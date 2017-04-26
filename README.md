@@ -5,7 +5,7 @@ Integrate R functionality with these modules for invesdwin-context
 
 Releases and snapshots are deployed to this maven repository:
 ```
-http://invesdwin.de/artifactory/invesdwin-oss
+http://invesdwin.de/artifactory/invesdwin-oss-remote
 ```
 
 Dependency declaration:
