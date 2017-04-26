@@ -51,11 +51,12 @@
 				<groupId>org.renjin</groupId>
 				<artifactId>renjin-script-engine</artifactId>
 				<version>${version.renjin}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.renjin</groupId>
-				<artifactId>renjin-aether-package-loader</artifactId>
-				<version>${version.renjin}</version>
+				<exclusions>
+					<exclusion>
+						<groupId>commons-logging</groupId>
+						<artifactId>commons-logging</artifactId>
+					</exclusion>
+				</exclusions>
 			</dependency>
 			<dependency>
 				<groupId>io.onetapbeyond</groupId>

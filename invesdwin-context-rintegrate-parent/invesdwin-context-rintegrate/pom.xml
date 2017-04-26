@@ -21,10 +21,6 @@
 			<artifactId>renjin-script-engine</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.renjin</groupId>
-			<artifactId>renjin-aether-package-loader</artifactId>
-		</dependency>
-		<dependency>
 			<groupId>io.onetapbeyond</groupId>
 			<artifactId>renjin-r-executor</artifactId>
 		</dependency>
