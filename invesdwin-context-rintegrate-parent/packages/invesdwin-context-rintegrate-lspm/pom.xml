@@ -12,9 +12,9 @@
 
 	<!-- WARNING: this module needs to be run on Ubuntu 14.04 with the following 
 		packages installed: -->
-	<!-- sudo apt-get install maven gcc-4.7 gcc-4.7-plugin-dev gfortran-4.7 
+	<!-- sudo apt-get install maven3 gcc-4.7 gcc-4.7-plugin-dev gfortran-4.7 
 		gcc-4.7.multilib r-base-dev -->
-
+	<!-- PPA: https://launchpad.net/~andrei-pozolotin/+archive/ubuntu/maven3 -->
 	<dependencies>
 		<dependency>
 			<groupId>org.renjin.cran</groupId>
