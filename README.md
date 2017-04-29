@@ -1,4 +1,4 @@
-# invesdwin-context-rintegrate
+# invesdwin-context-r
 Integrate R functionality with these modules for invesdwin-context 
 
 ## Maven
@@ -12,7 +12,7 @@ Dependency declaration:
 ```xml
 <dependency>
 	<groupId>de.invesdwin</groupId>
-	<artifactId>invesdwin-context-rintegrate</artifactId>
+	<artifactId>invesdwin-context-r-renjin</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
 </dependency>
 ```
