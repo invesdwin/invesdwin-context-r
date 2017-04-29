@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0                              http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>de.invesdwin</groupId>
+		<artifactId>invesdwin-context-parent</artifactId>
+		<version>1.0.0-SNAPSHOT</version>
+		<relativePath />
+	</parent>
+	<artifactId>invesdwin-context-r-parent</artifactId>
+	<packaging>pom</packaging>
+
+	<licenses>
+		<license>
+			<name>GNU General Public License (GPL), Version 3.0</name>
+			<url>http://www.gnu.org/licenses/gpl-3.0.html</url>
+		</license>
+	</licenses>
+
+
+	<modules>
+		<module>invesdwin-context-r-renjin</module>
+		<module>invesdwin-context-r-optimalf</module>
+	</modules>
+
+	<properties>
+		<version.invesdwin-context-integration>${version.invesdwin-context}</version.invesdwin-context-integration>
+		<version.invesdwin-context-r>${version.invesdwin-context}</version.invesdwin-context-r>
+
+		<version.renjin>0.8.2357</version.renjin>
+		<version.renjin-r-executor>1.2</version.renjin-r-executor>
+	</properties>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>de.invesdwin</groupId>
+				<artifactId>invesdwin-context-integration-parent</artifactId>
+				<version>${version.invesdwin-context-integration}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+
+			<dependency>
+				<groupId>de.invesdwin</groupId>
+				<artifactId>invesdwin-context-r-renjin</artifactId>
+				<version>${version.invesdwin-context-r}</version>
+			</dependency>
+			<dependency>
+				<groupId>de.invesdwin</groupId>
+				<artifactId>invesdwin-context-r-renjin-packages-lspm</artifactId>
+				<version>${version.invesdwin-context-r}</version>
+			</dependency>
+			<dependency>
+				<groupId>de.invesdwin</groupId>
+				<artifactId>invesdwin-context-r-optimalf</artifactId>
+				<version>${version.invesdwin-context-r}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.renjin</groupId>
+				<artifactId>renjin-script-engine</artifactId>
+				<version>${version.renjin}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.renjin</groupId>
+				<artifactId>renjin-core</artifactId>
+				<version>${version.renjin}</version>
+				<exclusions>
+					<exclusion>
+						<groupId>commons-logging</groupId>
+						<artifactId>commons-logging</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+			<dependency>
+				<groupId>org.renjin</groupId>
+				<artifactId>renjin-nmath</artifactId>
+				<version>${version.renjin}</version>
+			</dependency>
+			<dependency>
+				<groupId>io.onetapbeyond</groupId>
+				<artifactId>renjin-r-executor</artifactId>
+				<version>${version.renjin-r-executor}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.renjin</groupId>
+				<artifactId>gcc-runtime</artifactId>
+				<version>${version.renjin}</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<build>
+		<pluginManagement>
+			<plugins>
+			<plugin>
+				<groupId>org.renjin</groupId>
+				<artifactId>gcc-bridge-maven-plugin</artifactId>
+				<version>${version.renjin}</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>compile</goal>
+						</goals>
+						<phase>compile</phase>
+					</execution>
+				</executions>
+			</plugin>
+			<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
+			<plugin>
+				<groupId>org.eclipse.m2e</groupId>
+				<artifactId>lifecycle-mapping</artifactId>
+				<version>1.0.0</version>
+				<configuration>
+					<lifecycleMappingMetadata>
+						<pluginExecutions>
+							<pluginExecution>
+								<pluginExecutionFilter>
+									<groupId>org.renjin</groupId>
+									<artifactId>
+										gcc-bridge-maven-plugin
+									</artifactId>
+									<versionRange>
+										[0.8.2357,)
+									</versionRange>
+									<goals>
+										<goal>compile</goal>
+									</goals>
+								</pluginExecutionFilter>
+								<action>
+									<ignore></ignore>
+								</action>
+							</pluginExecution>
+						</pluginExecutions>
+					</lifecycleMappingMetadata>
+				</configuration>
+			</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
+
+	<distributionManagement>
+		<repository>
+			<id>central</id>
+			<name>invesdwin.de-releases</name>
+			<url>http://invesdwin.de/artifactory/invesdwin-oss</url>
+		</repository>
+		<snapshotRepository>
+			<id>snapshots</id>
+			<name>invesdwin.de-snapshots</name>
+			<url>http://invesdwin.de/artifactory/invesdwin-oss</url>
+		</snapshotRepository>
+	</distributionManagement>
+
+	<repositories>
+		<repository>
+			<id>invesdwin-oss</id>
+			<url>http://invesdwin.de/artifactory/invesdwin-oss-remote</url>
+		</repository>
+	</repositories>
+	<pluginRepositories>
+		<pluginRepository>
+			<id>invesdwin-oss</id>
+			<url>http://invesdwin.de/artifactory/invesdwin-oss-remote</url>
+		</pluginRepository>
+	</pluginRepositories>
+
+</project>
+
