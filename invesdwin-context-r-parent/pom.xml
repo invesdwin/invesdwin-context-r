@@ -90,11 +90,6 @@
 				<version>${version.renjin}</version>
 			</dependency>
 			<dependency>
-				<groupId>org.renjin</groupId>
-				<artifactId>tcltk</artifactId>
-				<version>${version.renjin}</version>
-			</dependency>
-			<dependency>
 				<groupId>io.onetapbeyond</groupId>
 				<artifactId>renjin-r-executor</artifactId>
 				<version>${version.renjin-r-executor}</version>
