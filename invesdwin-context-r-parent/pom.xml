@@ -96,6 +96,21 @@
 			</dependency>
 			<dependency>
 				<groupId>org.renjin</groupId>
+				<artifactId>stats4</artifactId>
+				<version>${version.renjin}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.renjin</groupId>
+				<artifactId>splines</artifactId>
+				<version>${version.renjin}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.renjin</groupId>
+				<artifactId>graphics</artifactId>
+				<version>${version.renjin}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.renjin</groupId>
 				<artifactId>renjin-gnur-runtime</artifactId>
 				<version>${version.renjin}</version>
 			</dependency>
