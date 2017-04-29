@@ -7,7 +7,8 @@
 		<artifactId>invesdwin-context-r-parent</artifactId>
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
-	<artifactId>invesdwin-context-r-renjin-packages</artifactId>
+	<groupId>de.invesdwin.context.r.renjin.packages</groupId>
+	<artifactId>parent</artifactId>
 	<packaging>pom</packaging>
 
 	<modules>

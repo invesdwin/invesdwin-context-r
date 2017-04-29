@@ -3,11 +3,11 @@
                              http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>de.invesdwin</groupId>
-		<artifactId>invesdwin-context-r-renjin-packages</artifactId>
+		<groupId>de.invesdwin.context.r.renjin.packages</groupId>
+		<artifactId>parent</artifactId>
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
-	<artifactId>invesdwin-context-r-renjin-packages-lspm</artifactId>
+	<artifactId>LSPM</artifactId>
 	<packaging>jar</packaging>
 
 	<!-- WARNING: this module needs to be run on Ubuntu 14.04 with the following 
@@ -35,15 +35,11 @@
 					<cFlags>
 						<cFlag>-std=c99</cFlag>
 					</cFlags>
-					<packageName>LSPM</packageName>
 				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.renjin</groupId>
 				<artifactId>renjin-maven-plugin</artifactId>
-				<configuration>
-					<packageName>LSPM</packageName>
-				</configuration>
 			</plugin>
 		</plugins>
 	</build>
