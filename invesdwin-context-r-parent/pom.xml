@@ -90,6 +90,17 @@
 				<version>${version.renjin}</version>
 			</dependency>
 			<dependency>
+				<groupId>org.renjin</groupId>
+				<artifactId>stats</artifactId>
+				<version>${version.renjin}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.renjin</groupId>
+				<artifactId>renjin-gnur-runtime</artifactId>
+				<version>${version.renjin}</version>
+			</dependency>
+
+			<dependency>
 				<groupId>io.onetapbeyond</groupId>
 				<artifactId>renjin-r-executor</artifactId>
 				<version>${version.renjin-r-executor}</version>
@@ -106,48 +117,49 @@
 	<build>
 		<pluginManagement>
 			<plugins>
-			<plugin>
-				<groupId>org.renjin</groupId>
-				<artifactId>gcc-bridge-maven-plugin</artifactId>
-				<version>${version.renjin}</version>
-				<executions>
-					<execution>
-						<goals>
-							<goal>compile</goal>
-						</goals>
-						<phase>compile</phase>
-					</execution>
-				</executions>
-			</plugin>
-			<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
-			<plugin>
-				<groupId>org.eclipse.m2e</groupId>
-				<artifactId>lifecycle-mapping</artifactId>
-				<version>1.0.0</version>
-				<configuration>
-					<lifecycleMappingMetadata>
-						<pluginExecutions>
-							<pluginExecution>
-								<pluginExecutionFilter>
-									<groupId>org.renjin</groupId>
-									<artifactId>
-										gcc-bridge-maven-plugin
-									</artifactId>
-									<versionRange>
-										[0.8.2357,)
-									</versionRange>
-									<goals>
-										<goal>compile</goal>
-									</goals>
-								</pluginExecutionFilter>
-								<action>
-									<ignore></ignore>
-								</action>
-							</pluginExecution>
-						</pluginExecutions>
-					</lifecycleMappingMetadata>
-				</configuration>
-			</plugin>
+				<plugin>
+					<groupId>org.renjin</groupId>
+					<artifactId>gcc-bridge-maven-plugin</artifactId>
+					<version>${version.renjin}</version>
+					<executions>
+						<execution>
+							<goals>
+								<goal>compile</goal>
+							</goals>
+							<phase>compile</phase>
+						</execution>
+					</executions>
+				</plugin>
+				<!--This plugin's configuration is used to store Eclipse m2e settings 
+					only. It has no influence on the Maven build itself. -->
+				<plugin>
+					<groupId>org.eclipse.m2e</groupId>
+					<artifactId>lifecycle-mapping</artifactId>
+					<version>1.0.0</version>
+					<configuration>
+						<lifecycleMappingMetadata>
+							<pluginExecutions>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>org.renjin</groupId>
+										<artifactId>
+											gcc-bridge-maven-plugin
+										</artifactId>
+										<versionRange>
+											[0.8.2357,)
+										</versionRange>
+										<goals>
+											<goal>compile</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore></ignore>
+									</action>
+								</pluginExecution>
+							</pluginExecutions>
+						</lifecycleMappingMetadata>
+					</configuration>
+				</plugin>
 			</plugins>
 		</pluginManagement>
 	</build>
