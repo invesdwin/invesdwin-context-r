@@ -14,5 +14,3 @@ export(probRuin)
 export(probProfit)
 
 S3method(print,lsp)
-
-export(print,lsp)
