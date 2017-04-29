@@ -4,10 +4,10 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>de.invesdwin</groupId>
-		<artifactId>invesdwin-context-rintegrate-packages</artifactId>
+		<artifactId>invesdwin-context-r-renjin-packages</artifactId>
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
-	<artifactId>invesdwin-context-rintegrate-lspm</artifactId>
+	<artifactId>invesdwin-context-r-renjin-packages-lspm</artifactId>
 	<packaging>jar</packaging>
 
 	<!-- WARNING: this module needs to be run on Ubuntu 14.04 with the following 
