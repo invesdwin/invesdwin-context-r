@@ -30,7 +30,7 @@
 				<artifactId>gcc-bridge-maven-plugin</artifactId>
 				<configuration>
 					<!-- Sets the package name of all generated classes -->
-					<packageName>de.invesdwin.context.rintegrate.lspm</packageName>
+					<packageName>de.invesdwin.LSPM</packageName>
 					<includeDirectories>
 						<includeDirectory>/usr/share/R/include/</includeDirectory>
 					</includeDirectories>
