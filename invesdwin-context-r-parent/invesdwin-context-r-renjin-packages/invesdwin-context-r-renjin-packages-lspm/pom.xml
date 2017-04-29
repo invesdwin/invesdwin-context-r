@@ -35,11 +35,15 @@
 					<cFlags>
 						<cFlag>-std=c99</cFlag>
 					</cFlags>
+					<packageName>LSPM</packageName>
 				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.renjin</groupId>
 				<artifactId>renjin-maven-plugin</artifactId>
+				<configuration>
+					<packageName>LSPM</packageName>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
