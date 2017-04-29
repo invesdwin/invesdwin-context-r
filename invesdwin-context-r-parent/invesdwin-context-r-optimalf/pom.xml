@@ -16,8 +16,8 @@
 			<artifactId>invesdwin-context-r-renjin</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>de.invesdwin</groupId>
-			<artifactId>invesdwin-context-r-renjin-packages-lspm</artifactId>
+			<groupId>de.invesdwin.context.r.renjin.packages</groupId>
+			<artifactId>LSPM</artifactId>
 		</dependency>
 
 	</dependencies>

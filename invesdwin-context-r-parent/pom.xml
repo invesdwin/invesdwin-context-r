@@ -48,8 +48,8 @@
 				<version>${version.invesdwin-context-r}</version>
 			</dependency>
 			<dependency>
-				<groupId>de.invesdwin</groupId>
-				<artifactId>invesdwin-context-r-renjin-packages-lspm</artifactId>
+				<groupId>de.invesdwin.context.r.renjin.packages</groupId>
+				<artifactId>LSPM</artifactId>
 				<version>${version.invesdwin-context-r}</version>
 			</dependency>
 			<dependency>
