@@ -13,11 +13,11 @@
 	<dependencies>
 		<dependency>
 			<groupId>de.invesdwin</groupId>
-			<artifactId>invesdwin-context-rintegrate</artifactId>
+			<artifactId>invesdwin-context-r-renjin</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>de.invesdwin</groupId>
-			<artifactId>invesdwin-context-rintegrate-lspm</artifactId>
+			<artifactId>invesdwin-context-r-renjin-packages-lspm</artifactId>
 		</dependency>
 
 	</dependencies>
