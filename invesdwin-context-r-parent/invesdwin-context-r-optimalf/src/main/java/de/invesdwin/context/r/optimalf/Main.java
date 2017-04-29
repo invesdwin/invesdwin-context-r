@@ -1,4 +1,4 @@
-package de.invesdwin.context.rintegrate.optimalf;
+package de.invesdwin.context.r.optimalf;
 
 import javax.annotation.concurrent.Immutable;
 
