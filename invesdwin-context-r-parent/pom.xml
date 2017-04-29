@@ -111,6 +111,21 @@
 			</dependency>
 			<dependency>
 				<groupId>org.renjin</groupId>
+				<artifactId>methods</artifactId>
+				<version>${version.renjin}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.renjin</groupId>
+				<artifactId>grDevices</artifactId>
+				<version>${version.renjin}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.renjin</groupId>
+				<artifactId>grid</artifactId>
+				<version>${version.renjin}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.renjin</groupId>
 				<artifactId>renjin-gnur-runtime</artifactId>
 				<version>${version.renjin}</version>
 			</dependency>
