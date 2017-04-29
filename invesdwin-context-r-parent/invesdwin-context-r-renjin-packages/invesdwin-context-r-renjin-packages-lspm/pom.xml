@@ -39,6 +39,13 @@
 					</cFlags>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.renjin</groupId>
+				<artifactId>renjin-maven-plugin</artifactId>
+				<configuration>
+					<packageName>de.invesdwin.context.r.renjin.packages.lspm</packageName>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 
