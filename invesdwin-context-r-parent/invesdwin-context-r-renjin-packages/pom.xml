@@ -12,7 +12,7 @@
 	<packaging>pom</packaging>
 
 	<modules>
-		<module>invesdwin-context-r-renjin-packages-lspm</module>
+		<module>LSPM</module>
 	</modules>
 
 
