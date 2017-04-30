@@ -164,13 +164,15 @@
 					<groupId>org.renjin</groupId>
 					<artifactId>renjin-maven-plugin</artifactId>
 					<version>${version.renjin}</version>
-					<execution>
-						<id>build</id>
-						<goals>
-							<goal>namespace-compile</goal>
-						</goals>
-						<phase>compile</phase>
-					</execution>
+					<executions>
+						<execution>
+							<id>build</id>
+							<goals>
+								<goal>namespace-compile</goal>
+							</goals>
+							<phase>compile</phase>
+						</execution>
+					</executions>
 				</plugin>
 				<!--This plugin's configuration is used to store Eclipse m2e settings 
 					only. It has no influence on the Maven build itself. -->
