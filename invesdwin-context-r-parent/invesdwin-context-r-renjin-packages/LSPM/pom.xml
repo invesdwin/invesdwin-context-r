@@ -28,14 +28,6 @@
 			<plugin>
 				<groupId>org.renjin</groupId>
 				<artifactId>gcc-bridge-maven-plugin</artifactId>
-				<configuration>
-					<includeDirectories>
-						<includeDirectory>/usr/share/R/include/</includeDirectory>
-					</includeDirectories>
-					<cFlags>
-						<cFlag>-std=c99</cFlag>
-					</cFlags>
-				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.renjin</groupId>
