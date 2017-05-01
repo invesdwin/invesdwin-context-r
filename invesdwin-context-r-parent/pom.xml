@@ -20,10 +20,11 @@
 
 
 	<modules>
-		<module>invesdwin-context-r-renjin</module>
-		<module>invesdwin-context-r-jri</module>
-		<module>invesdwin-context-r-optimalf-renjin</module>
-		<module>invesdwin-context-r-optimalf-jri</module>
+		<module>invesdwin-context-r-runtime-contract</module>
+		<module>invesdwin-context-r-runtime-renjin</module>
+		<module>invesdwin-context-r-runtime-jri</module>
+		<module>invesdwin-context-r-runtime-cli</module>
+		<module>invesdwin-context-r-optimalf</module>
 	</modules>
 
 	<properties>
@@ -49,11 +50,21 @@
 
 			<dependency>
 				<groupId>de.invesdwin</groupId>
-				<artifactId>invesdwin-context-r-renjin</artifactId>
+				<artifactId>invesdwin-context-r-runtime-contract</artifactId>
 				<version>${version.invesdwin-context-r}</version>
 			</dependency>
 			<dependency>
-				<groupId>de.invesdwin.context.r.renjin.packages</groupId>
+				<groupId>de.invesdwin</groupId>
+				<artifactId>invesdwin-context-r-runtime-jri</artifactId>
+				<version>${version.invesdwin-context-r}</version>
+			</dependency>
+			<dependency>
+				<groupId>de.invesdwin</groupId>
+				<artifactId>invesdwin-context-r-runtime-renjin</artifactId>
+				<version>${version.invesdwin-context-r}</version>
+			</dependency>
+			<dependency>
+				<groupId>de.invesdwin.context.r.runtime.renjin.packages</groupId>
 				<artifactId>LSPM</artifactId>
 				<version>${version.invesdwin-context-r}</version>
 			</dependency>

@@ -7,7 +7,7 @@
 		<artifactId>invesdwin-context-r-parent</artifactId>
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
-	<artifactId>invesdwin-context-r-jri</artifactId>
+	<artifactId>invesdwin-context-r-runtime-renjin</artifactId>
 	<packaging>jar</packaging>
 
 	<dependencies>
@@ -17,9 +17,13 @@
 		</dependency>
 
 		<dependency>
-				<groupId>org.nuiton.thirdparty</groupId>
-				<artifactId>JRI</artifactId>
-				</dependency>
+			<groupId>org.renjin</groupId>
+			<artifactId>renjin-script-engine</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>io.onetapbeyond</groupId>
+			<artifactId>renjin-r-executor</artifactId>
+		</dependency>
 	</dependencies>
 
 </project>

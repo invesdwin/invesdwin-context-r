@@ -7,23 +7,14 @@
 		<artifactId>invesdwin-context-r-parent</artifactId>
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
-	<artifactId>invesdwin-context-r-optimalf-jri</artifactId>
+	<artifactId>invesdwin-context-r-runtime-contract</artifactId>
 	<packaging>jar</packaging>
 
 	<dependencies>
 		<dependency>
 			<groupId>de.invesdwin</groupId>
-			<artifactId>invesdwin-context-r-renjin</artifactId>
+			<artifactId>invesdwin-context-integration</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>de.invesdwin.context.r.renjin.packages</groupId>
-			<artifactId>LSPM</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.renjin.cran</groupId>
-			<artifactId>DEoptim</artifactId>
-		</dependency>
-
 	</dependencies>
 
 </project>

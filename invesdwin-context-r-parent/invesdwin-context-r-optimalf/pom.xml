@@ -13,10 +13,10 @@
 	<dependencies>
 		<dependency>
 			<groupId>de.invesdwin</groupId>
-			<artifactId>invesdwin-context-r-renjin</artifactId>
+			<artifactId>invesdwin-context-r-runtime-renjin</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>de.invesdwin.context.r.renjin.packages</groupId>
+			<groupId>de.invesdwin.context.r.runtime.renjin.packages</groupId>
 			<artifactId>LSPM</artifactId>
 		</dependency>
 		<dependency>
