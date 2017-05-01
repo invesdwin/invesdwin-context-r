@@ -19,7 +19,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>org.renjin.cran</groupId>
-			<artifactId>DEoptim</artifactId>
+			<artifactId>DEoptimR</artifactId>
 		</dependency>
 	</dependencies>
 
