@@ -55,6 +55,10 @@ optimalf <- function(lsp, constrFun=NULL, constrVal=NULL,
   de <- DEoptim(fun, lower=l, upper=u, lsp=lsp,
                 constrFun=constrFun, constrVal=constrVal,
                 margin=margin, equity=equity, ...)
+  
+  jde <- JDEoptim(fn=fun, lower=l, upper=u, lsp=lsp,
+           constrFun=constrFun, constrVal=constrVal,
+           margin=margin, equity=equity, ...)
 
   res <- list(f=de$optim$bestmem, G=-de$optim$bestval)
   names(res$f) <- colnames(lsp$events)
