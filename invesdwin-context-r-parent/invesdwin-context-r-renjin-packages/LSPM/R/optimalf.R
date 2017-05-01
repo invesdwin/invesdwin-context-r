@@ -52,15 +52,15 @@ optimalf <- function(lsp, constrFun=NULL, constrVal=NULL,
     u[1:nc] <- upper
   }
 
-  de <- DEoptim(fun, lower=l, upper=u, lsp=lsp,
-                constrFun=constrFun, constrVal=constrVal,
-                margin=margin, equity=equity, ...)
+  #de <- DEoptim(fun, lower=l, upper=u, lsp=lsp,
+  #              constrFun=constrFun, constrVal=constrVal,
+  #              margin=margin, equity=equity, ...)
+   #print("--------- de: ")
+   #print(de)
   
   jde <- JDEoptim(fn=fun, lower=l, upper=u, lsp=lsp,
            constrFun=constrFun, constrVal=constrVal,
            margin=margin, equity=equity, ...)
-   print("--------- de: ")
-   print(de)
    print("--------- jde: ")
    print(jde)
 
