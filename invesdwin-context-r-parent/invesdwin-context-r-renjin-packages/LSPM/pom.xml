@@ -15,11 +15,11 @@
 	<!-- sudo apt-get install maven3 gcc-4.7 gcc-4.7-plugin-dev gfortran-4.7 
 		gcc-4.7.multilib r-base-dev -->
 	<!-- PPA: https://launchpad.net/~andrei-pozolotin/+archive/ubuntu/maven3 -->
+
 	<dependencies>
 		<dependency>
 			<groupId>org.renjin.cran</groupId>
 			<artifactId>DEoptim</artifactId>
-			<version>2.2-4-b5</version>
 		</dependency>
 	</dependencies>
 
@@ -27,21 +27,17 @@
 		<plugins>
 			<plugin>
 				<groupId>org.renjin</groupId>
-				<artifactId>gcc-bridge-maven-plugin</artifactId>
-				<configuration>
-					<includeDirectories>
-						<includeDirectory>/usr/share/R/include/</includeDirectory>
-					</includeDirectories>
-					<cFlags>
-						<cFlag>-std=c99</cFlag>
-					</cFlags>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.renjin</groupId>
 				<artifactId>renjin-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>compile</id>
+						<phase>compile</phase>
+						<goals>
+							<goal>gnur-compile</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>
-
 </project>

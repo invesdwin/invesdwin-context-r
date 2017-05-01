@@ -30,6 +30,7 @@
 
 		<version.renjin>0.8.2357</version.renjin>
 		<version.renjin-r-executor>1.2</version.renjin-r-executor>
+		<version.DEoptim>2.2-4-b5</version.DEoptim>
 	</properties>
 
 	<dependencyManagement>
@@ -129,6 +130,11 @@
 				<artifactId>renjin-gnur-runtime</artifactId>
 				<version>${version.renjin}</version>
 			</dependency>
+			<dependency>
+				<groupId>org.renjin</groupId>
+				<artifactId>gcc-runtime</artifactId>
+				<version>${version.renjin}</version>
+			</dependency>
 
 			<dependency>
 				<groupId>io.onetapbeyond</groupId>
@@ -136,10 +142,11 @@
 				<version>${version.renjin-r-executor}</version>
 			</dependency>
 
+
 			<dependency>
-				<groupId>org.renjin</groupId>
-				<artifactId>gcc-runtime</artifactId>
-				<version>${version.renjin}</version>
+				<groupId>org.renjin.cran</groupId>
+				<artifactId>DEoptim</artifactId>
+				<version>${version.DEoptim}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
@@ -149,60 +156,8 @@
 			<plugins>
 				<plugin>
 					<groupId>org.renjin</groupId>
-					<artifactId>gcc-bridge-maven-plugin</artifactId>
-					<version>${version.renjin}</version>
-					<executions>
-						<execution>
-							<goals>
-								<goal>compile</goal>
-							</goals>
-							<phase>compile</phase>
-						</execution>
-					</executions>
-				</plugin>
-				<plugin>
-					<groupId>org.renjin</groupId>
 					<artifactId>renjin-maven-plugin</artifactId>
 					<version>${version.renjin}</version>
-					<executions>
-						<execution>
-							<id>build</id>
-							<goals>
-								<goal>namespace-compile</goal>
-							</goals>
-							<phase>compile</phase>
-						</execution>
-					</executions>
-				</plugin>
-				<!--This plugin's configuration is used to store Eclipse m2e settings 
-					only. It has no influence on the Maven build itself. -->
-				<plugin>
-					<groupId>org.eclipse.m2e</groupId>
-					<artifactId>lifecycle-mapping</artifactId>
-					<version>1.0.0</version>
-					<configuration>
-						<lifecycleMappingMetadata>
-							<pluginExecutions>
-								<pluginExecution>
-									<pluginExecutionFilter>
-										<groupId>org.renjin</groupId>
-										<artifactId>
-											gcc-bridge-maven-plugin
-										</artifactId>
-										<versionRange>
-											[0.8.2357,)
-										</versionRange>
-										<goals>
-											<goal>compile</goal>
-										</goals>
-									</pluginExecutionFilter>
-									<action>
-										<ignore></ignore>
-									</action>
-								</pluginExecution>
-							</pluginExecutions>
-						</lifecycleMappingMetadata>
-					</configuration>
 				</plugin>
 			</plugins>
 		</pluginManagement>
