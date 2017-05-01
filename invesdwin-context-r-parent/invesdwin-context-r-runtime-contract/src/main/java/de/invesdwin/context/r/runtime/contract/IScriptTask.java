@@ -6,6 +6,6 @@ public interface IScriptTask {
 
     Resource getResource();
 
-    Iterable<IScriptResult<?>> getResults();
+    Iterable<IScriptResultExpression<?>> getResultExpressions();
 
 }

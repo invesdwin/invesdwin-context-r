@@ -1,6 +1,6 @@
 package de.invesdwin.context.r.runtime.contract;
 
-public interface IScriptResult<T> {
+public interface IScriptResultExpression<T> {
 
     /**
      * The R expression with which the result can be extracted from the actual script. Can be the variable name or
@@ -11,6 +11,6 @@ public interface IScriptResult<T> {
     /**
      * The result of the expression as extracted from the script result map.
      */
-    T getResult(IScriptResultMap resultMap);
+    T getResult(IScriptResults resultMap);
 
 }

@@ -7,7 +7,7 @@ import javax.annotation.concurrent.NotThreadSafe;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 
-import de.invesdwin.context.r.runtime.contract.IScriptResult;
+import de.invesdwin.context.r.runtime.contract.IScriptResultExpression;
 import de.invesdwin.context.r.runtime.contract.IScriptTask;
 
 @NotThreadSafe
@@ -36,7 +36,7 @@ public class OptimalfScriptTask implements IScriptTask {
     }
 
     @Override
-    public Iterable<IScriptResult<?>> getResults() {
+    public Iterable<IScriptResultExpression<?>> getResultExpressions() {
         return null;
     }
 
