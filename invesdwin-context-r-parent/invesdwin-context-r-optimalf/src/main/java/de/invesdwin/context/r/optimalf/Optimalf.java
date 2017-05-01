@@ -4,8 +4,6 @@ import java.util.List;
 
 import javax.annotation.concurrent.NotThreadSafe;
 
-import io.onetapbeyond.renjin.r.executor.RenjinException;
-
 @NotThreadSafe
 public class Optimalf {
 
@@ -15,7 +13,7 @@ public class Optimalf {
         this.tradesPerStrategy = tradesPerStrategy;
     }
 
-    public List<Double> getOptimalfPerStrategy() throws RenjinException {
+    public List<Double> getOptimalfPerStrategy() {
         //        final RenjinTask task = Renjin.R(true, true)
         //                .code(new InputStreamReader(getClass().getResourceAsStream("Optimalf.R")))
         //                .build();
