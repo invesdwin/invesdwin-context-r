@@ -7,21 +7,40 @@
 		<artifactId>invesdwin-context-r-parent</artifactId>
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
-	<artifactId>invesdwin-context-r-optimalf-renjin</artifactId>
+	<artifactId>invesdwin-context-r-optimalf</artifactId>
 	<packaging>jar</packaging>
 
 	<dependencies>
 		<dependency>
 			<groupId>de.invesdwin</groupId>
+			<artifactId>invesdwin-context-r-runtime-contract</artifactId>
+		</dependency>
+		
+		<!-- allow testing in in all engines -->
+		<dependency>
+			<groupId>de.invesdwin</groupId>
+			<artifactId>invesdwin-context-r-runtime-cli</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>de.invesdwin</groupId>
+			<artifactId>invesdwin-context-r-runtime-jri</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>de.invesdwin</groupId>
 			<artifactId>invesdwin-context-r-runtime-renjin</artifactId>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>de.invesdwin.context.r.runtime.renjin.packages</groupId>
 			<artifactId>LSPM</artifactId>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.renjin.cran</groupId>
 			<artifactId>DEoptim</artifactId>
+			<scope>test</scope>
 		</dependency>
 
 	</dependencies>

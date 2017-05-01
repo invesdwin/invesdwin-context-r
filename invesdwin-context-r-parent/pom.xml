@@ -55,6 +55,11 @@
 			</dependency>
 			<dependency>
 				<groupId>de.invesdwin</groupId>
+				<artifactId>invesdwin-context-r-runtime-cli</artifactId>
+				<version>${version.invesdwin-context-r}</version>
+			</dependency>
+			<dependency>
+				<groupId>de.invesdwin</groupId>
 				<artifactId>invesdwin-context-r-runtime-jri</artifactId>
 				<version>${version.invesdwin-context-r}</version>
 			</dependency>
