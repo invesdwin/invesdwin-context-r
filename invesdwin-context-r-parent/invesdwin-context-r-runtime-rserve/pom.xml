@@ -7,7 +7,7 @@
 		<artifactId>invesdwin-context-r-parent</artifactId>
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
-	<artifactId>invesdwin-context-r-runtime-jri</artifactId>
+	<artifactId>invesdwin-context-r-runtime-rserve</artifactId>
 	<packaging>jar</packaging>
 
 	<dependencies>
@@ -17,8 +17,8 @@
 		</dependency>
 
 		<dependency>
-			<groupId>org.nuiton.thirdparty</groupId>
-			<artifactId>JRI</artifactId>
+			<groupId>com.github.yannrichet</groupId>
+			<artifactId>Rsession</artifactId>
 		</dependency>
 	</dependencies>
 

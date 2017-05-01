@@ -29,6 +29,11 @@
 		</dependency>
 		<dependency>
 			<groupId>de.invesdwin</groupId>
+			<artifactId>invesdwin-context-r-runtime-rserve</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>de.invesdwin</groupId>
 			<artifactId>invesdwin-context-r-runtime-renjin</artifactId>
 			<scope>test</scope>
 		</dependency>

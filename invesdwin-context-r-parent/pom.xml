@@ -24,6 +24,7 @@
 		<module>invesdwin-context-r-runtime-renjin</module>
 		<module>invesdwin-context-r-runtime-jri</module>
 		<module>invesdwin-context-r-runtime-cli</module>
+		<module>invesdwin-context-r-runtime-rserve</module>
 		<module>invesdwin-context-r-optimalf</module>
 	</modules>
 
@@ -36,6 +37,7 @@
 		<version.deoptimr>1.0-8-b4</version.deoptimr>
 		<version.deoptim>2.2-4-b5</version.deoptim>
 		<version.jri>0.9-9</version.jri>
+		<version.rsession>1.8.3</version.rsession>
 	</properties>
 
 	<dependencyManagement>
@@ -65,6 +67,11 @@
 			</dependency>
 			<dependency>
 				<groupId>de.invesdwin</groupId>
+				<artifactId>invesdwin-context-r-runtime-rserve</artifactId>
+				<version>${version.invesdwin-context-r}</version>
+			</dependency>
+			<dependency>
+				<groupId>de.invesdwin</groupId>
 				<artifactId>invesdwin-context-r-runtime-renjin</artifactId>
 				<version>${version.invesdwin-context-r}</version>
 			</dependency>
@@ -73,6 +80,7 @@
 				<artifactId>LSPM</artifactId>
 				<version>${version.invesdwin-context-r}</version>
 			</dependency>
+			
 			<dependency>
 				<groupId>de.invesdwin</groupId>
 				<artifactId>invesdwin-context-r-optimalf</artifactId>
@@ -178,6 +186,12 @@
 				<artifactId>JRI</artifactId>
 				<version>${version.jri}</version>
 			</dependency>
+			<dependency>
+				<groupId>com.github.yannrichet</groupId>
+				<artifactId>Rsession</artifactId>
+				<version>${version.rsession}</version>
+			</dependency>
+
 		</dependencies>
 	</dependencyManagement>
 
