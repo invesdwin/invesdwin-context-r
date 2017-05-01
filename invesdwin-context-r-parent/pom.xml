@@ -22,7 +22,8 @@
 	<modules>
 		<module>invesdwin-context-r-renjin</module>
 		<module>invesdwin-context-r-jri</module>
-		<module>invesdwin-context-r-optimalf</module>
+		<module>invesdwin-context-r-optimalf-renjin</module>
+		<module>invesdwin-context-r-optimalf-jri</module>
 	</modules>
 
 	<properties>
