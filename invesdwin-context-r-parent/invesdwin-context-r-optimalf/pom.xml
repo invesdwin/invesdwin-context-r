@@ -19,6 +19,10 @@
 			<groupId>de.invesdwin.context.r.renjin.packages</groupId>
 			<artifactId>LSPM</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>org.renjin.cran</groupId>
+			<artifactId>DEoptim</artifactId>
+		</dependency>
 
 	</dependencies>
 
