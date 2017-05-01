@@ -24,7 +24,7 @@ public class Main extends AMain {
 
     @Override
     protected void startApplication(final CmdLineParser parser) throws Exception {
-        new Optimalf(null).getOptimalfPerStrategy();
+        new OptimalfScriptTask(null).getOptimalfPerStrategy();
     }
 
 }
