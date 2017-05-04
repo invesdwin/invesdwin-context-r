@@ -15,6 +15,15 @@
 			<groupId>de.invesdwin</groupId>
 			<artifactId>invesdwin-context-r-runtime-contract</artifactId>
 		</dependency>
+
+		<dependency>
+			<groupId>com.github.jbytecode</groupId>
+			<artifactId>RCaller</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.zeroturnaround</groupId>
+			<artifactId>zt-exec</artifactId>
+		</dependency>
 	</dependencies>
 
 </project>

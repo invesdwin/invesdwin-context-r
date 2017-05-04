@@ -13,8 +13,8 @@
 
 	<licenses>
 		<license>
-			<name>GNU General Public License (GPL), Version 3.0</name>
-			<url>http://www.gnu.org/licenses/gpl-3.0.html</url>
+			<name>GNU Lesser General Public License (LGPL), Version 3.0</name>
+			<url>http://www.gnu.org/licenses/lgpl-3.0.html</url>
 		</license>
 	</licenses>
 
@@ -38,6 +38,7 @@
 		<version.deoptim>2.2-4-b5</version.deoptim>
 		<version.jri>0.9-9</version.jri>
 		<version.rsession>1.8.3</version.rsession>
+		<version.rcaller>3.0</version.rcaller>
 	</properties>
 
 	<dependencyManagement>
@@ -62,6 +63,12 @@
 			</dependency>
 			<dependency>
 				<groupId>de.invesdwin</groupId>
+				<artifactId>invesdwin-context-r-runtime-cli</artifactId>
+				<version>${version.invesdwin-context-r}</version>
+				<type>test-jar</type>
+			</dependency>
+			<dependency>
+				<groupId>de.invesdwin</groupId>
 				<artifactId>invesdwin-context-r-runtime-jri</artifactId>
 				<version>${version.invesdwin-context-r}</version>
 			</dependency>
@@ -80,7 +87,7 @@
 				<artifactId>LSPM</artifactId>
 				<version>${version.invesdwin-context-r}</version>
 			</dependency>
-			
+
 			<dependency>
 				<groupId>de.invesdwin</groupId>
 				<artifactId>invesdwin-context-r-optimalf</artifactId>
@@ -191,6 +198,12 @@
 				<artifactId>Rsession</artifactId>
 				<version>${version.rsession}</version>
 			</dependency>
+			<dependency>
+				<groupId>com.github.jbytecode</groupId>
+				<artifactId>RCaller</artifactId>
+				<version>${version.rcaller}</version>
+			</dependency>
+
 
 		</dependencies>
 	</dependencyManagement>

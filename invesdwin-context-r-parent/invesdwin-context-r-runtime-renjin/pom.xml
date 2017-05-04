@@ -10,6 +10,14 @@
 	<artifactId>invesdwin-context-r-runtime-renjin</artifactId>
 	<packaging>jar</packaging>
 
+	<licenses>
+		<license>
+			<name>GNU General Public License (GPL), Version 3.0</name>
+			<url>http://www.gnu.org/licenses/gpl-3.0.html</url>
+		</license>
+	</licenses>
+
+
 	<dependencies>
 		<dependency>
 			<groupId>de.invesdwin</groupId>
