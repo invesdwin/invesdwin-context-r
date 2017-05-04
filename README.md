@@ -34,4 +34,4 @@ You are free to choose which integration method you prefer by selecting the appr
 - to measure the performance impact of the different solutions
 - to gain flexibility in various deployment scenarios
 
-For an example R script, have a look at the `invesdwin-context-r-optimalf` module.
+For an example R script integration, have a look at the `invesdwin-context-r-optimalf` module.
