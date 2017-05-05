@@ -35,6 +35,8 @@ public final class CliScriptTaskRunner implements IScriptTaskRunner, FactoryBean
             try {
                 final RCaller caller = RCallerObjectPool.INSTANCE.borrowObject();
                 caller.getRCode().addRCode(IOUtils.toString(in, StandardCharsets.UTF_8));
+                //provide access to all variables
+                caller.getRCode().addRCode("result <- ls()");
                 caller.runAndReturnResultOnline("result");
                 RCallerObjectPool.INSTANCE.returnObject(caller);
             } catch (final Exception e) {
