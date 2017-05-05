@@ -1,5 +1,6 @@
 package de.invesdwin.context.r.runtime.cli.pool.internal;
 
+import javax.annotation.concurrent.GuardedBy;
 import javax.annotation.concurrent.NotThreadSafe;
 
 import org.fest.reflect.field.Invoker;
@@ -7,12 +8,15 @@ import org.fest.reflect.field.Invoker;
 import com.github.rcaller.EventHandler;
 import com.github.rcaller.MessageSaver;
 import com.github.rcaller.TempFileService;
+import com.github.rcaller.exception.ExecutionException;
+import com.github.rcaller.rstuff.FailurePolicy;
 import com.github.rcaller.rstuff.RCaller;
 import com.github.rcaller.rstuff.RCallerOptions;
 import com.github.rcaller.rstuff.RCode;
 import com.github.rcaller.rstuff.ROutputParser;
 import com.github.rcaller.rstuff.RStreamHandler;
 
+import de.invesdwin.context.r.runtime.cli.CliScriptTaskRunner;
 import de.invesdwin.context.r.runtime.contract.IScriptTaskRunner;
 import de.invesdwin.util.lang.Reflections;
 import de.invesdwin.util.lang.Strings;
@@ -22,10 +26,15 @@ public class ModifiedRCaller extends RCaller {
 
     private final TempFileService tempFileServiceCopy;
     private final MessageSaver errorMessageSaverCopy;
+    @GuardedBy("curThreadForInterruptLock")
+    private Thread curThreadForInterrupt;
+    @GuardedBy("curThreadForInterruptLock")
+    private boolean interruped;
+    private final Object curThreadForInterruptLock = new Object();
 
     public ModifiedRCaller() {
         super(null, new ROutputParser(), newOutputStreamHandler(), newErrorStreamHandler(), new MessageSaver(),
-                new ModifiedTempFileService(), RCallerOptions.create());
+                new ModifiedTempFileService(), RCallerOptions.create(FailurePolicy.CONTINUE, Long.MAX_VALUE));
         final Invoker<TempFileService> rcallerTempFileServiceField = Reflections.field("tempFileService")
                 .ofType(TempFileService.class)
                 .in(this);
@@ -35,10 +44,30 @@ public class ModifiedRCaller extends RCaller {
                 .in(this);
         this.errorMessageSaverCopy = rcallerErrorMessageSaverField.get();
         setRCode(RCode.create());
+        quitOnErrorSetup();
+
+        final RStreamHandler rOutput = Reflections.field("rOutput").ofType(RStreamHandler.class).in(this).get();
+        rOutput.addEventHandler(new EventHandler() {
+            @Override
+            public void messageReceived(final String senderName, final String msg) {
+                //only keep the last error message, since it might have been a package loading message or something that is irrelevant
+                if (Strings.isNotBlank(msg)) {
+                    errorMessageSaverCopy.resetMessage();
+                }
+            }
+        });
+    }
+
+    private void quitOnErrorSetup() {
+        //sleep 1 second in between so that the logs can be processed properly before the process quits
+        getRCode().addRCode(
+                "options(error = function() { warning(geterrmessage()); Sys.sleep(1); quit(save = \"no\", status = 1, runLast = FALSE) } )");
+        getRCode().addRCode(CliScriptTaskRunner.INTERNAL_RESULT_VARIABLE + " <- c()");
+        runAndReturnResultOnline(CliScriptTaskRunner.INTERNAL_RESULT_VARIABLE);
     }
 
     private static RStreamHandler newOutputStreamHandler() {
-        final RStreamHandler output = new RStreamHandler(null, "Output");
+        final RStreamHandler output = new ModifiedRStreamHandler(null, "Output");
         output.addEventHandler(new EventHandler() {
             @Override
             public void messageReceived(final String senderName, final String msg) {
@@ -49,7 +78,7 @@ public class ModifiedRCaller extends RCaller {
     }
 
     private static RStreamHandler newErrorStreamHandler() {
-        final RStreamHandler error = new RStreamHandler(null, "Error");
+        final RStreamHandler error = new ModifiedRStreamHandler(null, "Error");
         error.addEventHandler(new EventHandler() {
             @Override
             public void messageReceived(final String senderName, final String msg) {
@@ -83,7 +112,60 @@ public class ModifiedRCaller extends RCaller {
     @Override
     public void deleteTempFiles() {
         super.deleteTempFiles();
+        quitOnErrorSetup();
         errorMessageSaverCopy.resetMessage();
+    }
+
+    @Override
+    public void startStreamConsumers(final Process process) {
+        super.startStreamConsumers(process);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    process.waitFor();
+                } catch (final InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                } finally {
+                    synchronized (curThreadForInterruptLock) {
+                        if (curThreadForInterrupt != null) {
+                            interruped = true;
+                            curThreadForInterrupt.interrupt();
+                        }
+                    }
+                }
+            }
+        }).start();
+    }
+
+    @Override
+    public void runAndReturnResultOnline(final String var) throws ExecutionException {
+        try {
+            synchronized (curThreadForInterruptLock) {
+                this.curThreadForInterrupt = Thread.currentThread();
+            }
+            try {
+                super.runAndReturnResultOnline(var);
+                synchronized (curThreadForInterruptLock) {
+                    if (interruped) {
+                        throw new IllegalStateException(errorMessageSaverCopy.getMessage().trim());
+                    }
+                }
+            } catch (final Throwable t) {
+                synchronized (curThreadForInterruptLock) {
+                    if (interruped) {
+                        throw new IllegalStateException(errorMessageSaverCopy.getMessage().trim(), t);
+                    }
+                }
+            } finally {
+                synchronized (curThreadForInterruptLock) {
+                    this.curThreadForInterrupt = null;
+                    this.interruped = false;
+                }
+            }
+        } finally {
+            getRCode().clearOnline();
+        }
     }
 
 }

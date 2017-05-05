@@ -26,7 +26,11 @@ public class OptimalfScript {
         final ScriptTask scriptTask = new ScriptTask(new ClassPathResource("OptimalfScript.R", getClass()));
         try (final IScriptTaskResults results = runner.run(scriptTask)) {
             final Double[] optimalf = results.getDoubleVector("optimalf");
-            return Arrays.asList(optimalf);
+            if (optimalf != null) {
+                return Arrays.asList(optimalf);
+            } else {
+                return null;
+            }
         }
     }
 

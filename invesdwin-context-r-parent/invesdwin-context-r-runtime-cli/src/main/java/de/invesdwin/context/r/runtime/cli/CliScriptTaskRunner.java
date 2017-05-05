@@ -1,15 +1,9 @@
 package de.invesdwin.context.r.runtime.cli;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
-
 import javax.annotation.concurrent.Immutable;
 import javax.inject.Named;
 
-import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.FactoryBean;
-import org.springframework.core.io.Resource;
 
 import com.github.rcaller.rstuff.RCaller;
 
@@ -17,6 +11,7 @@ import de.invesdwin.context.r.runtime.cli.pool.RCallerObjectPool;
 import de.invesdwin.context.r.runtime.contract.IScriptTaskResults;
 import de.invesdwin.context.r.runtime.contract.IScriptTaskRunner;
 import de.invesdwin.context.r.runtime.contract.ScriptTask;
+import de.invesdwin.util.error.Throwables;
 
 @Immutable
 @Named
@@ -24,29 +19,68 @@ public final class CliScriptTaskRunner implements IScriptTaskRunner, FactoryBean
 
     public static final CliScriptTaskRunner INSTANCE = new CliScriptTaskRunner();
 
+    public static final String INTERNAL_RESULT_VARIABLE = CliScriptTaskRunner.class.getSimpleName() + "_result";
+
     private CliScriptTaskRunner() {}
 
     @Override
     public IScriptTaskResults run(final ScriptTask scriptTask) {
-
-        final Resource resource = scriptTask.getScriptResource();
-
-        try (InputStream in = resource.getInputStream()) {
+        //get session
+        final RCaller rcaller;
+        try {
+            rcaller = RCallerObjectPool.INSTANCE.borrowObject();
+        } catch (final Exception e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            rcaller.getRCode().clearOnline();
+            rcaller.getRCode().addRCode(scriptTask.getScriptResourceAsString());
+            //provide access to all variables
+            rcaller.getRCode().addRCode(INTERNAL_RESULT_VARIABLE + " <- ls()");
+            rcaller.runAndReturnResultOnline(INTERNAL_RESULT_VARIABLE);
+            return newResult(rcaller);
+        } catch (final Throwable t) {
             try {
-                final RCaller caller = RCallerObjectPool.INSTANCE.borrowObject();
-                caller.getRCode().addRCode(IOUtils.toString(in, StandardCharsets.UTF_8));
-                //provide access to all variables
-                caller.getRCode().addRCode("result <- ls()");
-                caller.runAndReturnResultOnline("result");
-                RCallerObjectPool.INSTANCE.returnObject(caller);
+                RCallerObjectPool.INSTANCE.invalidateObject(rcaller);
             } catch (final Exception e) {
                 throw new RuntimeException(e);
             }
-        } catch (final IOException e) {
-            throw new RuntimeException(e);
+            throw Throwables.propagate(t);
         }
+    }
 
-        return null;
+    private IScriptTaskResults newResult(final RCaller rcaller) {
+        return new IScriptTaskResults() {
+
+            @Override
+            public String getString(final String variable) {
+                return null;
+            }
+
+            @Override
+            public Double[] getDoubleVector(final String variable) {
+                return null;
+            }
+
+            @Override
+            public Double[][] getDoubleMatrix(final String variable) {
+                return null;
+            }
+
+            @Override
+            public Double getDouble(final String variable) {
+                return null;
+            }
+
+            @Override
+            public void close() {
+                try {
+                    RCallerObjectPool.INSTANCE.returnObject(rcaller);
+                } catch (final Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        };
     }
 
     @Override

@@ -24,11 +24,11 @@ public final class RsessionPoolableObjectFactory
     public Rsession makeObject() {
         switch (RserveProperties.RSERVER_CONF_MODE) {
         case LOCAL_SPAWN:
-            return Rsession.newInstanceTry(RsessionLogger.INSTANCE, RserveProperties.RSERVER_CONF);
+            return Rsession.newInstanceTry(new RsessionLogger(), RserveProperties.RSERVER_CONF);
         case LOCAL:
             //fallthrough
         case REMOTE:
-            return Rsession.newRemoteInstance(RsessionLogger.INSTANCE, RserveProperties.RSERVER_CONF);
+            return Rsession.newRemoteInstance(new RsessionLogger(), RserveProperties.RSERVER_CONF);
         default:
             throw UnknownArgumentException.newInstance(RserverConfMode.class, RserveProperties.RSERVER_CONF_MODE);
         }
@@ -36,7 +36,7 @@ public final class RsessionPoolableObjectFactory
 
     @Override
     public void destroyObject(final Rsession obj) throws Exception {
-        obj.close();
+        obj.end();
     }
 
     @Override
@@ -50,6 +50,7 @@ public final class RsessionPoolableObjectFactory
     @Override
     public void passivateObject(final Rsession obj) throws Exception {
         obj.rmAll();
+        obj.close(); //reset logger
     }
 
     @Override

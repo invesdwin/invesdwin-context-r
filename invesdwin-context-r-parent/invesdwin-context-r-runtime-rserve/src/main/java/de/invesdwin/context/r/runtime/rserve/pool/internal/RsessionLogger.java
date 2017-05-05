@@ -1,40 +1,59 @@
 package de.invesdwin.context.r.runtime.rserve.pool.internal;
 
+import javax.annotation.concurrent.GuardedBy;
 import javax.annotation.concurrent.ThreadSafe;
 
-import de.invesdwin.context.log.Log;
+import org.math.R.Rsession;
+
 import de.invesdwin.context.r.runtime.contract.IScriptTaskRunner;
+import de.invesdwin.util.lang.Reflections;
 
 @ThreadSafe
 public final class RsessionLogger implements org.math.R.Logger {
 
-    public static final RsessionLogger INSTANCE = new RsessionLogger();
+    @GuardedBy("this")
+    private final StringBuilder errorMessage = new StringBuilder();
 
-    private static final Log LOGGER = IScriptTaskRunner.LOG;
-
-    private RsessionLogger() {}
+    public RsessionLogger() {}
 
     @Override
-    public void println(final String text, final Level level) {
+    public synchronized void println(final String text, final Level level) {
         switch (level) {
         case OUTPUT:
-            //fallthrough
+            IScriptTaskRunner.LOG.debug(text);
+            errorMessage.setLength(0);
         case INFO:
-            LOGGER.debug(text);
+            IScriptTaskRunner.LOG.trace(text);
+            errorMessage.setLength(0);
             break;
         case WARNING:
-            LOGGER.warn(text);
+            IScriptTaskRunner.LOG.warn(text);
+            errorMessage.append(text);
+            errorMessage.append("\n");
             break;
         case ERROR:
-            LOGGER.error(text);
+            IScriptTaskRunner.LOG.error(text);
+            errorMessage.append(text);
+            errorMessage.append("\n");
             break;
         default:
-            LOGGER.trace(text);
+            IScriptTaskRunner.LOG.trace(text);
+            errorMessage.setLength(0);
             break;
         }
     }
 
+    public synchronized String getErrorMessage() {
+        return String.valueOf(errorMessage).trim();
+    }
+
     @Override
-    public void close() {}
+    public synchronized void close() {
+        errorMessage.setLength(0);
+    }
+
+    public static RsessionLogger get(final Rsession rsession) {
+        return (RsessionLogger) Reflections.field("console").ofType(org.math.R.Logger.class).in(rsession).get();
+    }
 
 }

@@ -1,21 +1,17 @@
 package de.invesdwin.context.r.runtime.rserve;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
-
 import javax.annotation.concurrent.Immutable;
 import javax.inject.Named;
 
-import org.apache.commons.io.IOUtils;
 import org.math.R.Rsession;
+import org.rosuda.REngine.REXP;
 import org.springframework.beans.factory.FactoryBean;
-import org.springframework.core.io.Resource;
 
 import de.invesdwin.context.r.runtime.contract.IScriptTaskResults;
 import de.invesdwin.context.r.runtime.contract.IScriptTaskRunner;
 import de.invesdwin.context.r.runtime.contract.ScriptTask;
 import de.invesdwin.context.r.runtime.rserve.pool.RsessionObjectPool;
+import de.invesdwin.util.error.Throwables;
 
 @Immutable
 @Named
@@ -27,22 +23,75 @@ public final class RserveScriptTaskRunner implements IScriptTaskRunner, FactoryB
 
     @Override
     public IScriptTaskResults run(final ScriptTask scriptTask) {
-
-        final Resource resource = scriptTask.getScriptResource();
-
-        try (InputStream in = resource.getInputStream()) {
+        //get session
+        final Rsession rsession;
+        try {
+            rsession = RsessionObjectPool.INSTANCE.borrowObject();
+        } catch (final Exception e) {
+            throw new RuntimeException(e);
+        }
+        //eval
+        final REXP eval;
+        try {
+            eval = rsession.eval(scriptTask.getScriptResourceAsString());
+        } catch (final Throwable t) {
             try {
-                final Rsession caller = RsessionObjectPool.INSTANCE.borrowObject();
-                caller.voidEval(IOUtils.toString(in, StandardCharsets.UTF_8));
-                RsessionObjectPool.INSTANCE.returnObject(caller);
+                RsessionObjectPool.INSTANCE.invalidateObject(rsession);
             } catch (final Exception e) {
                 throw new RuntimeException(e);
             }
-        } catch (final IOException e) {
-            throw new RuntimeException(e);
+            throw Throwables.propagate(t);
         }
+        //handle error or return result
+        try {
+            if (eval == null) {
+                throw new IllegalStateException(
+                        String.valueOf(de.invesdwin.context.r.runtime.rserve.pool.internal.RsessionLogger.get(rsession)
+                                .getErrorMessage()));
+            }
+            return newResult(rsession);
+        } catch (final Throwable t) {
+            try {
+                RsessionObjectPool.INSTANCE.returnObject(rsession);
+            } catch (final Exception e) {
+                throw new RuntimeException(e);
+            }
+            throw Throwables.propagate(t);
+        }
+    }
 
-        return null;
+    private IScriptTaskResults newResult(final Rsession rsession) {
+        return new IScriptTaskResults() {
+
+            @Override
+            public String getString(final String variable) {
+                return null;
+            }
+
+            @Override
+            public Double[] getDoubleVector(final String variable) {
+                return null;
+            }
+
+            @Override
+            public Double[][] getDoubleMatrix(final String variable) {
+                return null;
+            }
+
+            @Override
+            public Double getDouble(final String variable) {
+                return null;
+            }
+
+            @Override
+            public void close() {
+                try {
+                    RsessionObjectPool.INSTANCE.returnObject(rsession);
+                } catch (final Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        };
     }
 
     @Override

@@ -6,6 +6,7 @@ import javax.inject.Inject;
 import org.junit.Test;
 
 import de.invesdwin.context.r.runtime.cli.CliScriptTaskRunner;
+import de.invesdwin.context.r.runtime.jri.JriScriptTaskRunner;
 import de.invesdwin.context.r.runtime.rserve.RserveScriptTaskRunner;
 import de.invesdwin.context.test.ATest;
 
@@ -17,11 +18,14 @@ public class OptimalfScriptTest extends ATest {
     private CliScriptTaskRunner cliScriptTaskRunner;
     @Inject
     private RserveScriptTaskRunner rserveScriptTaskRunner;
+    @Inject
+    private JriScriptTaskRunner jriScriptTaskRunner;
 
     @Test
     public void testCli() {
         for (int i = 0; i < ITERATIONS; i++) {
             new OptimalfScript(cliScriptTaskRunner, null).getOptimalfPerStrategy();
+            log.info("------------------------");
         }
     }
 
@@ -29,6 +33,15 @@ public class OptimalfScriptTest extends ATest {
     public void testRserve() {
         for (int i = 0; i < ITERATIONS; i++) {
             new OptimalfScript(rserveScriptTaskRunner, null).getOptimalfPerStrategy();
+            log.info("------------------------");
+        }
+    }
+
+    @Test
+    public void testJri() {
+        for (int i = 0; i < ITERATIONS; i++) {
+            new OptimalfScript(jriScriptTaskRunner, null).getOptimalfPerStrategy();
+            log.info("------------------------");
         }
     }
 
