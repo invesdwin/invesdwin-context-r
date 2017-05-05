@@ -7,6 +7,7 @@ import org.math.R.Rsession;
 
 import de.invesdwin.context.r.runtime.contract.IScriptTaskRunner;
 import de.invesdwin.util.lang.Reflections;
+import de.invesdwin.util.lang.Strings;
 
 @ThreadSafe
 public final class RsessionLogger implements org.math.R.Logger {
@@ -18,28 +19,30 @@ public final class RsessionLogger implements org.math.R.Logger {
 
     @Override
     public synchronized void println(final String text, final Level level) {
-        switch (level) {
-        case OUTPUT:
-            IScriptTaskRunner.LOG.debug(text);
-            errorMessage.setLength(0);
-        case INFO:
-            IScriptTaskRunner.LOG.trace(text);
-            errorMessage.setLength(0);
-            break;
-        case WARNING:
-            IScriptTaskRunner.LOG.warn(text);
-            errorMessage.append(text);
-            errorMessage.append("\n");
-            break;
-        case ERROR:
-            IScriptTaskRunner.LOG.error(text);
-            errorMessage.append(text);
-            errorMessage.append("\n");
-            break;
-        default:
-            IScriptTaskRunner.LOG.trace(text);
-            errorMessage.setLength(0);
-            break;
+        if (Strings.isNotBlank(text)) {
+            switch (level) {
+            case OUTPUT:
+                IScriptTaskRunner.LOG.debug(text);
+                errorMessage.setLength(0);
+            case INFO:
+                IScriptTaskRunner.LOG.trace(text);
+                errorMessage.setLength(0);
+                break;
+            case WARNING:
+                IScriptTaskRunner.LOG.warn(text);
+                errorMessage.append(text);
+                errorMessage.append("\n");
+                break;
+            case ERROR:
+                IScriptTaskRunner.LOG.error(text);
+                errorMessage.append(text);
+                errorMessage.append("\n");
+                break;
+            default:
+                IScriptTaskRunner.LOG.trace(text);
+                errorMessage.setLength(0);
+                break;
+            }
         }
     }
 
