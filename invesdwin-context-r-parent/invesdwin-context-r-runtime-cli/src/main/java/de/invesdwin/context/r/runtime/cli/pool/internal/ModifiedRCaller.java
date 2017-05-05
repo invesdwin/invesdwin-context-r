@@ -71,7 +71,9 @@ public class ModifiedRCaller extends RCaller {
         output.addEventHandler(new EventHandler() {
             @Override
             public void messageReceived(final String senderName, final String msg) {
-                IScriptTaskRunner.LOG.debug(msg);
+                if (Strings.isNotBlank(msg)) {
+                    IScriptTaskRunner.LOG.debug(msg);
+                }
             }
         });
         return output;
@@ -82,9 +84,7 @@ public class ModifiedRCaller extends RCaller {
         error.addEventHandler(new EventHandler() {
             @Override
             public void messageReceived(final String senderName, final String msg) {
-                if (Strings.containsIgnoreCase(msg, "error")) {
-                    IScriptTaskRunner.LOG.error(msg);
-                } else {
+                if (Strings.isNotBlank(msg)) {
                     IScriptTaskRunner.LOG.warn(msg);
                 }
             }
