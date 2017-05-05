@@ -58,14 +58,14 @@
 			</dependency>
 			<dependency>
 				<groupId>de.invesdwin</groupId>
-				<artifactId>invesdwin-context-r-runtime-cli</artifactId>
+				<artifactId>invesdwin-context-r-runtime-contract</artifactId>
 				<version>${version.invesdwin-context-r}</version>
+				<type>test-jar</type>
 			</dependency>
 			<dependency>
 				<groupId>de.invesdwin</groupId>
 				<artifactId>invesdwin-context-r-runtime-cli</artifactId>
 				<version>${version.invesdwin-context-r}</version>
-				<type>test-jar</type>
 			</dependency>
 			<dependency>
 				<groupId>de.invesdwin</groupId>

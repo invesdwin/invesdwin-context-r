@@ -1,4 +1,4 @@
-package de.invesdwin.context.r.runtime.cli;
+package de.invesdwin.context.r.runtime.rserve;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -8,24 +8,23 @@ import javax.annotation.concurrent.Immutable;
 import javax.inject.Named;
 
 import org.apache.commons.io.IOUtils;
+import org.math.R.Rsession;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.core.io.Resource;
 
-import com.github.rcaller.rstuff.RCaller;
-
-import de.invesdwin.context.r.runtime.cli.pool.RCallerObjectPool;
 import de.invesdwin.context.r.runtime.contract.IScriptResultExpression;
 import de.invesdwin.context.r.runtime.contract.IScriptResults;
 import de.invesdwin.context.r.runtime.contract.IScriptTask;
 import de.invesdwin.context.r.runtime.contract.IScriptTaskRunner;
+import de.invesdwin.context.r.runtime.rserve.pool.RsessionObjectPool;
 
 @Immutable
 @Named
-public final class CliScriptTaskRunner implements IScriptTaskRunner, FactoryBean<CliScriptTaskRunner> {
+public final class RserveScriptTaskRunner implements IScriptTaskRunner, FactoryBean<RserveScriptTaskRunner> {
 
-    public static final CliScriptTaskRunner INSTANCE = new CliScriptTaskRunner();
+    public static final RserveScriptTaskRunner INSTANCE = new RserveScriptTaskRunner();
 
-    private CliScriptTaskRunner() {}
+    private RserveScriptTaskRunner() {}
 
     @Override
     public IScriptResults run(final IScriptTask task) {
@@ -35,10 +34,9 @@ public final class CliScriptTaskRunner implements IScriptTaskRunner, FactoryBean
 
         try (InputStream in = resource.getInputStream()) {
             try {
-                final RCaller caller = RCallerObjectPool.INSTANCE.borrowObject();
-                caller.getRCode().addRCode(IOUtils.toString(in, StandardCharsets.UTF_8));
-                caller.runAndReturnResultOnline("result");
-                RCallerObjectPool.INSTANCE.returnObject(caller);
+                final Rsession caller = RsessionObjectPool.INSTANCE.borrowObject();
+                caller.voidEval(IOUtils.toString(in, StandardCharsets.UTF_8));
+                RsessionObjectPool.INSTANCE.returnObject(caller);
             } catch (final Exception e) {
                 throw new RuntimeException(e);
             }
@@ -50,13 +48,13 @@ public final class CliScriptTaskRunner implements IScriptTaskRunner, FactoryBean
     }
 
     @Override
-    public CliScriptTaskRunner getObject() throws Exception {
+    public RserveScriptTaskRunner getObject() throws Exception {
         return INSTANCE;
     }
 
     @Override
     public Class<?> getObjectType() {
-        return CliScriptTaskRunner.class;
+        return RserveScriptTaskRunner.class;
     }
 
     @Override

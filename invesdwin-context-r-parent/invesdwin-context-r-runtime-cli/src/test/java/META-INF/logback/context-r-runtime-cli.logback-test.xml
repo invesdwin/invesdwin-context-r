@@ -1,7 +1,0 @@
-<configuration>
-
-	<logger name="de.invesdwin.context.r.runtime.cli.CliScriptTaskRunner" additivity="true" level="DEBUG">
-	</logger>
-
-
-</configuration>

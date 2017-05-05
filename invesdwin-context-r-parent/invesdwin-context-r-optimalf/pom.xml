@@ -23,18 +23,19 @@
 			<groupId>de.invesdwin</groupId>
 			<artifactId>invesdwin-context-r-runtime-contract</artifactId>
 		</dependency>
+		<!-- enable debug logging by including the test-jar -->
+		<dependency>
+			<groupId>de.invesdwin</groupId>
+			<artifactId>invesdwin-context-r-runtime-contract</artifactId>
+			<scope>test</scope>
+			<type>test-jar</type>
+		</dependency>
 
 		<!-- allow testing in in all engines -->
 		<dependency>
 			<groupId>de.invesdwin</groupId>
 			<artifactId>invesdwin-context-r-runtime-cli</artifactId>
 			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>de.invesdwin</groupId>
-			<artifactId>invesdwin-context-r-runtime-cli</artifactId>
-			<scope>test</scope>
-			<type>test-jar</type>
 		</dependency>
 		<dependency>
 			<groupId>de.invesdwin</groupId>
