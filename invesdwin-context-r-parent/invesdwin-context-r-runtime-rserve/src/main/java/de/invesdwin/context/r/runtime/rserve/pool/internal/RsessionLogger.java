@@ -1,4 +1,4 @@
-package de.invesdwin.context.r.runtime.rserve.pool;
+package de.invesdwin.context.r.runtime.rserve.pool.internal;
 
 import javax.annotation.concurrent.ThreadSafe;
 

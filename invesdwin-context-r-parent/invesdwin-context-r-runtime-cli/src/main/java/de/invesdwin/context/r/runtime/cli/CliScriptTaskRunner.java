@@ -14,10 +14,9 @@ import org.springframework.core.io.Resource;
 import com.github.rcaller.rstuff.RCaller;
 
 import de.invesdwin.context.r.runtime.cli.pool.RCallerObjectPool;
-import de.invesdwin.context.r.runtime.contract.IScriptResultExpression;
-import de.invesdwin.context.r.runtime.contract.IScriptResults;
-import de.invesdwin.context.r.runtime.contract.IScriptTask;
+import de.invesdwin.context.r.runtime.contract.IScriptTaskResults;
 import de.invesdwin.context.r.runtime.contract.IScriptTaskRunner;
+import de.invesdwin.context.r.runtime.contract.ScriptTask;
 
 @Immutable
 @Named
@@ -28,10 +27,9 @@ public final class CliScriptTaskRunner implements IScriptTaskRunner, FactoryBean
     private CliScriptTaskRunner() {}
 
     @Override
-    public IScriptResults run(final IScriptTask task) {
+    public IScriptTaskResults run(final ScriptTask scriptTask) {
 
-        final Resource resource = task.getResource();
-        final Iterable<IScriptResultExpression<?>> expressions = task.getResultExpressions();
+        final Resource resource = scriptTask.getScriptResource();
 
         try (InputStream in = resource.getInputStream()) {
             try {

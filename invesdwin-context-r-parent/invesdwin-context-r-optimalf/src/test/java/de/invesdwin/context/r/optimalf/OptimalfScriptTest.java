@@ -10,7 +10,7 @@ import de.invesdwin.context.r.runtime.rserve.RserveScriptTaskRunner;
 import de.invesdwin.context.test.ATest;
 
 @NotThreadSafe
-public class OptimalfScriptTaskTest extends ATest {
+public class OptimalfScriptTest extends ATest {
 
     private static final int ITERATIONS = 10;
     @Inject
@@ -21,14 +21,14 @@ public class OptimalfScriptTaskTest extends ATest {
     @Test
     public void testCli() {
         for (int i = 0; i < ITERATIONS; i++) {
-            cliScriptTaskRunner.run(new OptimalfScriptTask(null));
+            new OptimalfScript(cliScriptTaskRunner, null).getOptimalfPerStrategy();
         }
     }
 
     @Test
     public void testRserve() {
         for (int i = 0; i < ITERATIONS; i++) {
-            rserveScriptTaskRunner.run(new OptimalfScriptTask(null));
+            new OptimalfScript(rserveScriptTaskRunner, null).getOptimalfPerStrategy();
         }
     }
 

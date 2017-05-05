@@ -12,10 +12,9 @@ import org.math.R.Rsession;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.core.io.Resource;
 
-import de.invesdwin.context.r.runtime.contract.IScriptResultExpression;
-import de.invesdwin.context.r.runtime.contract.IScriptResults;
-import de.invesdwin.context.r.runtime.contract.IScriptTask;
+import de.invesdwin.context.r.runtime.contract.IScriptTaskResults;
 import de.invesdwin.context.r.runtime.contract.IScriptTaskRunner;
+import de.invesdwin.context.r.runtime.contract.ScriptTask;
 import de.invesdwin.context.r.runtime.rserve.pool.RsessionObjectPool;
 
 @Immutable
@@ -27,10 +26,9 @@ public final class RserveScriptTaskRunner implements IScriptTaskRunner, FactoryB
     private RserveScriptTaskRunner() {}
 
     @Override
-    public IScriptResults run(final IScriptTask task) {
+    public IScriptTaskResults run(final ScriptTask scriptTask) {
 
-        final Resource resource = task.getResource();
-        final Iterable<IScriptResultExpression<?>> expressions = task.getResultExpressions();
+        final Resource resource = scriptTask.getScriptResource();
 
         try (InputStream in = resource.getInputStream()) {
             try {
