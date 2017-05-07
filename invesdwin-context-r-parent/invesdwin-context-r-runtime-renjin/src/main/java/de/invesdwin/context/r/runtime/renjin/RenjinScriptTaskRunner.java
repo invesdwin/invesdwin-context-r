@@ -1,5 +1,7 @@
 package de.invesdwin.context.r.runtime.renjin;
 
+import java.io.Reader;
+
 import javax.annotation.concurrent.Immutable;
 import javax.inject.Named;
 
@@ -29,8 +31,8 @@ public final class RenjinScriptTaskRunner implements IScriptTaskRunner, FactoryB
         } catch (final Exception e) {
             throw new RuntimeException(e);
         }
-        try {
-            renjinScriptEngine.eval(scriptTask.getScriptResourceAsString());
+        try (Reader reader = scriptTask.getScriptResourceAsReader()) {
+            renjinScriptEngine.eval(reader);
             return newResult(renjinScriptEngine);
         } catch (final Throwable t) {
             try {

@@ -2,6 +2,8 @@ package de.invesdwin.context.r.runtime.contract;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.nio.charset.StandardCharsets;
 
 import javax.annotation.concurrent.NotThreadSafe;
@@ -25,6 +27,14 @@ public class ScriptTask {
     public String getScriptResourceAsString() {
         try (InputStream in = scriptResource.getInputStream()) {
             return IOUtils.toString(in, StandardCharsets.UTF_8);
+        } catch (final IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public Reader getScriptResourceAsReader() {
+        try {
+            return new InputStreamReader(scriptResource.getInputStream());
         } catch (final IOException e) {
             throw new RuntimeException(e);
         }
