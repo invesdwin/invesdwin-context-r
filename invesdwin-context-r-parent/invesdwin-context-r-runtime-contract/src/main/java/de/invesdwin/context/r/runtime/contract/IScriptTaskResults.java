@@ -45,6 +45,25 @@ public interface IScriptTaskResults extends Closeable {
         return matrixAsList;
     }
 
+    Boolean getBoolean(String variable);
+
+    Boolean[] getBooleanVector(String variable);
+
+    default List<Boolean> getBooleanVectorAsList(final String variable) {
+        return Arrays.asList(getBooleanVector(variable));
+    }
+
+    Boolean[][] getBooleanMatrix(String variable);
+
+    default List<List<Boolean>> getBooleanMatrixAsList(final String variable) {
+        final Boolean[][] matrix = getBooleanMatrix(variable);
+        final List<List<Boolean>> matrixAsList = new ArrayList<>(matrix.length);
+        for (final Boolean[] vector : matrix) {
+            matrixAsList.add(Arrays.asList(vector));
+        }
+        return matrixAsList;
+    }
+
     @Override
     void close();
 

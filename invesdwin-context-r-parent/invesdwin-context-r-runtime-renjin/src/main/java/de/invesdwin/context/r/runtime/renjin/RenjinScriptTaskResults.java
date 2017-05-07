@@ -16,6 +16,20 @@ public class RenjinScriptTaskResults implements IScriptTaskResults {
     }
 
     @Override
+    public void close() {
+        try {
+            RenjinScriptEngineObjectPool.INSTANCE.returnObject(renjinScriptEngine);
+        } catch (final Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public RenjinScriptEngine getEngine() {
+        return renjinScriptEngine;
+    }
+
+    @Override
     public String getString(final String variable) {
         return null;
     }
@@ -46,16 +60,18 @@ public class RenjinScriptTaskResults implements IScriptTaskResults {
     }
 
     @Override
-    public void close() {
-        try {
-            RenjinScriptEngineObjectPool.INSTANCE.returnObject(renjinScriptEngine);
-        } catch (final Exception e) {
-            throw new RuntimeException(e);
-        }
+    public Boolean getBoolean(final String variable) {
+        return null;
     }
 
     @Override
-    public RenjinScriptEngine getEngine() {
-        return renjinScriptEngine;
+    public Boolean[] getBooleanVector(final String variable) {
+        return null;
     }
+
+    @Override
+    public Boolean[][] getBooleanMatrix(final String variable) {
+        return null;
+    }
+
 }

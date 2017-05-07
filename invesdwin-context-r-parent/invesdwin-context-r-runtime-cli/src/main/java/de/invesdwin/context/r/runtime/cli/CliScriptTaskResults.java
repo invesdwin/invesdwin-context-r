@@ -16,6 +16,20 @@ public class CliScriptTaskResults implements IScriptTaskResults {
     }
 
     @Override
+    public void close() {
+        try {
+            RCallerObjectPool.INSTANCE.returnObject(rcaller);
+        } catch (final Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public RCaller getEngine() {
+        return rcaller;
+    }
+
+    @Override
     public String getString(final String variable) {
         return null;
     }
@@ -46,16 +60,18 @@ public class CliScriptTaskResults implements IScriptTaskResults {
     }
 
     @Override
-    public void close() {
-        try {
-            RCallerObjectPool.INSTANCE.returnObject(rcaller);
-        } catch (final Exception e) {
-            throw new RuntimeException(e);
-        }
+    public Boolean getBoolean(final String variable) {
+        return null;
     }
 
     @Override
-    public RCaller getEngine() {
-        return rcaller;
+    public Boolean[] getBooleanVector(final String variable) {
+        return null;
     }
+
+    @Override
+    public Boolean[][] getBooleanMatrix(final String variable) {
+        return null;
+    }
+
 }

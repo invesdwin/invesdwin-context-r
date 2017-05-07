@@ -27,7 +27,7 @@ public class OptimalfScript {
         final AScriptTask scriptTask = new AScriptTask(new ClassPathResource("OptimalfScript.R", getClass())) {
             @Override
             public void populateInputs(final IScriptTaskInputs inputs) {
-                inputs.putDoubleMatrix("asd", tradesPerStrategy);
+                inputs.putDoubleMatrixAsList("asd", tradesPerStrategy);
             }
         };
         try (final IScriptTaskResults results = runner.run(scriptTask)) {

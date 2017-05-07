@@ -19,6 +19,16 @@ public class JriScriptTaskResults implements IScriptTaskResults {
     }
 
     @Override
+    public void close() {
+        rengineLock.unlock();
+    }
+
+    @Override
+    public Rengine getEngine() {
+        return rengine;
+    }
+
+    @Override
     public String getString(final String variable) {
         return null;
     }
@@ -49,12 +59,18 @@ public class JriScriptTaskResults implements IScriptTaskResults {
     }
 
     @Override
-    public void close() {
-        rengineLock.unlock();
+    public Boolean getBoolean(final String variable) {
+        return null;
     }
 
     @Override
-    public Rengine getEngine() {
-        return rengine;
+    public Boolean[] getBooleanVector(final String variable) {
+        return null;
     }
+
+    @Override
+    public Boolean[][] getBooleanMatrix(final String variable) {
+        return null;
+    }
+
 }

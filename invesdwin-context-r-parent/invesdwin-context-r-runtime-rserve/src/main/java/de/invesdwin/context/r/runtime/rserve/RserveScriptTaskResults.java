@@ -17,6 +17,20 @@ public class RserveScriptTaskResults implements IScriptTaskResults {
     }
 
     @Override
+    public void close() {
+        try {
+            RsessionObjectPool.INSTANCE.returnObject(rsession);
+        } catch (final Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public Rsession getEngine() {
+        return rsession;
+    }
+
+    @Override
     public String getString(final String variable) {
         return null;
     }
@@ -47,16 +61,18 @@ public class RserveScriptTaskResults implements IScriptTaskResults {
     }
 
     @Override
-    public void close() {
-        try {
-            RsessionObjectPool.INSTANCE.returnObject(rsession);
-        } catch (final Exception e) {
-            throw new RuntimeException(e);
-        }
+    public Boolean getBoolean(final String variable) {
+        return null;
     }
 
     @Override
-    public Rsession getEngine() {
-        return rsession;
+    public Boolean[] getBooleanVector(final String variable) {
+        return null;
     }
+
+    @Override
+    public Boolean[][] getBooleanMatrix(final String variable) {
+        return null;
+    }
+
 }
