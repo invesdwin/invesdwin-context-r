@@ -7,6 +7,7 @@ import org.junit.Test;
 
 import de.invesdwin.context.r.runtime.cli.CliScriptTaskRunner;
 import de.invesdwin.context.r.runtime.jri.JriScriptTaskRunner;
+import de.invesdwin.context.r.runtime.renjin.RenjinScriptTaskRunner;
 import de.invesdwin.context.r.runtime.rserve.RserveScriptTaskRunner;
 import de.invesdwin.context.test.ATest;
 
@@ -20,6 +21,8 @@ public class OptimalfScriptTest extends ATest {
     private RserveScriptTaskRunner rserveScriptTaskRunner;
     @Inject
     private JriScriptTaskRunner jriScriptTaskRunner;
+    @Inject
+    private RenjinScriptTaskRunner renjinScriptTaskRunner;
 
     @Test
     public void testCli() {
@@ -41,6 +44,14 @@ public class OptimalfScriptTest extends ATest {
     public void testJri() {
         for (int i = 0; i < ITERATIONS; i++) {
             new OptimalfScript(jriScriptTaskRunner, null).getOptimalfPerStrategy();
+            log.info("------------------------");
+        }
+    }
+
+    @Test
+    public void testRenjin() {
+        for (int i = 0; i < ITERATIONS; i++) {
+            new OptimalfScript(renjinScriptTaskRunner, null).getOptimalfPerStrategy();
             log.info("------------------------");
         }
     }
