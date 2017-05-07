@@ -45,6 +45,7 @@ public final class JriScriptTaskRunner implements IScriptTaskRunner, FactoryBean
     public IScriptTaskResults run(final AScriptTask scriptTask) {
         RENGINE_LOCK.lock();
         try {
+            scriptTask.populateInputs(new JriScriptTaskInputs(RENGINE));
             final REXP eval = RENGINE.eval("eval(parse(text=\"" + scriptTask.getScriptResourceAsString() + "\"))");
             if (eval == null) {
                 throw new IllegalStateException(String.valueOf(LoggingRMainLoopCallbacks.INSTANCE.getErrorMessage()));

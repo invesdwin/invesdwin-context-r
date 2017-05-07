@@ -7,9 +7,9 @@ import org.math.R.Rsession;
 import org.rosuda.REngine.REXP;
 import org.springframework.beans.factory.FactoryBean;
 
+import de.invesdwin.context.r.runtime.contract.AScriptTask;
 import de.invesdwin.context.r.runtime.contract.IScriptTaskResults;
 import de.invesdwin.context.r.runtime.contract.IScriptTaskRunner;
-import de.invesdwin.context.r.runtime.contract.AScriptTask;
 import de.invesdwin.context.r.runtime.rserve.pool.RsessionObjectPool;
 import de.invesdwin.util.error.Throwables;
 
@@ -33,6 +33,7 @@ public final class RserveScriptTaskRunner implements IScriptTaskRunner, FactoryB
         //eval
         final REXP eval;
         try {
+            scriptTask.populateInputs(new RserveScriptTaskInputs(rsession));
             eval = rsession.eval(scriptTask.getScriptResourceAsString());
         } catch (final Throwable t) {
             try {

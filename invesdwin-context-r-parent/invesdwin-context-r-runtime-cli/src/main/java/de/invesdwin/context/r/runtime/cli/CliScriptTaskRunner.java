@@ -8,9 +8,9 @@ import org.springframework.beans.factory.FactoryBean;
 import com.github.rcaller.rstuff.RCaller;
 
 import de.invesdwin.context.r.runtime.cli.pool.RCallerObjectPool;
+import de.invesdwin.context.r.runtime.contract.AScriptTask;
 import de.invesdwin.context.r.runtime.contract.IScriptTaskResults;
 import de.invesdwin.context.r.runtime.contract.IScriptTaskRunner;
-import de.invesdwin.context.r.runtime.contract.AScriptTask;
 import de.invesdwin.util.error.Throwables;
 
 @Immutable
@@ -34,6 +34,7 @@ public final class CliScriptTaskRunner implements IScriptTaskRunner, FactoryBean
         }
         try {
             rcaller.getRCode().clearOnline();
+            scriptTask.populateInputs(new CliScriptTaskInputs(rcaller));
             rcaller.getRCode().addRCode(scriptTask.getScriptResourceAsString());
             //provide access to all variables
             rcaller.getRCode().addRCode(INTERNAL_RESULT_VARIABLE + " <- ls()");

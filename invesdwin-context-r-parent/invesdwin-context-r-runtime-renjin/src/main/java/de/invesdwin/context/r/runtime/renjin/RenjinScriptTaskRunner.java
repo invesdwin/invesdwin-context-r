@@ -8,9 +8,9 @@ import javax.inject.Named;
 import org.renjin.script.RenjinScriptEngine;
 import org.springframework.beans.factory.FactoryBean;
 
+import de.invesdwin.context.r.runtime.contract.AScriptTask;
 import de.invesdwin.context.r.runtime.contract.IScriptTaskResults;
 import de.invesdwin.context.r.runtime.contract.IScriptTaskRunner;
-import de.invesdwin.context.r.runtime.contract.AScriptTask;
 import de.invesdwin.context.r.runtime.renjin.pool.RenjinScriptEngineObjectPool;
 import de.invesdwin.util.error.Throwables;
 
@@ -31,8 +31,11 @@ public final class RenjinScriptTaskRunner implements IScriptTaskRunner, FactoryB
         } catch (final Exception e) {
             throw new RuntimeException(e);
         }
-        try (Reader reader = scriptTask.getScriptResourceAsReader()) {
-            renjinScriptEngine.eval(reader);
+        try {
+            scriptTask.populateInputs(new RenjinScriptTaskInputs(renjinScriptEngine));
+            try (Reader reader = scriptTask.getScriptResourceAsReader()) {
+                renjinScriptEngine.eval(reader);
+            }
             return new RenjinScriptTaskResults(renjinScriptEngine);
         } catch (final Throwable t) {
             try {
