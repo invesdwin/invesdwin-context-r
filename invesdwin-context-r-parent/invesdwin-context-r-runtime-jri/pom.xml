@@ -19,6 +19,12 @@
 			<groupId>de.invesdwin</groupId>
 			<artifactId>invesdwin-context-r-runtime-contract</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>de.invesdwin</groupId>
+			<artifactId>invesdwin-context-r-runtime-contract</artifactId>
+			<type>test-jar</type>
+			<scope>test</scope>
+		</dependency>
 
 		<dependency>
 			<groupId>org.nuiton.thirdparty</groupId>

@@ -45,17 +45,6 @@ public class ModifiedRCaller extends RCaller {
         this.errorMessageSaverCopy = rcallerErrorMessageSaverField.get();
         setRCode(RCode.create());
         quitOnErrorSetup();
-
-        final RStreamHandler rOutput = Reflections.field("rOutput").ofType(RStreamHandler.class).in(this).get();
-        rOutput.addEventHandler(new EventHandler() {
-            @Override
-            public void messageReceived(final String senderName, final String msg) {
-                //only keep the last error message, since it might have been a package loading message or something that is irrelevant
-                if (Strings.isNotBlank(msg)) {
-                    errorMessageSaverCopy.resetMessage();
-                }
-            }
-        });
     }
 
     private void quitOnErrorSetup() {

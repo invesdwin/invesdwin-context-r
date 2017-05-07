@@ -9,7 +9,6 @@ import com.github.rcaller.rstuff.RCaller;
 
 import de.invesdwin.context.r.runtime.cli.pool.RCallerObjectPool;
 import de.invesdwin.context.r.runtime.contract.AScriptTask;
-import de.invesdwin.context.r.runtime.contract.IScriptTaskResults;
 import de.invesdwin.context.r.runtime.contract.IScriptTaskRunner;
 import de.invesdwin.util.error.Throwables;
 
@@ -24,7 +23,7 @@ public final class CliScriptTaskRunner implements IScriptTaskRunner, FactoryBean
     private CliScriptTaskRunner() {}
 
     @Override
-    public IScriptTaskResults run(final AScriptTask scriptTask) {
+    public CliScriptTaskResults run(final AScriptTask scriptTask) {
         //get session
         final RCaller rcaller;
         try {

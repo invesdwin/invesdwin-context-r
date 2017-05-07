@@ -1,7 +1,5 @@
 package de.invesdwin.context.r.runtime.rserve;
 
-import java.util.List;
-
 import javax.annotation.concurrent.NotThreadSafe;
 
 import org.math.R.Rsession;
@@ -23,48 +21,82 @@ public class RserveScriptTaskInputs implements IScriptTaskInputs {
     }
 
     @Override
-    public void putString(final String variable, final String value) {}
+    public void putString(final String variable, final String value) {
+        if (value == null) {
+            putExpression(variable, "NA_character_");
+        } else {
+            rsession.set(variable, value);
+        }
+    }
 
     @Override
-    public void putStringVector(final String variable, final String[] value) {}
+    public void putStringVector(final String variable, final String[] value) {
+        rsession.set(variable, value);
+    }
 
     @Override
-    public void putStringVectorAsList(final String variable, final List<String> value) {}
+    public void putDouble(final String variable, final double value) {
+        rsession.set(variable, value);
+    }
 
     @Override
-    public void putStringMatrix(final String variable, final String[][] value) {}
+    public void putDoubleVector(final String variable, final double[] value) {
+        rsession.set(variable, value);
+    }
 
     @Override
-    public void putStringMatrixAsList(final String variable, final List<? extends List<String>> value) {}
+    public void putDoubleMatrix(final String variable, final double[][] value) {
+        rsession.set(variable, value);
+    }
 
     @Override
-    public void putDouble(final String variable, final Double value) {}
+    public void putBoolean(final String variable, final boolean value) {
+        final double doubleValue;
+        if (value) {
+            doubleValue = 1D;
+        } else {
+            doubleValue = 0D;
+        }
+        rsession.set(variable, doubleValue);
+        putExpression(variable, "as.logical(" + variable + ")");
+    }
 
     @Override
-    public void putDoubleVector(final String variable, final Double[] value) {}
+    public void putBooleanVector(final String variable, final boolean[] value) {
+        final double[] doubleValue = new double[value.length];
+        for (int i = 0; i < value.length; i++) {
+            if (value[i]) {
+                doubleValue[i] = 1D;
+            } else {
+                doubleValue[i] = 0D;
+            }
+        }
+        rsession.set(variable, doubleValue);
+        putExpression(variable, "as.logical(" + variable + ")");
+    }
 
     @Override
-    public void putDoubleVectorAsList(final String variable, final List<Double> value) {}
+    public void putBooleanMatrix(final String variable, final boolean[][] value) {
+        final double[][] doubleValue = new double[value.length][];
+        for (int i = 0; i < value.length; i++) {
+            final boolean[] vector = value[i];
+            final double[] doubleVector = new double[vector.length];
+            for (int j = 0; j < vector.length; j++) {
+                if (vector[j]) {
+                    doubleVector[j] = 1D;
+                } else {
+                    doubleVector[j] = 0D;
+                }
+            }
+            doubleValue[i] = doubleVector;
+        }
+        rsession.set(variable, doubleValue);
+        putExpression(variable, "array(as.logical(" + variable + "), dim(" + variable + "))");
+    }
 
     @Override
-    public void putDoubleMatrix(final String variable, final Double[][] value) {}
-
-    @Override
-    public void putDoubleMatrixAsList(final String variable, final List<? extends List<Double>> value) {}
-
-    @Override
-    public void putBoolean(final String variable, final Boolean value) {}
-
-    @Override
-    public void putBooleanVector(final String variable, final Boolean[] value) {}
-
-    @Override
-    public void putBooleanVectorAsList(final String variable, final List<Boolean> value) {}
-
-    @Override
-    public void putBooleanMatrix(final String variable, final Boolean[][] value) {}
-
-    @Override
-    public void putBooleanMatrixAsList(final String variable, final List<? extends List<Boolean>> value) {}
+    public void putExpression(final String variable, final String expression) {
+        RserveScriptTaskRunner.eval(rsession, variable + " <- " + expression);
+    }
 
 }

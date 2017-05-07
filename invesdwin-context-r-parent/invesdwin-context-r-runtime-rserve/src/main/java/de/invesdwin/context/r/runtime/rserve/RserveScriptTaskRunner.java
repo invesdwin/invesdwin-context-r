@@ -8,7 +8,6 @@ import org.rosuda.REngine.REXP;
 import org.springframework.beans.factory.FactoryBean;
 
 import de.invesdwin.context.r.runtime.contract.AScriptTask;
-import de.invesdwin.context.r.runtime.contract.IScriptTaskResults;
 import de.invesdwin.context.r.runtime.contract.IScriptTaskRunner;
 import de.invesdwin.context.r.runtime.rserve.pool.RsessionObjectPool;
 import de.invesdwin.util.error.Throwables;
@@ -22,7 +21,7 @@ public final class RserveScriptTaskRunner implements IScriptTaskRunner, FactoryB
     private RserveScriptTaskRunner() {}
 
     @Override
-    public IScriptTaskResults run(final AScriptTask scriptTask) {
+    public RserveScriptTaskResults run(final AScriptTask scriptTask) {
         //get session
         final Rsession rsession;
         try {
@@ -31,10 +30,10 @@ public final class RserveScriptTaskRunner implements IScriptTaskRunner, FactoryB
             throw new RuntimeException(e);
         }
         //eval
-        final REXP eval;
         try {
             scriptTask.populateInputs(new RserveScriptTaskInputs(rsession));
-            eval = rsession.eval(scriptTask.getScriptResourceAsString());
+            eval(rsession, scriptTask.getScriptResourceAsString());
+            return new RserveScriptTaskResults(rsession);
         } catch (final Throwable t) {
             try {
                 RsessionObjectPool.INSTANCE.invalidateObject(rsession);
@@ -43,21 +42,14 @@ public final class RserveScriptTaskRunner implements IScriptTaskRunner, FactoryB
             }
             throw Throwables.propagate(t);
         }
-        //handle error or return result
-        try {
-            if (eval == null) {
-                throw new IllegalStateException(
-                        String.valueOf(de.invesdwin.context.r.runtime.rserve.pool.internal.RsessionLogger.get(rsession)
-                                .getErrorMessage()));
-            }
-            return new RserveScriptTaskResults(rsession);
-        } catch (final Throwable t) {
-            try {
-                RsessionObjectPool.INSTANCE.returnObject(rsession);
-            } catch (final Exception e) {
-                throw new RuntimeException(e);
-            }
-            throw Throwables.propagate(t);
+    }
+
+    public static void eval(final Rsession rsession, final String expression) {
+        final REXP eval = rsession.eval(expression);
+        if (eval == null) {
+            throw new IllegalStateException(
+                    String.valueOf(de.invesdwin.context.r.runtime.rserve.pool.internal.RsessionLogger.get(rsession)
+                            .getErrorMessage()));
         }
     }
 

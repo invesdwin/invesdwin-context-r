@@ -1,7 +1,5 @@
 package de.invesdwin.context.r.runtime.cli;
 
-import java.util.List;
-
 import javax.annotation.concurrent.NotThreadSafe;
 
 import com.github.rcaller.rstuff.RCaller;
@@ -23,48 +21,78 @@ public class CliScriptTaskInputs implements IScriptTaskInputs {
     }
 
     @Override
-    public void putString(final String variable, final String value) {}
+    public void putString(final String variable, final String value) {
+        if (value == null) {
+            putExpression(variable, "NA_character_");
+        } else {
+            rcaller.getRCode().addString(variable, value);
+        }
+    }
 
     @Override
-    public void putStringVector(final String variable, final String[] value) {}
+    public void putStringVector(final String variable, final String[] value) {
+        rcaller.getRCode().addStringArray(variable, replaceNullWithNa(value));
+        rcaller.getRCode().addRCode(variable + "[ " + variable + " == \"NA_character_\" ] <- NA_character_");
+    }
+
+    private String[] replaceNullWithNa(final String[] value) {
+        final String[] array = value.clone();
+        for (int i = 0; i < array.length; i++) {
+            if (array[i] == null) {
+                array[i] = "NA_character_";
+            }
+        }
+        return array;
+    }
 
     @Override
-    public void putStringVectorAsList(final String variable, final List<String> value) {}
+    public void putDouble(final String variable, final double value) {
+        rcaller.getRCode().addDouble(variable, value);
+    }
 
     @Override
-    public void putStringMatrix(final String variable, final String[][] value) {}
+    public void putDoubleVector(final String variable, final double[] value) {
+        rcaller.getRCode().addDoubleArray(variable, value);
+    }
 
     @Override
-    public void putStringMatrixAsList(final String variable, final List<? extends List<String>> value) {}
+    public void putDoubleMatrix(final String variable, final double[][] value) {
+        rcaller.getRCode().addDoubleMatrix(variable, value);
+    }
 
     @Override
-    public void putDouble(final String variable, final Double value) {}
+    public void putBoolean(final String variable, final boolean value) {
+        rcaller.getRCode().addLogical(variable, value);
+    }
 
     @Override
-    public void putDoubleVector(final String variable, final Double[] value) {}
+    public void putBooleanVector(final String variable, final boolean[] value) {
+        rcaller.getRCode().addLogicalArray(variable, value);
+    }
 
     @Override
-    public void putDoubleVectorAsList(final String variable, final List<Double> value) {}
+    public void putBooleanMatrix(final String variable, final boolean[][] value) {
+        final double[][] matrix = new double[value.length][];
+        for (int i = 0; i < matrix.length; i++) {
+            final boolean[] boolVector = value[i];
+            final double[] vector = new double[boolVector.length];
+            for (int j = 0; j < vector.length; j++) {
+                final boolean bool = boolVector[j];
+                if (bool) {
+                    vector[j] = 1D;
+                } else {
+                    vector[j] = 0D;
+                }
+            }
+            matrix[i] = vector;
+        }
+        rcaller.getRCode().addDoubleMatrix(variable, matrix);
+        putExpression(variable, "array(as.logical(" + variable + "), dim(" + variable + "))");
+    }
 
     @Override
-    public void putDoubleMatrix(final String variable, final Double[][] value) {}
-
-    @Override
-    public void putDoubleMatrixAsList(final String variable, final List<? extends List<Double>> value) {}
-
-    @Override
-    public void putBoolean(final String variable, final Boolean value) {}
-
-    @Override
-    public void putBooleanVector(final String variable, final Boolean[] value) {}
-
-    @Override
-    public void putBooleanVectorAsList(final String variable, final List<Boolean> value) {}
-
-    @Override
-    public void putBooleanMatrix(final String variable, final Boolean[][] value) {}
-
-    @Override
-    public void putBooleanMatrixAsList(final String variable, final List<? extends List<Boolean>> value) {}
+    public void putExpression(final String variable, final String expression) {
+        rcaller.getRCode().addRCode(variable + " <- " + expression);
+    }
 
 }

@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.apache.commons.lang3.ArrayUtils;
+
 public interface IScriptTaskResults extends Closeable {
 
     String getString(String variable);
@@ -15,51 +17,40 @@ public interface IScriptTaskResults extends Closeable {
         return Arrays.asList(getStringVector(variable));
     }
 
-    String[][] getStringMatrix(String variable);
+    double getDouble(String variable);
 
-    default List<List<String>> getStringMatrixAsList(final String variable) {
-        final String[][] matrix = getStringMatrix(variable);
-        final List<List<String>> matrixAsList = new ArrayList<>(matrix.length);
-        for (final String[] vector : matrix) {
-            matrixAsList.add(Arrays.asList(vector));
-        }
-        return matrixAsList;
-    }
-
-    Double getDouble(String variable);
-
-    Double[] getDoubleVector(String variable);
+    double[] getDoubleVector(String variable);
 
     default List<Double> getDoubleVectorAsList(final String variable) {
-        return Arrays.asList(getDoubleVector(variable));
+        return Arrays.asList(ArrayUtils.toObject(getDoubleVector(variable)));
     }
 
-    Double[][] getDoubleMatrix(String variable);
+    double[][] getDoubleMatrix(String variable);
 
     default List<List<Double>> getDoubleMatrixAsList(final String variable) {
-        final Double[][] matrix = getDoubleMatrix(variable);
+        final double[][] matrix = getDoubleMatrix(variable);
         final List<List<Double>> matrixAsList = new ArrayList<>(matrix.length);
-        for (final Double[] vector : matrix) {
-            matrixAsList.add(Arrays.asList(vector));
+        for (final double[] vector : matrix) {
+            matrixAsList.add(Arrays.asList(ArrayUtils.toObject(vector)));
         }
         return matrixAsList;
     }
 
-    Boolean getBoolean(String variable);
+    boolean getBoolean(String variable);
 
-    Boolean[] getBooleanVector(String variable);
+    boolean[] getBooleanVector(String variable);
 
     default List<Boolean> getBooleanVectorAsList(final String variable) {
-        return Arrays.asList(getBooleanVector(variable));
+        return Arrays.asList(ArrayUtils.toObject(getBooleanVector(variable)));
     }
 
-    Boolean[][] getBooleanMatrix(String variable);
+    boolean[][] getBooleanMatrix(String variable);
 
     default List<List<Boolean>> getBooleanMatrixAsList(final String variable) {
-        final Boolean[][] matrix = getBooleanMatrix(variable);
+        final boolean[][] matrix = getBooleanMatrix(variable);
         final List<List<Boolean>> matrixAsList = new ArrayList<>(matrix.length);
-        for (final Boolean[] vector : matrix) {
-            matrixAsList.add(Arrays.asList(vector));
+        for (final boolean[] vector : matrix) {
+            matrixAsList.add(Arrays.asList(ArrayUtils.toObject(vector)));
         }
         return matrixAsList;
     }

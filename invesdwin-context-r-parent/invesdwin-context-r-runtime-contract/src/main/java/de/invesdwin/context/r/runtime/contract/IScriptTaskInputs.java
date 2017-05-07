@@ -2,37 +2,57 @@ package de.invesdwin.context.r.runtime.contract;
 
 import java.util.List;
 
+import org.apache.commons.lang3.ArrayUtils;
+
 public interface IScriptTaskInputs {
 
     void putString(String variable, String value);
 
     void putStringVector(String variable, String[] value);
 
-    void putStringVectorAsList(String variable, List<String> value);
+    default void putStringVectorAsList(final String variable, final List<String> value) {
+        putStringVector(variable, value.toArray(new String[value.size()]));
+    }
 
-    void putStringMatrix(String variable, String[][] value);
+    void putDouble(String variable, double value);
 
-    void putStringMatrixAsList(String variable, List<? extends List<String>> value);
+    void putDoubleVector(String variable, double[] value);
 
-    void putDouble(String variable, Double value);
+    default void putDoubleVectorAsList(final String variable, final List<Double> value) {
+        putDoubleVector(variable, ArrayUtils.toPrimitive(value.toArray(new Double[value.size()])));
+    }
 
-    void putDoubleVector(String variable, Double[] value);
+    void putDoubleMatrix(String variable, double[][] value);
 
-    void putDoubleVectorAsList(String variable, List<Double> value);
+    default void putDoubleMatrixAsList(final String variable, final List<? extends List<Double>> value) {
+        final double[][] matrix = new double[value.size()][];
+        for (int i = 0; i < value.size(); i++) {
+            final List<Double> vector = value.get(i);
+            matrix[i] = ArrayUtils.toPrimitive(vector.toArray(new Double[vector.size()]));
+        }
+        putDoubleMatrix(variable, matrix);
+    }
 
-    void putDoubleMatrix(String variable, Double[][] value);
+    void putBoolean(String variable, boolean value);
 
-    void putDoubleMatrixAsList(String variable, List<? extends List<Double>> value);
+    void putBooleanVector(String variable, boolean[] value);
 
-    void putBoolean(String variable, Boolean value);
+    default void putBooleanVectorAsList(final String variable, final List<Boolean> value) {
+        putBooleanVector(variable, ArrayUtils.toPrimitive(value.toArray(new Boolean[value.size()])));
+    }
 
-    void putBooleanVector(String variable, Boolean[] value);
+    void putBooleanMatrix(String variable, boolean[][] value);
 
-    void putBooleanVectorAsList(String variable, List<Boolean> value);
+    default void putBooleanMatrixAsList(final String variable, final List<? extends List<Boolean>> value) {
+        final boolean[][] matrix = new boolean[value.size()][];
+        for (int i = 0; i < value.size(); i++) {
+            final List<Boolean> vector = value.get(i);
+            matrix[i] = ArrayUtils.toPrimitive(vector.toArray(new Boolean[vector.size()]));
+        }
+        putBooleanMatrix(variable, matrix);
+    }
 
-    void putBooleanMatrix(String variable, Boolean[][] value);
-
-    void putBooleanMatrixAsList(String variable, List<? extends List<Boolean>> value);
+    void putExpression(String variable, String expression);
 
     Object getEngine();
 

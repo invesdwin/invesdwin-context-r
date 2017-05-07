@@ -1,6 +1,5 @@
 package de.invesdwin.context.r.optimalf;
 
-import java.util.Arrays;
 import java.util.List;
 
 import javax.annotation.concurrent.NotThreadSafe;
@@ -31,9 +30,9 @@ public class OptimalfScript {
             }
         };
         try (final IScriptTaskResults results = runner.run(scriptTask)) {
-            final Double[] optimalf = results.getDoubleVector("optimalf");
+            final List<Double> optimalf = results.getDoubleVectorAsList("optimalf");
             if (optimalf != null) {
-                return Arrays.asList(optimalf);
+                return optimalf;
             } else {
                 return null;
             }

@@ -11,7 +11,6 @@ import org.rosuda.JRI.Rengine;
 import org.springframework.beans.factory.FactoryBean;
 
 import de.invesdwin.context.r.runtime.contract.AScriptTask;
-import de.invesdwin.context.r.runtime.contract.IScriptTaskResults;
 import de.invesdwin.context.r.runtime.contract.IScriptTaskRunner;
 import de.invesdwin.context.r.runtime.jri.internal.LoggingRMainLoopCallbacks;
 import de.invesdwin.util.error.Throwables;
@@ -42,20 +41,24 @@ public final class JriScriptTaskRunner implements IScriptTaskRunner, FactoryBean
     private JriScriptTaskRunner() {}
 
     @Override
-    public IScriptTaskResults run(final AScriptTask scriptTask) {
+    public JriScriptTaskResults run(final AScriptTask scriptTask) {
         RENGINE_LOCK.lock();
         try {
             scriptTask.populateInputs(new JriScriptTaskInputs(RENGINE));
-            final REXP eval = RENGINE.eval("eval(parse(text=\"" + scriptTask.getScriptResourceAsString() + "\"))");
-            if (eval == null) {
-                throw new IllegalStateException(String.valueOf(LoggingRMainLoopCallbacks.INSTANCE.getErrorMessage()));
-            }
+            eval(RENGINE, scriptTask.getScriptResourceAsString());
             return new JriScriptTaskResults(RENGINE, RENGINE_LOCK);
         } catch (final Throwable t) {
             unlockRengine();
             throw Throwables.propagate(t);
         } finally {
             LoggingRMainLoopCallbacks.INSTANCE.reset();
+        }
+    }
+
+    public static void eval(final Rengine rengine, final String expression) {
+        final REXP eval = RENGINE.eval("eval(parse(text=\"" + expression + "\"))");
+        if (eval == null) {
+            throw new IllegalStateException(String.valueOf(LoggingRMainLoopCallbacks.INSTANCE.getErrorMessage()));
         }
     }
 

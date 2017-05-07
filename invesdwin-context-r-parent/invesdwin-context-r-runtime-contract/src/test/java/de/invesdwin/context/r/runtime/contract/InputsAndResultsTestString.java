@@ -1,6 +1,5 @@
 package de.invesdwin.context.r.runtime.contract;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -38,32 +37,8 @@ public class InputsAndResultsTestString {
         final List<String> putStringVectorAsListNull = Objects.clone(putStringVectorAsList);
         putStringVectorAsListNull.set(1, null);
 
-        //putStringMatrix
-        final String[][] putStringMatrix = new String[3][];
-        for (int i = 0; i < putStringMatrix.length; i++) {
-            final String[] vector = new String[putStringMatrix.length];
-            for (int j = 0; j < vector.length; j++) {
-                vector[j] = i + "" + j + "-" + i + "" + j;
-            }
-            putStringMatrix[i] = vector;
-        }
-        final String[][] putStringMatrixNull = Objects.clone(putStringMatrix);
-        for (int i = 0; i < putStringMatrixNull.length; i++) {
-            putStringMatrixNull[i][i] = null;
-        }
-
-        //putStringMatrixAsList
-        final List<List<String>> putStringMatrixAsList = new ArrayList<List<String>>(putStringMatrix.length);
-        for (final String[] vector : putStringMatrix) {
-            putStringMatrixAsList.add(Arrays.asList(vector));
-        }
-        final List<List<String>> putStringMatrixAsListNull = Objects.clone(putStringMatrixAsList);
-        for (int i = 0; i < putStringMatrixAsListNull.size(); i++) {
-            putStringMatrixAsListNull.get(i).set(i, null);
-        }
-
         final AScriptTask task = new AScriptTask(
-                new ClassPathResource("InputsAndResultsTestString", InputsAndResultsTestString.class)) {
+                new ClassPathResource("InputsAndResultsTestString.R", InputsAndResultsTestString.class)) {
             @Override
             public void populateInputs(final IScriptTaskInputs inputs) {
                 inputs.putString("putString", putString);
@@ -74,12 +49,6 @@ public class InputsAndResultsTestString {
 
                 inputs.putStringVectorAsList("putStringVectorAsList", putStringVectorAsList);
                 inputs.putStringVectorAsList("putStringVectorAsListNull", putStringVectorAsListNull);
-
-                inputs.putStringMatrix("putStringMatrix", putStringMatrix);
-                inputs.putStringMatrix("putStringMatrixNull", putStringMatrixNull);
-
-                inputs.putStringMatrixAsList("putStringMatrixAsList", putStringMatrixAsList);
-                inputs.putStringMatrixAsList("putStringMatrixAsListNull", putStringMatrixAsListNull);
             }
         };
         try (IScriptTaskResults results = runner.run(task)) {
@@ -100,19 +69,6 @@ public class InputsAndResultsTestString {
             Assertions.assertThat(putStringVectorAsList).isEqualTo(getStringVectorAsList);
             final List<String> getStringVectorAsListNull = results.getStringVectorAsList("getStringVectorAsListNull");
             Assertions.assertThat(putStringVectorAsListNull).isEqualTo(getStringVectorAsListNull);
-
-            //getStringMatrix
-            final String[][] getStringMatrix = results.getStringMatrix("getStringMatrix");
-            Assertions.assertThat(putStringMatrix).isEqualTo(getStringMatrix);
-            final String[][] getStringMatrixNull = results.getStringMatrix("getStringMatrixNull");
-            Assertions.assertThat(putStringMatrixNull).isEqualTo(getStringMatrixNull);
-
-            //getStringMatrixAsList
-            final List<List<String>> getStringMatrixAsList = results.getStringMatrixAsList("getStringMatrixAsList");
-            Assertions.assertThat(putStringMatrixAsList).isEqualTo(getStringMatrixAsList);
-            final List<List<String>> getStringMatrixAsListNull = results
-                    .getStringMatrixAsList("getStringMatrixAsListNull");
-            Assertions.assertThat(putStringMatrixAsListNull).isEqualTo(getStringMatrixAsListNull);
         }
     }
 

@@ -1,9 +1,11 @@
 package de.invesdwin.context.r.runtime.renjin;
 
-import java.util.List;
-
 import javax.annotation.concurrent.NotThreadSafe;
+import javax.script.ScriptException;
 
+import org.apache.commons.lang3.ArrayUtils;
+import org.renjin.primitives.matrix.DoubleMatrixBuilder;
+import org.renjin.primitives.matrix.IntMatrixBuilder;
 import org.renjin.script.RenjinScriptEngine;
 
 import de.invesdwin.context.r.runtime.contract.IScriptTaskInputs;
@@ -23,48 +25,79 @@ public class RenjinScriptTaskInputs implements IScriptTaskInputs {
     }
 
     @Override
-    public void putString(final String variable, final String value) {}
+    public void putString(final String variable, final String value) {
+        if (value == null) {
+            putExpression(variable, "NA_character_");
+        } else {
+            renjinScriptEngine.put(variable, value);
+        }
+    }
 
     @Override
-    public void putStringVector(final String variable, final String[] value) {}
+    public void putStringVector(final String variable, final String[] value) {
+        renjinScriptEngine.put(variable, value);
+    }
 
     @Override
-    public void putStringVectorAsList(final String variable, final List<String> value) {}
+    public void putDouble(final String variable, final double value) {
+        renjinScriptEngine.put(variable, value);
+    }
 
     @Override
-    public void putStringMatrix(final String variable, final String[][] value) {}
+    public void putDoubleVector(final String variable, final double[] value) {
+        renjinScriptEngine.put(variable, value);
+    }
 
     @Override
-    public void putStringMatrixAsList(final String variable, final List<? extends List<String>> value) {}
+    public void putDoubleMatrix(final String variable, final double[][] value) {
+        final int rows = value.length;
+        final int cols = value[0].length;
+        final DoubleMatrixBuilder matrix = new DoubleMatrixBuilder(rows, cols);
+        for (int row = 0; row < rows; row++) {
+            for (int col = 0; col < cols; col++) {
+                matrix.set(row, col, value[row][col]);
+            }
+        }
+        renjinScriptEngine.put(variable, matrix.build());
+    }
 
     @Override
-    public void putDouble(final String variable, final Double value) {}
+    public void putBoolean(final String variable, final boolean value) {
+        renjinScriptEngine.put(variable, value);
+    }
 
     @Override
-    public void putDoubleVector(final String variable, final Double[] value) {}
+    public void putBooleanVector(final String variable, final boolean[] value) {
+        renjinScriptEngine.put(variable, ArrayUtils.toObject(value));
+    }
 
     @Override
-    public void putDoubleVectorAsList(final String variable, final List<Double> value) {}
+    public void putBooleanMatrix(final String variable, final boolean[][] value) {
+        final int rows = value.length;
+        final int cols = value[0].length;
+        final IntMatrixBuilder matrix = new IntMatrixBuilder(rows, cols);
+        for (int row = 0; row < rows; row++) {
+            for (int col = 0; col < cols; col++) {
+                final int intValue;
+                if (value[row][col]) {
+                    intValue = 1;
+                } else {
+                    intValue = 0;
+                }
+                matrix.set(row, col, intValue);
+            }
+        }
+        renjinScriptEngine.put(variable, matrix.build());
+        putExpression(variable, "array(as.logical(" + variable + "), dim(" + variable + "))");
+    }
 
     @Override
-    public void putDoubleMatrix(final String variable, final Double[][] value) {}
-
-    @Override
-    public void putDoubleMatrixAsList(final String variable, final List<? extends List<Double>> value) {}
-
-    @Override
-    public void putBoolean(final String variable, final Boolean value) {}
-
-    @Override
-    public void putBooleanVector(final String variable, final Boolean[] value) {}
-
-    @Override
-    public void putBooleanVectorAsList(final String variable, final List<Boolean> value) {}
-
-    @Override
-    public void putBooleanMatrix(final String variable, final Boolean[][] value) {}
-
-    @Override
-    public void putBooleanMatrixAsList(final String variable, final List<? extends List<Boolean>> value) {}
+    public void putExpression(final String variable, final String expression) {
+        try {
+            renjinScriptEngine.eval(variable + " <- " + expression);
+        } catch (final ScriptException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 }
