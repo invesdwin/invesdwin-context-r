@@ -49,7 +49,7 @@ public final class JriScriptTaskRunner implements IScriptTaskRunner, FactoryBean
             if (eval == null) {
                 throw new IllegalStateException(String.valueOf(LoggingRMainLoopCallbacks.INSTANCE.getErrorMessage()));
             }
-            return newResult(RENGINE, RENGINE_LOCK);
+            return new JriScriptTaskResults(RENGINE, RENGINE_LOCK);
         } catch (final Throwable t) {
             unlockRengine();
             throw Throwables.propagate(t);
@@ -60,36 +60,6 @@ public final class JriScriptTaskRunner implements IScriptTaskRunner, FactoryBean
 
     private void unlockRengine() {
         RENGINE_LOCK.unlock();
-    }
-
-    private IScriptTaskResults newResult(final Rengine rengine, final ReentrantLock rengineLock) {
-        return new IScriptTaskResults() {
-
-            @Override
-            public String getString(final String variable) {
-                return null;
-            }
-
-            @Override
-            public Double[] getDoubleVector(final String variable) {
-                return null;
-            }
-
-            @Override
-            public Double[][] getDoubleMatrix(final String variable) {
-                return null;
-            }
-
-            @Override
-            public Double getDouble(final String variable) {
-                return null;
-            }
-
-            @Override
-            public void close() {
-                rengineLock.unlock();
-            }
-        };
     }
 
     @Override

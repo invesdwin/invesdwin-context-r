@@ -33,7 +33,7 @@ public final class RenjinScriptTaskRunner implements IScriptTaskRunner, FactoryB
         }
         try (Reader reader = scriptTask.getScriptResourceAsReader()) {
             renjinScriptEngine.eval(reader);
-            return newResult(renjinScriptEngine);
+            return new RenjinScriptTaskResults(renjinScriptEngine);
         } catch (final Throwable t) {
             try {
                 RenjinScriptEngineObjectPool.INSTANCE.invalidateObject(renjinScriptEngine);
@@ -42,40 +42,6 @@ public final class RenjinScriptTaskRunner implements IScriptTaskRunner, FactoryB
             }
             throw Throwables.propagate(t);
         }
-    }
-
-    private IScriptTaskResults newResult(final RenjinScriptEngine renjinScriptEngine) {
-        return new IScriptTaskResults() {
-
-            @Override
-            public String getString(final String variable) {
-                return null;
-            }
-
-            @Override
-            public Double[] getDoubleVector(final String variable) {
-                return null;
-            }
-
-            @Override
-            public Double[][] getDoubleMatrix(final String variable) {
-                return null;
-            }
-
-            @Override
-            public Double getDouble(final String variable) {
-                return null;
-            }
-
-            @Override
-            public void close() {
-                try {
-                    RenjinScriptEngineObjectPool.INSTANCE.returnObject(renjinScriptEngine);
-                } catch (final Exception e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        };
     }
 
     @Override

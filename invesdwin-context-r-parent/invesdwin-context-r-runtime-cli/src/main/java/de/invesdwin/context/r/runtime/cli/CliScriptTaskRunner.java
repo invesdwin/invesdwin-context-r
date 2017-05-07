@@ -38,7 +38,7 @@ public final class CliScriptTaskRunner implements IScriptTaskRunner, FactoryBean
             //provide access to all variables
             rcaller.getRCode().addRCode(INTERNAL_RESULT_VARIABLE + " <- ls()");
             rcaller.runAndReturnResultOnline(INTERNAL_RESULT_VARIABLE);
-            return newResult(rcaller);
+            return new CliScriptTaskResults(rcaller);
         } catch (final Throwable t) {
             try {
                 RCallerObjectPool.INSTANCE.invalidateObject(rcaller);
@@ -47,40 +47,6 @@ public final class CliScriptTaskRunner implements IScriptTaskRunner, FactoryBean
             }
             throw Throwables.propagate(t);
         }
-    }
-
-    private IScriptTaskResults newResult(final RCaller rcaller) {
-        return new IScriptTaskResults() {
-
-            @Override
-            public String getString(final String variable) {
-                return null;
-            }
-
-            @Override
-            public Double[] getDoubleVector(final String variable) {
-                return null;
-            }
-
-            @Override
-            public Double[][] getDoubleMatrix(final String variable) {
-                return null;
-            }
-
-            @Override
-            public Double getDouble(final String variable) {
-                return null;
-            }
-
-            @Override
-            public void close() {
-                try {
-                    RCallerObjectPool.INSTANCE.returnObject(rcaller);
-                } catch (final Exception e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        };
     }
 
     @Override

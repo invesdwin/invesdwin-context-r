@@ -6,6 +6,10 @@ public interface IScriptTaskResults extends Closeable {
 
     String getString(String variable);
 
+    String[] getStringVector(String variable);
+
+    String[][] getStringMatrix(String variable);
+
     Double getDouble(String variable);
 
     Double[] getDoubleVector(String variable);
@@ -14,5 +18,7 @@ public interface IScriptTaskResults extends Closeable {
 
     @Override
     void close();
+
+    Object getEngine();
 
 }
