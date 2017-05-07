@@ -5,6 +5,7 @@ import javax.annotation.concurrent.NotThreadSafe;
 import org.math.R.Rsession;
 
 import de.invesdwin.context.r.runtime.contract.IScriptTaskInputs;
+import de.invesdwin.util.assertions.Assertions;
 
 @NotThreadSafe
 public class RserveScriptTaskInputs implements IScriptTaskInputs {
@@ -32,6 +33,23 @@ public class RserveScriptTaskInputs implements IScriptTaskInputs {
     @Override
     public void putStringVector(final String variable, final String[] value) {
         rsession.set(variable, value);
+    }
+
+    @Override
+    public void putStringMatrix(final String variable, final String[][] value) {
+        final int rows = value.length;
+        final int cols = value[0].length;
+        final String[] flatMatrix = new String[rows * cols];
+        int i = 0;
+        for (int row = 0; row < rows; row++) {
+            Assertions.checkEquals(value[row].length, cols);
+            for (int col = 0; col < cols; col++) {
+                flatMatrix[i] = value[row][col];
+                i++;
+            }
+        }
+        putStringVector(variable, flatMatrix);
+        putExpression(variable, "matrix(" + variable + ", " + rows + ", " + cols + ", TRUE)");
     }
 
     @Override

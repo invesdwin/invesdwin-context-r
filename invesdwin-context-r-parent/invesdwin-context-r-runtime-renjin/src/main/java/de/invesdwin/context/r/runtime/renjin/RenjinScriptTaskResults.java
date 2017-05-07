@@ -63,6 +63,35 @@ public class RenjinScriptTaskResults implements IScriptTaskResults {
     }
 
     @Override
+    public String[][] getStringMatrix(final String variable) {
+        try {
+            final Matrix sexp = new Matrix((Vector) renjinScriptEngine.eval(variable));
+            final String[][] matrix = new String[sexp.getNumRows()][];
+            for (int row = 0; row < matrix.length; row++) {
+                final String[] vector = new String[sexp.getNumCols()];
+                for (int col = 0; col < vector.length; col++) {
+                    vector[col] = sexp.getVector().getElementAsString(org.renjin.primitives.Indexes
+                            .matrixIndexToVectorIndex(row, col, sexp.getNumRows(), sexp.getNumCols()));
+                }
+                matrix[row] = vector;
+            }
+            return matrix;
+        } catch (final ScriptException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public double getDouble(final String variable) {
+        try {
+            final SEXP sexp = (SEXP) renjinScriptEngine.eval(variable);
+            return sexp.asReal();
+        } catch (final ScriptException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
     public double[] getDoubleVector(final String variable) {
         try {
             final Vector sexp = (Vector) renjinScriptEngine.eval(variable);
@@ -89,16 +118,6 @@ public class RenjinScriptTaskResults implements IScriptTaskResults {
                 matrix[row] = vector;
             }
             return matrix;
-        } catch (final ScriptException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    @Override
-    public double getDouble(final String variable) {
-        try {
-            final SEXP sexp = (SEXP) renjinScriptEngine.eval(variable);
-            return sexp.asReal();
         } catch (final ScriptException e) {
             throw new RuntimeException(e);
         }

@@ -43,6 +43,41 @@ public class JriScriptTaskResults implements IScriptTaskResults {
     }
 
     @Override
+    public String[][] getStringMatrix(final String variable) {
+        final REXP rexp = rengine.eval(variable);
+        return asStringMatrix(rexp);
+    }
+
+    private String[][] asStringMatrix(final REXP rexp) {
+        final String[] ct = rexp.asStringArray();
+        if (ct == null) {
+            return null;
+        }
+        final REXP dim = rexp.getAttribute("dim");
+        if (dim == null) {
+            return null;
+        }
+        final int[] ds = dim.asIntArray();
+        if ((ds == null) || (ds.length != 2)) {
+            return null;
+        }
+        final int m = ds[0];
+        final int n = ds[1];
+        final String[][] r = new String[m][n];
+
+        int i = 0;
+        int k = 0;
+        while (i < n) {
+            int j = 0;
+            while (j < m) {
+                r[(j++)][i] = ct[(k++)];
+            }
+            i++;
+        }
+        return r;
+    }
+
+    @Override
     public double[] getDoubleVector(final String variable) {
         final REXP rexp = rengine.eval(variable);
         return rexp.asDoubleArray();

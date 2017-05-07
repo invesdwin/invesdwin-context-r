@@ -33,7 +33,6 @@ public class CliScriptTaskResults implements IScriptTaskResults {
     }
 
     private void requestVariable(final String variable) {
-        rcaller.getRCode().addRCode(variable);
         rcaller.runAndReturnResultOnline(variable);
     }
 
@@ -58,6 +57,38 @@ public class CliScriptTaskResults implements IScriptTaskResults {
     public String[] getStringVector(final String variable) {
         requestVariable(variable);
         return replaceNaWithNull(rcaller.getParser().getAsStringArray(variable));
+    }
+
+    @Override
+    public String[][] getStringMatrix(final String variable) {
+        final String[] ct = getStringVector(variable);
+        if (ct == null) {
+            return null;
+        }
+        rcaller.getRCode().addRCode(CliScriptTaskRunner.INTERNAL_RESULT_VARIABLE + " <- dim(" + variable + ")");
+        final int[] ds = getIntVector(CliScriptTaskRunner.INTERNAL_RESULT_VARIABLE);
+        if ((ds == null) || (ds.length != 2)) {
+            return null;
+        }
+        final int m = ds[0];
+        final int n = ds[1];
+        final String[][] r = new String[m][n];
+
+        int i = 0;
+        int k = 0;
+        while (i < n) {
+            int j = 0;
+            while (j < m) {
+                r[(j++)][i] = ct[(k++)];
+            }
+            i++;
+        }
+        return r;
+    }
+
+    public int[] getIntVector(final String variable) {
+        requestVariable(variable);
+        return rcaller.getParser().getAsIntArray(variable);
     }
 
     @Override

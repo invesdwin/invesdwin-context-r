@@ -6,6 +6,7 @@ import javax.script.ScriptException;
 import org.apache.commons.lang3.ArrayUtils;
 import org.renjin.primitives.matrix.DoubleMatrixBuilder;
 import org.renjin.primitives.matrix.IntMatrixBuilder;
+import org.renjin.primitives.matrix.StringMatrixBuilder;
 import org.renjin.script.RenjinScriptEngine;
 
 import de.invesdwin.context.r.runtime.contract.IScriptTaskInputs;
@@ -39,6 +40,19 @@ public class RenjinScriptTaskInputs implements IScriptTaskInputs {
     }
 
     @Override
+    public void putStringMatrix(final String variable, final String[][] value) {
+        final int rows = value.length;
+        final int cols = value[0].length;
+        final StringMatrixBuilder matrix = new StringMatrixBuilder(rows, cols);
+        for (int row = 0; row < rows; row++) {
+            for (int col = 0; col < cols; col++) {
+                matrix.setValue(row, col, value[row][col]);
+            }
+        }
+        renjinScriptEngine.put(variable, matrix.build());
+    }
+
+    @Override
     public void putDouble(final String variable, final double value) {
         renjinScriptEngine.put(variable, value);
     }
@@ -55,7 +69,7 @@ public class RenjinScriptTaskInputs implements IScriptTaskInputs {
         final DoubleMatrixBuilder matrix = new DoubleMatrixBuilder(rows, cols);
         for (int row = 0; row < rows; row++) {
             for (int col = 0; col < cols; col++) {
-                matrix.set(row, col, value[row][col]);
+                matrix.setValue(row, col, value[row][col]);
             }
         }
         renjinScriptEngine.put(variable, matrix.build());
@@ -84,7 +98,7 @@ public class RenjinScriptTaskInputs implements IScriptTaskInputs {
                 } else {
                     intValue = 0;
                 }
-                matrix.set(row, col, intValue);
+                matrix.setValue(row, col, intValue);
             }
         }
         renjinScriptEngine.put(variable, matrix.build());

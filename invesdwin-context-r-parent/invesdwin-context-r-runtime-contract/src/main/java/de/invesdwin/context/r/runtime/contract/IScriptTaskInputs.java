@@ -14,6 +14,17 @@ public interface IScriptTaskInputs {
         putStringVector(variable, value.toArray(new String[value.size()]));
     }
 
+    void putStringMatrix(String variable, String[][] value);
+
+    default void putStringMatrixAsList(final String variable, final List<? extends List<String>> value) {
+        final String[][] matrix = new String[value.size()][];
+        for (int i = 0; i < value.size(); i++) {
+            final List<String> vector = value.get(i);
+            matrix[i] = vector.toArray(new String[vector.size()]);
+        }
+        putStringMatrix(variable, matrix);
+    }
+
     void putDouble(String variable, double value);
 
     void putDoubleVector(String variable, double[] value);

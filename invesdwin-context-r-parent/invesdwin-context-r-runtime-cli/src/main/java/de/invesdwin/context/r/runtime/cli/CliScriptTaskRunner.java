@@ -35,8 +35,7 @@ public final class CliScriptTaskRunner implements IScriptTaskRunner, FactoryBean
             rcaller.getRCode().clearOnline();
             scriptTask.populateInputs(new CliScriptTaskInputs(rcaller));
             rcaller.getRCode().addRCode(scriptTask.getScriptResourceAsString());
-            //provide access to all variables
-            rcaller.getRCode().addRCode(INTERNAL_RESULT_VARIABLE + " <- ls()");
+            rcaller.getRCode().addRCode(INTERNAL_RESULT_VARIABLE + " <- c()");
             rcaller.runAndReturnResultOnline(INTERNAL_RESULT_VARIABLE);
             return new CliScriptTaskResults(rcaller);
         } catch (final Throwable t) {

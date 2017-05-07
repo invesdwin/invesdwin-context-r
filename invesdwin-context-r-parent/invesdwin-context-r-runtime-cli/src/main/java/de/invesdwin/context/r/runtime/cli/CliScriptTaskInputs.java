@@ -5,6 +5,7 @@ import javax.annotation.concurrent.NotThreadSafe;
 import com.github.rcaller.rstuff.RCaller;
 
 import de.invesdwin.context.r.runtime.contract.IScriptTaskInputs;
+import de.invesdwin.util.assertions.Assertions;
 
 @NotThreadSafe
 public class CliScriptTaskInputs implements IScriptTaskInputs {
@@ -33,6 +34,23 @@ public class CliScriptTaskInputs implements IScriptTaskInputs {
     public void putStringVector(final String variable, final String[] value) {
         rcaller.getRCode().addStringArray(variable, replaceNullWithNa(value));
         rcaller.getRCode().addRCode(variable + "[ " + variable + " == \"NA_character_\" ] <- NA_character_");
+    }
+
+    @Override
+    public void putStringMatrix(final String variable, final String[][] value) {
+        final int rows = value.length;
+        final int cols = value[0].length;
+        final String[] flatMatrix = new String[rows * cols];
+        int i = 0;
+        for (int row = 0; row < rows; row++) {
+            Assertions.checkEquals(value[row].length, cols);
+            for (int col = 0; col < cols; col++) {
+                flatMatrix[i] = value[row][col];
+                i++;
+            }
+        }
+        putStringVector(variable, flatMatrix);
+        putExpression(variable, "matrix(" + variable + ", " + rows + ", " + cols + ", TRUE)");
     }
 
     private String[] replaceNullWithNa(final String[] value) {
