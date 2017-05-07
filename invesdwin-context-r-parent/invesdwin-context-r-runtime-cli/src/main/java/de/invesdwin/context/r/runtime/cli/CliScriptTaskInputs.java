@@ -79,6 +79,33 @@ public class CliScriptTaskInputs implements IScriptTaskInputs {
     }
 
     @Override
+    public void putInteger(final String variable, final int value) {
+        rcaller.getRCode().addInt(variable, value);
+        putExpression(variable, "as.integer(" + variable + ")");
+    }
+
+    @Override
+    public void putIntegerVector(final String variable, final int[] value) {
+        rcaller.getRCode().addIntArray(variable, value);
+        putExpression(variable, "as.integer(" + variable + ")");
+    }
+
+    @Override
+    public void putIntegerMatrix(final String variable, final int[][] value) {
+        final double[][] matrix = new double[value.length][];
+        for (int i = 0; i < matrix.length; i++) {
+            final int[] intVector = value[i];
+            final double[] vector = new double[intVector.length];
+            for (int j = 0; j < vector.length; j++) {
+                vector[j] = intVector[j];
+            }
+            matrix[i] = vector;
+        }
+        rcaller.getRCode().addDoubleMatrix(variable, matrix);
+        putExpression(variable, "array(as.integer(" + variable + "), dim(" + variable + "))");
+    }
+
+    @Override
     public void putBoolean(final String variable, final boolean value) {
         rcaller.getRCode().addLogical(variable, value);
     }

@@ -20,6 +20,7 @@ public class InputsAndResultsTests {
 
     public void test() {
         new InputsAndResultsTestDouble(runner).testDouble();
+        new InputsAndResultsTestInteger(runner).testInteger();
         new InputsAndResultsTestString(runner).testString();
         new InputsAndResultsTestBoolean(runner).testBoolean();
     }

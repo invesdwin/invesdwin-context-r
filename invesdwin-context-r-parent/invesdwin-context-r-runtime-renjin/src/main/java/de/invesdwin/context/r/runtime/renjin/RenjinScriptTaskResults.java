@@ -11,6 +11,7 @@ import org.renjin.sexp.Vector;
 
 import de.invesdwin.context.r.runtime.contract.IScriptTaskResults;
 import de.invesdwin.context.r.runtime.renjin.pool.RenjinScriptEngineObjectPool;
+import de.invesdwin.util.assertions.Assertions;
 
 @NotThreadSafe
 public class RenjinScriptTaskResults implements IScriptTaskResults {
@@ -114,6 +115,49 @@ public class RenjinScriptTaskResults implements IScriptTaskResults {
                 final double[] vector = new double[sexp.getNumCols()];
                 for (int col = 0; col < vector.length; col++) {
                     vector[col] = sexp.getElementAsDouble(row, col);
+                }
+                matrix[row] = vector;
+            }
+            return matrix;
+        } catch (final ScriptException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public int getInteger(final String variable) {
+        try {
+            final Vector sexp = (Vector) renjinScriptEngine.eval(variable);
+            Assertions.checkEquals(sexp.length(), 1);
+            return sexp.getElementAsInt(0);
+        } catch (final ScriptException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public int[] getIntegerVector(final String variable) {
+        try {
+            final Vector sexp = (Vector) renjinScriptEngine.eval(variable);
+            final int[] array = new int[sexp.length()];
+            for (int i = 0; i < array.length; i++) {
+                array[i] = sexp.getElementAsInt(i);
+            }
+            return array;
+        } catch (final ScriptException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public int[][] getIntegerMatrix(final String variable) {
+        try {
+            final Matrix sexp = new Matrix((Vector) renjinScriptEngine.eval(variable));
+            final int[][] matrix = new int[sexp.getNumRows()][];
+            for (int row = 0; row < matrix.length; row++) {
+                final int[] vector = new int[sexp.getNumCols()];
+                for (int col = 0; col < vector.length; col++) {
+                    vector[col] = sexp.getElementAsInt(row, col);
                 }
                 matrix[row] = vector;
             }

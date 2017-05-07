@@ -68,6 +68,37 @@ public class RserveScriptTaskInputs implements IScriptTaskInputs {
     }
 
     @Override
+    public void putInteger(final String variable, final int value) {
+        rsession.set(variable, value);
+        putExpression(variable, "as.integer(" + variable + ")");
+    }
+
+    @Override
+    public void putIntegerVector(final String variable, final int[] value) {
+        final double[] doubleValue = new double[value.length];
+        for (int i = 0; i < doubleValue.length; i++) {
+            doubleValue[i] = value[i];
+        }
+        rsession.set(variable, doubleValue);
+        putExpression(variable, "as.integer(" + variable + ")");
+    }
+
+    @Override
+    public void putIntegerMatrix(final String variable, final int[][] value) {
+        final double[][] doubleValue = new double[value.length][];
+        for (int i = 0; i < value.length; i++) {
+            final int[] vector = value[i];
+            final double[] doubleVector = new double[vector.length];
+            for (int j = 0; j < vector.length; j++) {
+                doubleVector[j] = vector[j];
+            }
+            doubleValue[i] = doubleVector;
+        }
+        rsession.set(variable, doubleValue);
+        putExpression(variable, "array(as.integer(" + variable + "), dim(" + variable + "))");
+    }
+
+    @Override
     public void putBoolean(final String variable, final boolean value) {
         final double doubleValue;
         if (value) {

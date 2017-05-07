@@ -79,6 +79,36 @@ public class JriScriptTaskInputs implements IScriptTaskInputs {
     }
 
     @Override
+    public void putInteger(final String variable, final int value) {
+        Assertions.checkTrue(rengine.assign(variable, new int[] { value }));
+    }
+
+    @Override
+    public void putIntegerVector(final String variable, final int[] value) {
+        Assertions.checkTrue(rengine.assign(variable, value));
+    }
+
+    /**
+     * http://permalink.gmane.org/gmane.comp.lang.r.rosuda.devel/87
+     */
+    @Override
+    public void putIntegerMatrix(final String variable, final int[][] value) {
+        final int rows = value.length;
+        final int cols = value[0].length;
+        final int[] flatMatrix = new int[rows * cols];
+        int i = 0;
+        for (int row = 0; row < rows; row++) {
+            Assertions.checkEquals(value[row].length, cols);
+            for (int col = 0; col < cols; col++) {
+                flatMatrix[i] = value[row][col];
+                i++;
+            }
+        }
+        rengine.assign(variable, flatMatrix);
+        putExpression(variable, "matrix(" + variable + ", " + rows + ", " + cols + ", TRUE)");
+    }
+
+    @Override
     public void putBoolean(final String variable, final boolean value) {
         Assertions.checkTrue(rengine.assign(variable, new boolean[] { value }));
     }

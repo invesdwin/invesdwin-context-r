@@ -76,6 +76,29 @@ public class RenjinScriptTaskInputs implements IScriptTaskInputs {
     }
 
     @Override
+    public void putInteger(final String variable, final int value) {
+        renjinScriptEngine.put(variable, value);
+    }
+
+    @Override
+    public void putIntegerVector(final String variable, final int[] value) {
+        renjinScriptEngine.put(variable, value);
+    }
+
+    @Override
+    public void putIntegerMatrix(final String variable, final int[][] value) {
+        final int rows = value.length;
+        final int cols = value[0].length;
+        final IntMatrixBuilder matrix = new IntMatrixBuilder(rows, cols);
+        for (int row = 0; row < rows; row++) {
+            for (int col = 0; col < cols; col++) {
+                matrix.setValue(row, col, value[row][col]);
+            }
+        }
+        renjinScriptEngine.put(variable, matrix.build());
+    }
+
+    @Override
     public void putBoolean(final String variable, final boolean value) {
         renjinScriptEngine.put(variable, value);
     }

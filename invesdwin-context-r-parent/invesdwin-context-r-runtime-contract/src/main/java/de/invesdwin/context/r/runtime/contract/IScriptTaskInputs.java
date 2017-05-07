@@ -44,6 +44,25 @@ public interface IScriptTaskInputs {
         putDoubleMatrix(variable, matrix);
     }
 
+    void putInteger(String variable, int value);
+
+    void putIntegerVector(String variable, int[] value);
+
+    default void putIntegerVectorAsList(final String variable, final List<Integer> value) {
+        putIntegerVector(variable, ArrayUtils.toPrimitive(value.toArray(new Integer[value.size()])));
+    }
+
+    void putIntegerMatrix(String variable, int[][] value);
+
+    default void putIntegerMatrixAsList(final String variable, final List<? extends List<Integer>> value) {
+        final int[][] matrix = new int[value.size()][];
+        for (int i = 0; i < value.size(); i++) {
+            final List<Integer> vector = value.get(i);
+            matrix[i] = ArrayUtils.toPrimitive(vector.toArray(new Integer[vector.size()]));
+        }
+        putIntegerMatrix(variable, matrix);
+    }
+
     void putBoolean(String variable, boolean value);
 
     void putBooleanVector(String variable, boolean[] value);

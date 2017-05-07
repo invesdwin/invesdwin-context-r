@@ -9,6 +9,7 @@ import org.rosuda.JRI.REXP;
 import org.rosuda.JRI.Rengine;
 
 import de.invesdwin.context.r.runtime.contract.IScriptTaskResults;
+import de.invesdwin.util.assertions.Assertions;
 
 @NotThreadSafe
 public class JriScriptTaskResults implements IScriptTaskResults {
@@ -78,6 +79,12 @@ public class JriScriptTaskResults implements IScriptTaskResults {
     }
 
     @Override
+    public double getDouble(final String variable) {
+        final REXP rexp = rengine.eval(variable);
+        return rexp.asDouble();
+    }
+
+    @Override
     public double[] getDoubleVector(final String variable) {
         final REXP rexp = rengine.eval(variable);
         return rexp.asDoubleArray();
@@ -90,9 +97,52 @@ public class JriScriptTaskResults implements IScriptTaskResults {
     }
 
     @Override
-    public double getDouble(final String variable) {
+    public int getInteger(final String variable) {
         final REXP rexp = rengine.eval(variable);
-        return rexp.asDouble();
+        final int[] array = rexp.asIntArray();
+        Assertions.checkEquals(array.length, 1);
+        return array[0];
+    }
+
+    @Override
+    public int[] getIntegerVector(final String variable) {
+        final REXP rexp = rengine.eval(variable);
+        return rexp.asIntArray();
+    }
+
+    @Override
+    public int[][] getIntegerMatrix(final String variable) {
+        final REXP rexp = rengine.eval(variable);
+        return asIntMatrix(rexp);
+    }
+
+    private int[][] asIntMatrix(final REXP rexp) {
+        final int[] ct = rexp.asIntArray();
+        if (ct == null) {
+            return null;
+        }
+        final REXP dim = rexp.getAttribute("dim");
+        if (dim == null) {
+            return null;
+        }
+        final int[] ds = dim.asIntArray();
+        if ((ds == null) || (ds.length != 2)) {
+            return null;
+        }
+        final int m = ds[0];
+        final int n = ds[1];
+        final int[][] r = new int[m][n];
+
+        int i = 0;
+        int k = 0;
+        while (i < n) {
+            int j = 0;
+            while (j < m) {
+                r[(j++)][i] = ct[(k++)];
+            }
+            i++;
+        }
+        return r;
     }
 
     @Override
@@ -127,35 +177,6 @@ public class JriScriptTaskResults implements IScriptTaskResults {
             booleanMatrix[i] = booleanVector;
         }
         return booleanMatrix;
-    }
-
-    private int[][] asIntMatrix(final REXP rexp) {
-        final int[] ct = rexp.asIntArray();
-        if (ct == null) {
-            return null;
-        }
-        final REXP dim = rexp.getAttribute("dim");
-        if (dim == null) {
-            return null;
-        }
-        final int[] ds = dim.asIntArray();
-        if ((ds == null) || (ds.length != 2)) {
-            return null;
-        }
-        final int m = ds[0];
-        final int n = ds[1];
-        final int[][] r = new int[m][n];
-
-        int i = 0;
-        int k = 0;
-        while (i < n) {
-            int j = 0;
-            while (j < m) {
-                r[(j++)][i] = ct[(k++)];
-            }
-            i++;
-        }
-        return r;
     }
 
 }

@@ -120,6 +120,57 @@ public class RserveScriptTaskResults implements IScriptTaskResults {
     }
 
     @Override
+    public int getInteger(final String variable) {
+        try {
+            return rsession.eval(variable).asInteger();
+        } catch (final REXPMismatchException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public int[] getIntegerVector(final String variable) {
+        try {
+            return rsession.eval(variable).asIntegers();
+        } catch (final REXPMismatchException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public int[][] getIntegerMatrix(final String variable) {
+        try {
+            return asIntegerMatrix(rsession.eval(variable));
+        } catch (final REXPMismatchException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private int[][] asIntegerMatrix(final REXP rexp) throws REXPMismatchException {
+        final int[] ct = rexp.asIntegers();
+        final REXP dim = rexp.getAttribute("dim");
+        if (dim == null) {
+            throw new REXPMismatchException(rexp, "matrix (dim attribute missing)");
+        }
+        final int[] ds = dim.asIntegers();
+        if (ds.length != 2) {
+            throw new REXPMismatchException(rexp, "matrix (wrong dimensionality)");
+        }
+        final int m = ds[0], n = ds[1];
+
+        final int[][] r = new int[m][n];
+        // R stores matrices as matrix(c(1,2,3,4),2,2) = col1:(1,2), col2:(3,4)
+        // we need to copy everything, since we create 2d array from 1d array
+        int k = 0;
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                r[j][i] = ct[k++];
+            }
+        }
+        return r;
+    }
+
+    @Override
     public boolean getBoolean(final String variable) {
         try {
             return rsession.eval(variable).asInteger() > 0;

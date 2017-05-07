@@ -2,8 +2,6 @@ package de.invesdwin.context.r.runtime.cli;
 
 import javax.annotation.concurrent.NotThreadSafe;
 
-import org.apache.commons.math3.linear.MatrixUtils;
-
 import com.github.rcaller.rstuff.RCaller;
 
 import de.invesdwin.context.r.runtime.cli.pool.RCallerObjectPool;
@@ -66,7 +64,7 @@ public class CliScriptTaskResults implements IScriptTaskResults {
             return null;
         }
         rcaller.getRCode().addRCode(CliScriptTaskRunner.INTERNAL_RESULT_VARIABLE + " <- dim(" + variable + ")");
-        final int[] ds = getIntVector(CliScriptTaskRunner.INTERNAL_RESULT_VARIABLE);
+        final int[] ds = getIntegerVector(CliScriptTaskRunner.INTERNAL_RESULT_VARIABLE);
         if ((ds == null) || (ds.length != 2)) {
             return null;
         }
@@ -86,9 +84,12 @@ public class CliScriptTaskResults implements IScriptTaskResults {
         return r;
     }
 
-    public int[] getIntVector(final String variable) {
+    @Override
+    public double getDouble(final String variable) {
         requestVariable(variable);
-        return rcaller.getParser().getAsIntArray(variable);
+        final double[] array = rcaller.getParser().getAsDoubleArray(variable);
+        Assertions.checkEquals(array.length, 1);
+        return array[0];
     }
 
     @Override
@@ -99,22 +100,69 @@ public class CliScriptTaskResults implements IScriptTaskResults {
 
     @Override
     public double[][] getDoubleMatrix(final String variable) {
-        requestVariable(variable);
-        //the internal logic of RCaller is wrong here as the results are returned transposed... we have to undo that
-        final int[] dims = rcaller.getParser().getDimensions(variable);
-        final int rows = dims[0];
-        final int cols = dims[1];
-        final double[][] matrix = rcaller.getParser().getAsDoubleMatrix(variable, cols, rows);
-        final double[][] transposedMatrix = MatrixUtils.createRealMatrix(matrix).transpose().getData();
-        return transposedMatrix;
+        //not using rcaller getDoubleMatrix since it transposes the matrix as a side effect...
+        final double[] ct = getDoubleVector(variable);
+        if (ct == null) {
+            return null;
+        }
+        final int[] ds = rcaller.getParser().getDimensions(variable);
+        if ((ds == null) || (ds.length != 2)) {
+            return null;
+        }
+        final int m = ds[0];
+        final int n = ds[1];
+        final double[][] r = new double[m][n];
+
+        int i = 0;
+        int k = 0;
+        while (i < n) {
+            int j = 0;
+            while (j < m) {
+                r[(j++)][i] = ct[(k++)];
+            }
+            i++;
+        }
+        return r;
     }
 
     @Override
-    public double getDouble(final String variable) {
+    public int getInteger(final String variable) {
         requestVariable(variable);
-        final double[] array = rcaller.getParser().getAsDoubleArray(variable);
+        final int[] array = rcaller.getParser().getAsIntArray(variable);
         Assertions.checkEquals(array.length, 1);
         return array[0];
+    }
+
+    @Override
+    public int[] getIntegerVector(final String variable) {
+        requestVariable(variable);
+        return rcaller.getParser().getAsIntArray(variable);
+    }
+
+    @Override
+    public int[][] getIntegerMatrix(final String variable) {
+        final int[] ct = getIntegerVector(variable);
+        if (ct == null) {
+            return null;
+        }
+        final int[] ds = rcaller.getParser().getDimensions(variable);
+        if ((ds == null) || (ds.length != 2)) {
+            return null;
+        }
+        final int m = ds[0];
+        final int n = ds[1];
+        final int[][] r = new int[m][n];
+
+        int i = 0;
+        int k = 0;
+        while (i < n) {
+            int j = 0;
+            while (j < m) {
+                r[(j++)][i] = ct[(k++)];
+            }
+            i++;
+        }
+        return r;
     }
 
     @Override
