@@ -7,9 +7,10 @@ import javax.annotation.concurrent.NotThreadSafe;
 
 import org.springframework.core.io.ClassPathResource;
 
+import de.invesdwin.context.r.runtime.contract.AScriptTask;
+import de.invesdwin.context.r.runtime.contract.IScriptTaskInputs;
 import de.invesdwin.context.r.runtime.contract.IScriptTaskResults;
 import de.invesdwin.context.r.runtime.contract.IScriptTaskRunner;
-import de.invesdwin.context.r.runtime.contract.ScriptTask;
 
 @NotThreadSafe
 public class OptimalfScript {
@@ -23,7 +24,12 @@ public class OptimalfScript {
     }
 
     public List<Double> getOptimalfPerStrategy() {
-        final ScriptTask scriptTask = new ScriptTask(new ClassPathResource("OptimalfScript.R", getClass()));
+        final AScriptTask scriptTask = new AScriptTask(new ClassPathResource("OptimalfScript.R", getClass())) {
+            @Override
+            public void populateInputs(final IScriptTaskInputs inputs) {
+                inputs.putDoubleMatrix("asd", tradesPerStrategy);
+            }
+        };
         try (final IScriptTaskResults results = runner.run(scriptTask)) {
             final Double[] optimalf = results.getDoubleVector("optimalf");
             if (optimalf != null) {

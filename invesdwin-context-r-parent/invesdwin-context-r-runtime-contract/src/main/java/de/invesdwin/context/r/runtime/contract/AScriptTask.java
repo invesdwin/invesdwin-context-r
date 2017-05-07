@@ -12,11 +12,11 @@ import org.apache.commons.io.IOUtils;
 import org.springframework.core.io.Resource;
 
 @NotThreadSafe
-public class ScriptTask {
+public abstract class AScriptTask {
 
     private final Resource scriptResource;
 
-    public ScriptTask(final Resource scriptResource) {
+    public AScriptTask(final Resource scriptResource) {
         this.scriptResource = scriptResource;
     }
 
@@ -39,5 +39,7 @@ public class ScriptTask {
             throw new RuntimeException(e);
         }
     }
+
+    public abstract void populateInputs(IScriptTaskInputs inputs);
 
 }

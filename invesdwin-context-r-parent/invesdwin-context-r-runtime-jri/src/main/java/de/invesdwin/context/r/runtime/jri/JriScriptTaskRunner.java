@@ -12,7 +12,7 @@ import org.springframework.beans.factory.FactoryBean;
 
 import de.invesdwin.context.r.runtime.contract.IScriptTaskResults;
 import de.invesdwin.context.r.runtime.contract.IScriptTaskRunner;
-import de.invesdwin.context.r.runtime.contract.ScriptTask;
+import de.invesdwin.context.r.runtime.contract.AScriptTask;
 import de.invesdwin.context.r.runtime.jri.internal.LoggingRMainLoopCallbacks;
 import de.invesdwin.util.error.Throwables;
 
@@ -42,7 +42,7 @@ public final class JriScriptTaskRunner implements IScriptTaskRunner, FactoryBean
     private JriScriptTaskRunner() {}
 
     @Override
-    public IScriptTaskResults run(final ScriptTask scriptTask) {
+    public IScriptTaskResults run(final AScriptTask scriptTask) {
         RENGINE_LOCK.lock();
         try {
             final REXP eval = RENGINE.eval("eval(parse(text=\"" + scriptTask.getScriptResourceAsString() + "\"))");

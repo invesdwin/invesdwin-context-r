@@ -6,6 +6,6 @@ public interface IScriptTaskRunner {
 
     Log LOG = new Log(IScriptTaskRunner.class);
 
-    IScriptTaskResults run(ScriptTask scriptTask);
+    IScriptTaskResults run(AScriptTask scriptTask);
 
 }

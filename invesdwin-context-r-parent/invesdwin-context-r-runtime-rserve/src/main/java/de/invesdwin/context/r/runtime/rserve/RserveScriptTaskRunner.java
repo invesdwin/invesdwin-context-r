@@ -9,7 +9,7 @@ import org.springframework.beans.factory.FactoryBean;
 
 import de.invesdwin.context.r.runtime.contract.IScriptTaskResults;
 import de.invesdwin.context.r.runtime.contract.IScriptTaskRunner;
-import de.invesdwin.context.r.runtime.contract.ScriptTask;
+import de.invesdwin.context.r.runtime.contract.AScriptTask;
 import de.invesdwin.context.r.runtime.rserve.pool.RsessionObjectPool;
 import de.invesdwin.util.error.Throwables;
 
@@ -22,7 +22,7 @@ public final class RserveScriptTaskRunner implements IScriptTaskRunner, FactoryB
     private RserveScriptTaskRunner() {}
 
     @Override
-    public IScriptTaskResults run(final ScriptTask scriptTask) {
+    public IScriptTaskResults run(final AScriptTask scriptTask) {
         //get session
         final Rsession rsession;
         try {
