@@ -90,6 +90,7 @@ public class JriScriptTaskInputs implements IScriptTaskInputs {
         }
         rengine.assign(variable, flatMatrix);
         putExpression(variable, "matrix(" + variable + ", " + rows + ", " + cols + ", TRUE)");
+        putExpression(variable, "array(as.logical(" + variable + "), dim(" + variable + "))");
     }
 
     @Override

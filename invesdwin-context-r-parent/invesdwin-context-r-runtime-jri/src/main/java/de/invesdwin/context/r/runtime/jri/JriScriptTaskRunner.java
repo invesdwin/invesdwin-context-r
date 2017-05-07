@@ -56,7 +56,7 @@ public final class JriScriptTaskRunner implements IScriptTaskRunner, FactoryBean
     }
 
     public static void eval(final Rengine rengine, final String expression) {
-        final REXP eval = RENGINE.eval("eval(parse(text=\"" + expression + "\"))");
+        final REXP eval = RENGINE.eval("eval(parse(text=\"" + expression.replace("\"", "\\\"") + "\"))");
         if (eval == null) {
             throw new IllegalStateException(String.valueOf(LoggingRMainLoopCallbacks.INSTANCE.getErrorMessage()));
         }
