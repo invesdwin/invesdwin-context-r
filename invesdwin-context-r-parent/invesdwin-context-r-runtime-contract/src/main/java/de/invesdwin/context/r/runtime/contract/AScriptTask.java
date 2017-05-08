@@ -40,4 +40,8 @@ public abstract class AScriptTask<R> {
         return runner.run(this);
     }
 
+    public R run() {
+        return run(ProvidedScriptTaskRunner.INSTANCE);
+    }
+
 }
