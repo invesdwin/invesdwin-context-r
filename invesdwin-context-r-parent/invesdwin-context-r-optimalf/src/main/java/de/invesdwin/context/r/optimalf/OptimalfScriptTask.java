@@ -14,9 +14,9 @@ import de.invesdwin.context.r.runtime.contract.IScriptTaskResults;
 @NotThreadSafe
 public class OptimalfScriptTask extends AScriptTask<List<Double>> {
 
-    private final List<List<Double>> tradesPerStrategy;
+    private final List<? extends List<Double>> tradesPerStrategy;
 
-    public OptimalfScriptTask(final List<List<Double>> tradesPerStrategy) {
+    public OptimalfScriptTask(final List<? extends List<Double>> tradesPerStrategy) {
         this.tradesPerStrategy = tradesPerStrategy;
     }
 
