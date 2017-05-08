@@ -18,10 +18,13 @@ public final class RserveScriptTaskRunner implements IScriptTaskRunner, FactoryB
 
     public static final RserveScriptTaskRunner INSTANCE = new RserveScriptTaskRunner();
 
-    private RserveScriptTaskRunner() {}
+    /**
+     * public for ServiceLoader support
+     */
+    public RserveScriptTaskRunner() {}
 
     @Override
-    public RserveScriptTaskResults run(final AScriptTask scriptTask) {
+    public <T> T run(final AScriptTask<T> scriptTask) {
         //get session
         final Rsession rsession;
         try {
@@ -29,11 +32,23 @@ public final class RserveScriptTaskRunner implements IScriptTaskRunner, FactoryB
         } catch (final Exception e) {
             throw new RuntimeException(e);
         }
-        //eval
         try {
-            scriptTask.populateInputs(new RserveScriptTaskInputs(rsession));
+            //inputs
+            final RserveScriptTaskInputs inputs = new RserveScriptTaskInputs(rsession);
+            scriptTask.populateInputs(inputs);
+            inputs.close();
+
+            //execute
             eval(rsession, scriptTask.getScriptResourceAsString());
-            return new RserveScriptTaskResults(rsession);
+
+            //results
+            final RserveScriptTaskResults results = new RserveScriptTaskResults(rsession);
+            final T result = scriptTask.extractResults(results);
+            results.close();
+
+            //return
+            RsessionObjectPool.INSTANCE.returnObject(rsession);
+            return result;
         } catch (final Throwable t) {
             try {
                 RsessionObjectPool.INSTANCE.invalidateObject(rsession);

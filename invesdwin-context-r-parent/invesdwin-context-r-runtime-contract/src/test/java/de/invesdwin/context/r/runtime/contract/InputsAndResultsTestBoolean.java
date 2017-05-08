@@ -8,6 +8,7 @@ import javax.annotation.concurrent.NotThreadSafe;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 
 import de.invesdwin.util.assertions.Assertions;
 
@@ -49,8 +50,14 @@ public class InputsAndResultsTestBoolean {
             putBooleanMatrixAsList.add(Arrays.asList(ArrayUtils.toObject(vector)));
         }
 
-        final AScriptTask task = new AScriptTask(
-                new ClassPathResource("InputsAndResultsTestBoolean.R", InputsAndResultsTestBoolean.class)) {
+        new AScriptTask<Void>() {
+
+            @Override
+            public Resource getScriptResource() {
+                return new ClassPathResource(InputsAndResultsTestBoolean.class.getSimpleName() + ".R",
+                        InputsAndResultsTestBoolean.class);
+            }
+
             @Override
             public void populateInputs(final IScriptTaskInputs inputs) {
                 inputs.putBoolean("putBoolean", putBoolean);
@@ -63,28 +70,32 @@ public class InputsAndResultsTestBoolean {
 
                 inputs.putBooleanMatrixAsList("putBooleanMatrixAsList", putBooleanMatrixAsList);
             }
-        };
-        try (IScriptTaskResults results = runner.run(task)) {
-            //getBoolean
-            final Boolean getBoolean = results.getBoolean("getBoolean");
-            Assertions.assertThat(putBoolean).isEqualTo(getBoolean);
 
-            //getBooleanVector
-            final boolean[] getBooleanVector = results.getBooleanVector("getBooleanVector");
-            Assertions.assertThat(putBooleanVector).isEqualTo(getBooleanVector);
+            @Override
+            public Void extractResults(final IScriptTaskResults results) {
+                //getBoolean
+                final Boolean getBoolean = results.getBoolean("getBoolean");
+                Assertions.assertThat(putBoolean).isEqualTo(getBoolean);
 
-            //getBooleanVectorAsList
-            final List<Boolean> getBooleanVectorAsList = results.getBooleanVectorAsList("getBooleanVectorAsList");
-            Assertions.assertThat(putBooleanVectorAsList).isEqualTo(getBooleanVectorAsList);
+                //getBooleanVector
+                final boolean[] getBooleanVector = results.getBooleanVector("getBooleanVector");
+                Assertions.assertThat(putBooleanVector).isEqualTo(getBooleanVector);
 
-            //getBooleanMatrix
-            final boolean[][] getBooleanMatrix = results.getBooleanMatrix("getBooleanMatrix");
-            Assertions.assertThat(putBooleanMatrix).isEqualTo(getBooleanMatrix);
+                //getBooleanVectorAsList
+                final List<Boolean> getBooleanVectorAsList = results.getBooleanVectorAsList("getBooleanVectorAsList");
+                Assertions.assertThat(putBooleanVectorAsList).isEqualTo(getBooleanVectorAsList);
 
-            //getBooleanMatrixAsList
-            final List<List<Boolean>> getBooleanMatrixAsList = results.getBooleanMatrixAsList("getBooleanMatrixAsList");
-            Assertions.assertThat(putBooleanMatrixAsList).isEqualTo(getBooleanMatrixAsList);
-        }
+                //getBooleanMatrix
+                final boolean[][] getBooleanMatrix = results.getBooleanMatrix("getBooleanMatrix");
+                Assertions.assertThat(putBooleanMatrix).isEqualTo(getBooleanMatrix);
+
+                //getBooleanMatrixAsList
+                final List<List<Boolean>> getBooleanMatrixAsList = results
+                        .getBooleanMatrixAsList("getBooleanMatrixAsList");
+                Assertions.assertThat(putBooleanMatrixAsList).isEqualTo(getBooleanMatrixAsList);
+                return null;
+            }
+        }.run(runner);
     }
 
 }

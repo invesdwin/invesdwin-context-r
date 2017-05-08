@@ -14,7 +14,7 @@ import de.invesdwin.context.r.runtime.contract.IScriptTaskInputs;
 @NotThreadSafe
 public class RenjinScriptTaskInputs implements IScriptTaskInputs {
 
-    private final RenjinScriptEngine renjinScriptEngine;
+    private RenjinScriptEngine renjinScriptEngine;
 
     public RenjinScriptTaskInputs(final RenjinScriptEngine renjinScriptEngine) {
         this.renjinScriptEngine = renjinScriptEngine;
@@ -23,6 +23,11 @@ public class RenjinScriptTaskInputs implements IScriptTaskInputs {
     @Override
     public RenjinScriptEngine getEngine() {
         return renjinScriptEngine;
+    }
+
+    @Override
+    public void close() {
+        renjinScriptEngine = null;
     }
 
     @Override

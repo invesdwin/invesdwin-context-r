@@ -7,30 +7,25 @@ import org.rosuda.REngine.REXP;
 import org.rosuda.REngine.REXPMismatchException;
 
 import de.invesdwin.context.r.runtime.contract.IScriptTaskResults;
-import de.invesdwin.context.r.runtime.rserve.pool.RsessionObjectPool;
 import de.invesdwin.util.assertions.Assertions;
 
 @NotThreadSafe
 public class RserveScriptTaskResults implements IScriptTaskResults {
 
-    private final Rsession rsession;
+    private Rsession rsession;
 
     public RserveScriptTaskResults(final Rsession rsession) {
         this.rsession = rsession;
     }
 
     @Override
-    public void close() {
-        try {
-            RsessionObjectPool.INSTANCE.returnObject(rsession);
-        } catch (final Exception e) {
-            throw new RuntimeException(e);
-        }
+    public Rsession getEngine() {
+        return rsession;
     }
 
     @Override
-    public Rsession getEngine() {
-        return rsession;
+    public void close() {
+        rsession = null;
     }
 
     @Override

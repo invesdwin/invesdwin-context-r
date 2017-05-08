@@ -13,7 +13,7 @@ import de.invesdwin.context.r.runtime.rserve.RserveScriptTaskRunner;
 import de.invesdwin.context.test.ATest;
 
 @NotThreadSafe
-public class OptimalfScriptTest extends ATest {
+public class OptimalfScriptTaskTest extends ATest {
 
     private static final int ITERATIONS = 10;
     @Inject
@@ -28,7 +28,7 @@ public class OptimalfScriptTest extends ATest {
     @Test
     public void testCli() {
         for (int i = 0; i < ITERATIONS; i++) {
-            new OptimalfScript(cliScriptTaskRunner, null).getOptimalfPerStrategy();
+            new OptimalfScriptTask(null).run(cliScriptTaskRunner);
             log.info("------------------------");
         }
     }
@@ -36,7 +36,7 @@ public class OptimalfScriptTest extends ATest {
     @Test
     public void testRserve() {
         for (int i = 0; i < ITERATIONS; i++) {
-            new OptimalfScript(rserveScriptTaskRunner, null).getOptimalfPerStrategy();
+            new OptimalfScriptTask(null).run(rserveScriptTaskRunner);
             log.info("------------------------");
         }
     }
@@ -44,7 +44,7 @@ public class OptimalfScriptTest extends ATest {
     @Test
     public void testJri() {
         for (int i = 0; i < ITERATIONS; i++) {
-            new OptimalfScript(jriScriptTaskRunner, null).getOptimalfPerStrategy();
+            new OptimalfScriptTask(null).run(jriScriptTaskRunner);
             log.info("------------------------");
         }
     }
@@ -53,7 +53,7 @@ public class OptimalfScriptTest extends ATest {
     @Test
     public void testRenjin() {
         for (int i = 0; i < ITERATIONS; i++) {
-            new OptimalfScript(renjinScriptTaskRunner, null).getOptimalfPerStrategy();
+            new OptimalfScriptTask(null).run(renjinScriptTaskRunner);
             log.info("------------------------");
         }
     }

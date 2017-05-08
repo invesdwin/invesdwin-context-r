@@ -10,7 +10,7 @@ import de.invesdwin.util.assertions.Assertions;
 @NotThreadSafe
 public class RserveScriptTaskInputs implements IScriptTaskInputs {
 
-    private final Rsession rsession;
+    private Rsession rsession;
 
     public RserveScriptTaskInputs(final Rsession rsession) {
         this.rsession = rsession;
@@ -19,6 +19,11 @@ public class RserveScriptTaskInputs implements IScriptTaskInputs {
     @Override
     public Rsession getEngine() {
         return rsession;
+    }
+
+    @Override
+    public void close() {
+        rsession = null;
     }
 
     @Override

@@ -10,29 +10,25 @@ import org.renjin.sexp.SEXP;
 import org.renjin.sexp.Vector;
 
 import de.invesdwin.context.r.runtime.contract.IScriptTaskResults;
-import de.invesdwin.context.r.runtime.renjin.pool.RenjinScriptEngineObjectPool;
 import de.invesdwin.util.assertions.Assertions;
 
 @NotThreadSafe
 public class RenjinScriptTaskResults implements IScriptTaskResults {
-    private final RenjinScriptEngine renjinScriptEngine;
+
+    private RenjinScriptEngine renjinScriptEngine;
 
     public RenjinScriptTaskResults(final RenjinScriptEngine renjinScriptEngine) {
         this.renjinScriptEngine = renjinScriptEngine;
     }
 
     @Override
-    public void close() {
-        try {
-            RenjinScriptEngineObjectPool.INSTANCE.returnObject(renjinScriptEngine);
-        } catch (final Exception e) {
-            throw new RuntimeException(e);
-        }
+    public RenjinScriptEngine getEngine() {
+        return renjinScriptEngine;
     }
 
     @Override
-    public RenjinScriptEngine getEngine() {
-        return renjinScriptEngine;
+    public void close() {
+        renjinScriptEngine = null;
     }
 
     @Override

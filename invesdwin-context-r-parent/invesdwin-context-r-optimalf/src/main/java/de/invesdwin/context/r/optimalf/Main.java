@@ -6,7 +6,7 @@ import org.kohsuke.args4j.CmdLineParser;
 
 import de.invesdwin.context.PlatformInitializerProperties;
 import de.invesdwin.context.beans.init.AMain;
-import de.invesdwin.context.r.runtime.cli.CliScriptTaskRunner;
+import de.invesdwin.context.r.runtime.contract.ProvidedScriptTaskRunner;
 
 @Immutable
 public class Main extends AMain {
@@ -25,7 +25,7 @@ public class Main extends AMain {
 
     @Override
     protected void startApplication(final CmdLineParser parser) throws Exception {
-        new OptimalfScript(CliScriptTaskRunner.INSTANCE, null).getOptimalfPerStrategy();
+        new OptimalfScriptTask(null).run(ProvidedScriptTaskRunner.INSTANCE);
     }
 
 }

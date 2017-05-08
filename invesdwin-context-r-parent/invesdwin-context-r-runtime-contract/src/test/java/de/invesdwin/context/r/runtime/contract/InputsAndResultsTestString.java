@@ -7,6 +7,7 @@ import java.util.List;
 import javax.annotation.concurrent.NotThreadSafe;
 
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 
 import de.invesdwin.util.assertions.Assertions;
 import de.invesdwin.util.lang.Objects;
@@ -62,8 +63,14 @@ public class InputsAndResultsTestString {
             putStringMatrixAsListNull.get(i).set(i, null);
         }
 
-        final AScriptTask task = new AScriptTask(
-                new ClassPathResource("InputsAndResultsTestString.R", InputsAndResultsTestString.class)) {
+        new AScriptTask<Void>() {
+
+            @Override
+            public Resource getScriptResource() {
+                return new ClassPathResource(InputsAndResultsTestString.class.getSimpleName() + ".R",
+                        InputsAndResultsTestString.class);
+            }
+
             @Override
             public void populateInputs(final IScriptTaskInputs inputs) {
                 inputs.putString("putString", putString);
@@ -81,39 +88,43 @@ public class InputsAndResultsTestString {
                 inputs.putStringMatrixAsList("putStringMatrixAsList", putStringMatrixAsList);
                 inputs.putStringMatrixAsList("putStringMatrixAsListNull", putStringMatrixAsListNull);
             }
-        };
-        try (IScriptTaskResults results = runner.run(task)) {
-            //getString
-            final String getString = results.getString("getString");
-            Assertions.assertThat(putString).isEqualTo(getString);
-            final String getStringNull = results.getString("getStringNull");
-            Assertions.assertThat(putStringNull).isEqualTo(getStringNull);
 
-            //getStringVector
-            final String[] getStringVector = results.getStringVector("getStringVector");
-            Assertions.assertThat(putStringVector).isEqualTo(getStringVector);
-            final String[] getStringVectorNull = results.getStringVector("getStringVectorNull");
-            Assertions.assertThat(putStringVectorNull).isEqualTo(getStringVectorNull);
+            @Override
+            public Void extractResults(final IScriptTaskResults results) {
+                //getString
+                final String getString = results.getString("getString");
+                Assertions.assertThat(putString).isEqualTo(getString);
+                final String getStringNull = results.getString("getStringNull");
+                Assertions.assertThat(putStringNull).isEqualTo(getStringNull);
 
-            //getStringVectorAsList
-            final List<String> getStringVectorAsList = results.getStringVectorAsList("getStringVectorAsList");
-            Assertions.assertThat(putStringVectorAsList).isEqualTo(getStringVectorAsList);
-            final List<String> getStringVectorAsListNull = results.getStringVectorAsList("getStringVectorAsListNull");
-            Assertions.assertThat(putStringVectorAsListNull).isEqualTo(getStringVectorAsListNull);
+                //getStringVector
+                final String[] getStringVector = results.getStringVector("getStringVector");
+                Assertions.assertThat(putStringVector).isEqualTo(getStringVector);
+                final String[] getStringVectorNull = results.getStringVector("getStringVectorNull");
+                Assertions.assertThat(putStringVectorNull).isEqualTo(getStringVectorNull);
 
-            //getStringMatrix
-            final String[][] getStringMatrix = results.getStringMatrix("getStringMatrix");
-            Assertions.assertThat(putStringMatrix).isEqualTo(getStringMatrix);
-            final String[][] getStringMatrixNull = results.getStringMatrix("getStringMatrixNull");
-            Assertions.assertThat(putStringMatrixNull).isEqualTo(getStringMatrixNull);
+                //getStringVectorAsList
+                final List<String> getStringVectorAsList = results.getStringVectorAsList("getStringVectorAsList");
+                Assertions.assertThat(putStringVectorAsList).isEqualTo(getStringVectorAsList);
+                final List<String> getStringVectorAsListNull = results
+                        .getStringVectorAsList("getStringVectorAsListNull");
+                Assertions.assertThat(putStringVectorAsListNull).isEqualTo(getStringVectorAsListNull);
 
-            //getStringMatrixAsList
-            final List<List<String>> getStringMatrixAsList = results.getStringMatrixAsList("getStringMatrixAsList");
-            Assertions.assertThat(putStringMatrixAsList).isEqualTo(getStringMatrixAsList);
-            final List<List<String>> getStringMatrixAsListNull = results
-                    .getStringMatrixAsList("getStringMatrixAsListNull");
-            Assertions.assertThat(putStringMatrixAsListNull).isEqualTo(getStringMatrixAsListNull);
-        }
+                //getStringMatrix
+                final String[][] getStringMatrix = results.getStringMatrix("getStringMatrix");
+                Assertions.assertThat(putStringMatrix).isEqualTo(getStringMatrix);
+                final String[][] getStringMatrixNull = results.getStringMatrix("getStringMatrixNull");
+                Assertions.assertThat(putStringMatrixNull).isEqualTo(getStringMatrixNull);
+
+                //getStringMatrixAsList
+                final List<List<String>> getStringMatrixAsList = results.getStringMatrixAsList("getStringMatrixAsList");
+                Assertions.assertThat(putStringMatrixAsList).isEqualTo(getStringMatrixAsList);
+                final List<List<String>> getStringMatrixAsListNull = results
+                        .getStringMatrixAsList("getStringMatrixAsListNull");
+                Assertions.assertThat(putStringMatrixAsListNull).isEqualTo(getStringMatrixAsListNull);
+                return null;
+            }
+        }.run(runner);
     }
 
 }

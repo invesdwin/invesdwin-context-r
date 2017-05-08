@@ -8,6 +8,7 @@ import javax.annotation.concurrent.NotThreadSafe;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 
 import de.invesdwin.util.assertions.Assertions;
 
@@ -49,8 +50,14 @@ public class InputsAndResultsTestInteger {
             putIntegerMatrixAsList.add(Arrays.asList(ArrayUtils.toObject(vector)));
         }
 
-        final AScriptTask task = new AScriptTask(
-                new ClassPathResource("InputsAndResultsTestInteger.R", InputsAndResultsTestInteger.class)) {
+        new AScriptTask<Void>() {
+
+            @Override
+            public Resource getScriptResource() {
+                return new ClassPathResource(InputsAndResultsTestInteger.class.getSimpleName() + ".R",
+                        InputsAndResultsTestInteger.class);
+            }
+
             @Override
             public void populateInputs(final IScriptTaskInputs inputs) {
                 inputs.putInteger("putInteger", putInteger);
@@ -63,28 +70,32 @@ public class InputsAndResultsTestInteger {
 
                 inputs.putIntegerMatrixAsList("putIntegerMatrixAsList", putIntegerMatrixAsList);
             }
-        };
-        try (IScriptTaskResults results = runner.run(task)) {
-            //getInteger
-            final Integer getInteger = results.getInteger("getInteger");
-            Assertions.assertThat(putInteger).isEqualTo(getInteger);
 
-            //getIntegerVector
-            final int[] getIntegerVector = results.getIntegerVector("getIntegerVector");
-            Assertions.assertThat(putIntegerVector).isEqualTo(getIntegerVector);
+            @Override
+            public Void extractResults(final IScriptTaskResults results) {
+                //getInteger
+                final Integer getInteger = results.getInteger("getInteger");
+                Assertions.assertThat(putInteger).isEqualTo(getInteger);
 
-            //getIntegerVectorAsList
-            final List<Integer> getIntegerVectorAsList = results.getIntegerVectorAsList("getIntegerVectorAsList");
-            Assertions.assertThat(putIntegerVectorAsList).isEqualTo(getIntegerVectorAsList);
+                //getIntegerVector
+                final int[] getIntegerVector = results.getIntegerVector("getIntegerVector");
+                Assertions.assertThat(putIntegerVector).isEqualTo(getIntegerVector);
 
-            //getIntegerMatrix
-            final int[][] getIntegerMatrix = results.getIntegerMatrix("getIntegerMatrix");
-            Assertions.assertThat(putIntegerMatrix).isEqualTo(getIntegerMatrix);
+                //getIntegerVectorAsList
+                final List<Integer> getIntegerVectorAsList = results.getIntegerVectorAsList("getIntegerVectorAsList");
+                Assertions.assertThat(putIntegerVectorAsList).isEqualTo(getIntegerVectorAsList);
 
-            //getIntegerMatrixAsList
-            final List<List<Integer>> getIntegerMatrixAsList = results.getIntegerMatrixAsList("getIntegerMatrixAsList");
-            Assertions.assertThat(putIntegerMatrixAsList).isEqualTo(getIntegerMatrixAsList);
-        }
+                //getIntegerMatrix
+                final int[][] getIntegerMatrix = results.getIntegerMatrix("getIntegerMatrix");
+                Assertions.assertThat(putIntegerMatrix).isEqualTo(getIntegerMatrix);
+
+                //getIntegerMatrixAsList
+                final List<List<Integer>> getIntegerMatrixAsList = results
+                        .getIntegerMatrixAsList("getIntegerMatrixAsList");
+                Assertions.assertThat(putIntegerMatrixAsList).isEqualTo(getIntegerMatrixAsList);
+                return null;
+            }
+        }.run(runner);
     }
 
 }

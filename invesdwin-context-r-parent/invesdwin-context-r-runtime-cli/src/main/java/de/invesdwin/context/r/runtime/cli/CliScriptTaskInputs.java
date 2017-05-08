@@ -10,7 +10,7 @@ import de.invesdwin.util.assertions.Assertions;
 @NotThreadSafe
 public class CliScriptTaskInputs implements IScriptTaskInputs {
 
-    private final RCaller rcaller;
+    private RCaller rcaller;
 
     public CliScriptTaskInputs(final RCaller rcaller) {
         this.rcaller = rcaller;
@@ -19,6 +19,11 @@ public class CliScriptTaskInputs implements IScriptTaskInputs {
     @Override
     public RCaller getEngine() {
         return rcaller;
+    }
+
+    @Override
+    public void close() {
+        rcaller = null;
     }
 
     @Override

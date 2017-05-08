@@ -38,17 +38,34 @@ public final class JriScriptTaskRunner implements IScriptTaskRunner, FactoryBean
         RENGINE_LOCK = new ReentrantLock();
     }
 
-    private JriScriptTaskRunner() {}
+    /**
+     * public for ServiceLoader support
+     */
+    public JriScriptTaskRunner() {}
 
     @Override
-    public JriScriptTaskResults run(final AScriptTask scriptTask) {
+    public <T> T run(final AScriptTask<T> scriptTask) {
+        //get session
         RENGINE_LOCK.lock();
         try {
-            scriptTask.populateInputs(new JriScriptTaskInputs(RENGINE));
+            //inputs
+            final JriScriptTaskInputs inputs = new JriScriptTaskInputs(RENGINE);
+            scriptTask.populateInputs(inputs);
+            inputs.close();
+
+            //execute
             eval(RENGINE, scriptTask.getScriptResourceAsString());
-            return new JriScriptTaskResults(RENGINE, RENGINE_LOCK);
+
+            //results
+            final JriScriptTaskResults results = new JriScriptTaskResults(RENGINE);
+            final T result = scriptTask.extractResults(results);
+            results.close();
+
+            //return
+            RENGINE_LOCK.unlock();
+            return result;
         } catch (final Throwable t) {
-            unlockRengine();
+            RENGINE_LOCK.unlock();
             throw Throwables.propagate(t);
         } finally {
             LoggingRMainLoopCallbacks.INSTANCE.reset();
@@ -60,10 +77,6 @@ public final class JriScriptTaskRunner implements IScriptTaskRunner, FactoryBean
         if (eval == null) {
             throw new IllegalStateException(String.valueOf(LoggingRMainLoopCallbacks.INSTANCE.getErrorMessage()));
         }
-    }
-
-    private void unlockRengine() {
-        RENGINE_LOCK.unlock();
     }
 
     @Override

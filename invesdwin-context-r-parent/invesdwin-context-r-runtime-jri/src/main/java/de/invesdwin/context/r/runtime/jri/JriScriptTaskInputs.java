@@ -10,7 +10,7 @@ import de.invesdwin.util.assertions.Assertions;
 @NotThreadSafe
 public class JriScriptTaskInputs implements IScriptTaskInputs {
 
-    private final Rengine rengine;
+    private Rengine rengine;
 
     public JriScriptTaskInputs(final Rengine rengine) {
         this.rengine = rengine;
@@ -19,6 +19,11 @@ public class JriScriptTaskInputs implements IScriptTaskInputs {
     @Override
     public Rengine getEngine() {
         return rengine;
+    }
+
+    @Override
+    public void close() {
+        rengine = null;
     }
 
     @Override

@@ -8,6 +8,7 @@ import javax.annotation.concurrent.NotThreadSafe;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 
 import de.invesdwin.util.assertions.Assertions;
 
@@ -49,8 +50,14 @@ public class InputsAndResultsTestDouble {
             putDoubleMatrixAsList.add(Arrays.asList(ArrayUtils.toObject(vector)));
         }
 
-        final AScriptTask task = new AScriptTask(
-                new ClassPathResource("InputsAndResultsTestDouble.R", InputsAndResultsTestDouble.class)) {
+        new AScriptTask<Void>() {
+
+            @Override
+            public Resource getScriptResource() {
+                return new ClassPathResource(InputsAndResultsTestDouble.class.getSimpleName() + ".R",
+                        InputsAndResultsTestDouble.class);
+            }
+
             @Override
             public void populateInputs(final IScriptTaskInputs inputs) {
                 inputs.putDouble("putDouble", putDouble);
@@ -63,28 +70,31 @@ public class InputsAndResultsTestDouble {
 
                 inputs.putDoubleMatrixAsList("putDoubleMatrixAsList", putDoubleMatrixAsList);
             }
-        };
-        try (IScriptTaskResults results = runner.run(task)) {
-            //getDouble
-            final Double getDouble = results.getDouble("getDouble");
-            Assertions.assertThat(putDouble).isEqualTo(getDouble);
 
-            //getDoubleVector
-            final double[] getDoubleVector = results.getDoubleVector("getDoubleVector");
-            Assertions.assertThat(putDoubleVector).isEqualTo(getDoubleVector);
+            @Override
+            public Void extractResults(final IScriptTaskResults results) {
+                //getDouble
+                final Double getDouble = results.getDouble("getDouble");
+                Assertions.assertThat(putDouble).isEqualTo(getDouble);
 
-            //getDoubleVectorAsList
-            final List<Double> getDoubleVectorAsList = results.getDoubleVectorAsList("getDoubleVectorAsList");
-            Assertions.assertThat(putDoubleVectorAsList).isEqualTo(getDoubleVectorAsList);
+                //getDoubleVector
+                final double[] getDoubleVector = results.getDoubleVector("getDoubleVector");
+                Assertions.assertThat(putDoubleVector).isEqualTo(getDoubleVector);
 
-            //getDoubleMatrix
-            final double[][] getDoubleMatrix = results.getDoubleMatrix("getDoubleMatrix");
-            Assertions.assertThat(putDoubleMatrix).isEqualTo(getDoubleMatrix);
+                //getDoubleVectorAsList
+                final List<Double> getDoubleVectorAsList = results.getDoubleVectorAsList("getDoubleVectorAsList");
+                Assertions.assertThat(putDoubleVectorAsList).isEqualTo(getDoubleVectorAsList);
 
-            //getDoubleMatrixAsList
-            final List<List<Double>> getDoubleMatrixAsList = results.getDoubleMatrixAsList("getDoubleMatrixAsList");
-            Assertions.assertThat(putDoubleMatrixAsList).isEqualTo(getDoubleMatrixAsList);
-        }
+                //getDoubleMatrix
+                final double[][] getDoubleMatrix = results.getDoubleMatrix("getDoubleMatrix");
+                Assertions.assertThat(putDoubleMatrix).isEqualTo(getDoubleMatrix);
+
+                //getDoubleMatrixAsList
+                final List<List<Double>> getDoubleMatrixAsList = results.getDoubleMatrixAsList("getDoubleMatrixAsList");
+                Assertions.assertThat(putDoubleMatrixAsList).isEqualTo(getDoubleMatrixAsList);
+                return null;
+            }
+        }.run(runner);
     }
 
 }

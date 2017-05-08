@@ -4,30 +4,25 @@ import javax.annotation.concurrent.NotThreadSafe;
 
 import com.github.rcaller.rstuff.RCaller;
 
-import de.invesdwin.context.r.runtime.cli.pool.RCallerObjectPool;
 import de.invesdwin.context.r.runtime.contract.IScriptTaskResults;
 import de.invesdwin.util.assertions.Assertions;
 
 @NotThreadSafe
 public class CliScriptTaskResults implements IScriptTaskResults {
-    private final RCaller rcaller;
+    private RCaller rcaller;
 
     public CliScriptTaskResults(final RCaller rcaller) {
         this.rcaller = rcaller;
     }
 
     @Override
-    public void close() {
-        try {
-            RCallerObjectPool.INSTANCE.returnObject(rcaller);
-        } catch (final Exception e) {
-            throw new RuntimeException(e);
-        }
+    public RCaller getEngine() {
+        return rcaller;
     }
 
     @Override
-    public RCaller getEngine() {
-        return rcaller;
+    public void close() {
+        rcaller = null;
     }
 
     private void requestVariable(final String variable) {

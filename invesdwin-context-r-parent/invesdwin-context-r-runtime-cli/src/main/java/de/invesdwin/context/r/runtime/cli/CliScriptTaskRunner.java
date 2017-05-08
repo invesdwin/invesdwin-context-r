@@ -20,10 +20,13 @@ public final class CliScriptTaskRunner implements IScriptTaskRunner, FactoryBean
 
     public static final String INTERNAL_RESULT_VARIABLE = CliScriptTaskRunner.class.getSimpleName() + "_result";
 
-    private CliScriptTaskRunner() {}
+    /**
+     * public for ServiceLoader support
+     */
+    public CliScriptTaskRunner() {}
 
     @Override
-    public CliScriptTaskResults run(final AScriptTask scriptTask) {
+    public <T> T run(final AScriptTask<T> scriptTask) {
         //get session
         final RCaller rcaller;
         try {
@@ -32,12 +35,25 @@ public final class CliScriptTaskRunner implements IScriptTaskRunner, FactoryBean
             throw new RuntimeException(e);
         }
         try {
+            //inputs
             rcaller.getRCode().clearOnline();
-            scriptTask.populateInputs(new CliScriptTaskInputs(rcaller));
+            final CliScriptTaskInputs inputs = new CliScriptTaskInputs(rcaller);
+            scriptTask.populateInputs(inputs);
+            inputs.close();
+
+            //execute
             rcaller.getRCode().addRCode(scriptTask.getScriptResourceAsString());
             rcaller.getRCode().addRCode(INTERNAL_RESULT_VARIABLE + " <- c()");
             rcaller.runAndReturnResultOnline(INTERNAL_RESULT_VARIABLE);
-            return new CliScriptTaskResults(rcaller);
+
+            //results
+            final CliScriptTaskResults results = new CliScriptTaskResults(rcaller);
+            final T result = scriptTask.extractResults(results);
+            results.close();
+
+            //return
+            RCallerObjectPool.INSTANCE.returnObject(rcaller);
+            return result;
         } catch (final Throwable t) {
             try {
                 RCallerObjectPool.INSTANCE.invalidateObject(rcaller);

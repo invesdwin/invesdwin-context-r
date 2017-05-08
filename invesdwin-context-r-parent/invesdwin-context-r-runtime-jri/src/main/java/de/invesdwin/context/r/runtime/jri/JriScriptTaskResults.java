@@ -1,7 +1,5 @@
 package de.invesdwin.context.r.runtime.jri;
 
-import java.util.concurrent.locks.ReentrantLock;
-
 import javax.annotation.concurrent.NotThreadSafe;
 
 import org.rosuda.JRI.RBool;
@@ -13,17 +11,16 @@ import de.invesdwin.util.assertions.Assertions;
 
 @NotThreadSafe
 public class JriScriptTaskResults implements IScriptTaskResults {
-    private final Rengine rengine;
-    private final ReentrantLock rengineLock;
 
-    public JriScriptTaskResults(final Rengine rengine, final ReentrantLock rengineLock) {
+    private Rengine rengine;
+
+    public JriScriptTaskResults(final Rengine rengine) {
         this.rengine = rengine;
-        this.rengineLock = rengineLock;
     }
 
     @Override
     public void close() {
-        rengineLock.unlock();
+        rengine = null;
     }
 
     @Override

@@ -19,10 +19,13 @@ public final class RenjinScriptTaskRunner implements IScriptTaskRunner, FactoryB
 
     public static final RenjinScriptTaskRunner INSTANCE = new RenjinScriptTaskRunner();
 
-    private RenjinScriptTaskRunner() {}
+    /**
+     * public for ServiceLoader support
+     */
+    public RenjinScriptTaskRunner() {}
 
     @Override
-    public RenjinScriptTaskResults run(final AScriptTask scriptTask) {
+    public <T> T run(final AScriptTask<T> scriptTask) {
         //get session
         final RenjinScriptEngine renjinScriptEngine;
         try {
@@ -30,13 +33,25 @@ public final class RenjinScriptTaskRunner implements IScriptTaskRunner, FactoryB
         } catch (final Exception e) {
             throw new RuntimeException(e);
         }
-        //eval
         try {
-            scriptTask.populateInputs(new RenjinScriptTaskInputs(renjinScriptEngine));
+            //inputs
+            final RenjinScriptTaskInputs inputs = new RenjinScriptTaskInputs(renjinScriptEngine);
+            scriptTask.populateInputs(inputs);
+            inputs.close();
+
+            //execute
             try (Reader reader = scriptTask.getScriptResourceAsReader()) {
                 renjinScriptEngine.eval(reader);
             }
-            return new RenjinScriptTaskResults(renjinScriptEngine);
+
+            //results
+            final RenjinScriptTaskResults results = new RenjinScriptTaskResults(renjinScriptEngine);
+            final T result = scriptTask.extractResults(results);
+            results.close();
+
+            //return
+            RenjinScriptEngineObjectPool.INSTANCE.returnObject(renjinScriptEngine);
+            return result;
         } catch (final Throwable t) {
             try {
                 RenjinScriptEngineObjectPool.INSTANCE.invalidateObject(renjinScriptEngine);
