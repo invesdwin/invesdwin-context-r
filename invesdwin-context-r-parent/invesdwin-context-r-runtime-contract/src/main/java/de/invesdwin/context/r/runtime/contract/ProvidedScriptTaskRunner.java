@@ -46,8 +46,8 @@ public final class ProvidedScriptTaskRunner implements IScriptTaskRunner, Factor
                 for (final IScriptTaskRunner runner : ServiceLoader.load(IScriptTaskRunner.class)) {
                     final IScriptTaskRunner existing = runners.put(runner.getClass().getName(), runner);
                     if (existing != null) {
-                        throw new IllegalStateException("Duplicate service provider found for [" + PROVIDED_INSTANCE_KEY + "="
-                                + existing.getClass().getName()
+                        throw new IllegalStateException("Duplicate service provider found for [" + PROVIDED_INSTANCE_KEY
+                                + "=" + existing.getClass().getName()
                                 + "]. Please make sure you have only one provider for it in the classpath.");
                     }
                 }
@@ -78,7 +78,11 @@ public final class ProvidedScriptTaskRunner implements IScriptTaskRunner, Factor
     public static synchronized void setProvidedInstance(final IScriptTaskRunner providedInstance) {
         ProvidedScriptTaskRunner.providedInstance = providedInstance;
         final SystemProperties systemProperties = new SystemProperties();
-        systemProperties.setString(PROVIDED_INSTANCE_KEY, providedInstance.getClass().getName());
+        if (providedInstance == null) {
+            systemProperties.setString(PROVIDED_INSTANCE_KEY, null);
+        } else {
+            systemProperties.setString(PROVIDED_INSTANCE_KEY, providedInstance.getClass().getName());
+        }
     }
 
     @Override
