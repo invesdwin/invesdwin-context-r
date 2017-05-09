@@ -34,7 +34,7 @@
 		<!-- allow testing in in all engines -->
 		<dependency>
 			<groupId>de.invesdwin</groupId>
-			<artifactId>invesdwin-context-r-runtime-cli</artifactId>
+			<artifactId>invesdwin-context-r-runtime-rcaller</artifactId>
 			<scope>test</scope>
 		</dependency>
 		<dependency>

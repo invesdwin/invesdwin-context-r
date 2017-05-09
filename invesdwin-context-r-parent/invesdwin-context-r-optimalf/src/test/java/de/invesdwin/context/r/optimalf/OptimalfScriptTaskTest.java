@@ -6,8 +6,8 @@ import javax.inject.Inject;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import de.invesdwin.context.r.runtime.cli.CliScriptTaskRunnerR;
 import de.invesdwin.context.r.runtime.jri.JriScriptTaskRunnerR;
+import de.invesdwin.context.r.runtime.rcaller.RCallerScriptTaskRunnerR;
 import de.invesdwin.context.r.runtime.renjin.RenjinScriptTaskRunnerR;
 import de.invesdwin.context.r.runtime.rserve.RserveScriptTaskRunnerR;
 import de.invesdwin.context.test.ATest;
@@ -17,7 +17,7 @@ public class OptimalfScriptTaskTest extends ATest {
 
     private static final int ITERATIONS = 10;
     @Inject
-    private CliScriptTaskRunnerR cliScriptTaskRunner;
+    private RCallerScriptTaskRunnerR rcallerScriptTaskRunner;
     @Inject
     private RserveScriptTaskRunnerR rserveScriptTaskRunner;
     @Inject
@@ -26,9 +26,9 @@ public class OptimalfScriptTaskTest extends ATest {
     private RenjinScriptTaskRunnerR renjinScriptTaskRunner;
 
     @Test
-    public void testCli() {
+    public void testRCaller() {
         for (int i = 0; i < ITERATIONS; i++) {
-            new OptimalfScriptTask(null).run(cliScriptTaskRunner);
+            new OptimalfScriptTask(null).run(rcallerScriptTaskRunner);
             log.info("------------------------");
         }
     }
