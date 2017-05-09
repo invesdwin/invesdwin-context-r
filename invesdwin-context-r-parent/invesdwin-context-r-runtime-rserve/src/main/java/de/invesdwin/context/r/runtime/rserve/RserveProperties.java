@@ -15,7 +15,11 @@ public final class RserveProperties {
 
     static {
         final SystemProperties systemProperties = new SystemProperties(RserveProperties.class);
-        RSERVER_CONF_MODE = systemProperties.getEnum(RserverConfMode.class, "RSERVER_CONF_MODE");
+        if (systemProperties.containsValue("RSERVER_CONF_MODE")) {
+            RSERVER_CONF_MODE = systemProperties.getEnum(RserverConfMode.class, "RSERVER_CONF_MODE");
+        } else {
+            RSERVER_CONF_MODE = RserverConfMode.LOCAL_SPAWN;
+        }
         if (systemProperties.containsValue("RSERVER_CONF")) {
             final String rserverConf = systemProperties.getString("RSERVER_CONF");
             RSERVER_CONF = RserverConf.parse(rserverConf);
