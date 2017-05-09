@@ -6,7 +6,7 @@ import javax.annotation.concurrent.ThreadSafe;
 import org.rosuda.JRI.RMainLoopCallbacks;
 import org.rosuda.JRI.Rengine;
 
-import de.invesdwin.context.r.runtime.contract.IScriptTaskRunner;
+import de.invesdwin.context.r.runtime.contract.IScriptTaskRunnerR;
 import de.invesdwin.util.lang.Strings;
 
 @ThreadSafe
@@ -36,9 +36,9 @@ public final class LoggingRMainLoopCallbacks implements RMainLoopCallbacks {
             message.append(text);
             if (Strings.isNotBlank(message)) {
                 if (error) {
-                    IScriptTaskRunner.LOG.warn(String.valueOf(message).trim());
+                    IScriptTaskRunnerR.LOG.warn(String.valueOf(message).trim());
                 } else {
-                    IScriptTaskRunner.LOG.debug(String.valueOf(message).trim());
+                    IScriptTaskRunnerR.LOG.debug(String.valueOf(message).trim());
                 }
             }
             message.setLength(0);
@@ -61,23 +61,23 @@ public final class LoggingRMainLoopCallbacks implements RMainLoopCallbacks {
 
     @Override
     public void rShowMessage(final Rengine rengine, final String message) {
-        IScriptTaskRunner.LOG.warn("rShowMessage: %s", message);
+        IScriptTaskRunnerR.LOG.warn("rShowMessage: %s", message);
     }
 
     @Override
     public void rSaveHistory(final Rengine rengine, final String filename) {
-        IScriptTaskRunner.LOG.warn("rSaveHistory: %s", filename);
+        IScriptTaskRunnerR.LOG.warn("rSaveHistory: %s", filename);
     }
 
     @Override
     public String rReadConsole(final Rengine rengine, final String prompt, final int addToHistory) {
-        IScriptTaskRunner.LOG.warn("rReadConsole: %s [%s]", prompt, addToHistory);
+        IScriptTaskRunnerR.LOG.warn("rReadConsole: %s [%s]", prompt, addToHistory);
         return null;
     }
 
     @Override
     public void rLoadHistory(final Rengine rengine, final String filename) {
-        IScriptTaskRunner.LOG.warn("rLoadHistory: %s", filename);
+        IScriptTaskRunnerR.LOG.warn("rLoadHistory: %s", filename);
     }
 
     @Override
@@ -87,12 +87,12 @@ public final class LoggingRMainLoopCallbacks implements RMainLoopCallbacks {
 
     @Override
     public String rChooseFile(final Rengine rengine, final int newFile) {
-        IScriptTaskRunner.LOG.warn("rChooseFile: %s", newFile);
+        IScriptTaskRunnerR.LOG.warn("rChooseFile: %s", newFile);
         return null;
     }
 
     @Override
     public void rBusy(final Rengine rengine, final int which) {
-        IScriptTaskRunner.LOG.warn("rBusy: %s", which);
+        IScriptTaskRunnerR.LOG.warn("rBusy: %s", which);
     }
 }

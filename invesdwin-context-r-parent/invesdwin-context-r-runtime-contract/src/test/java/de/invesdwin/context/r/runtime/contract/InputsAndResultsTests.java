@@ -12,9 +12,9 @@ import de.invesdwin.util.concurrent.WrappedExecutorService;
 @NotThreadSafe
 public class InputsAndResultsTests {
 
-    private final IScriptTaskRunner runner;
+    private final IScriptTaskRunnerR runner;
 
-    public InputsAndResultsTests(final IScriptTaskRunner runner) {
+    public InputsAndResultsTests(final IScriptTaskRunnerR runner) {
         this.runner = runner;
     }
 

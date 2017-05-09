@@ -9,10 +9,10 @@ import de.invesdwin.context.r.runtime.contract.InputsAndResultsTests;
 import de.invesdwin.context.test.ATest;
 
 @NotThreadSafe
-public class RenjinScriptTaskRunnerTest extends ATest {
+public class RenjinScriptTaskRunnerRTest extends ATest {
 
     @Inject
-    private RenjinScriptTaskRunner runner;
+    private RenjinScriptTaskRunnerR runner;
 
     @Test
     public void test() {

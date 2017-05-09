@@ -10,14 +10,16 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 
+import de.invesdwin.context.integration.script.IScriptTaskInputs;
+import de.invesdwin.context.integration.script.IScriptTaskResults;
 import de.invesdwin.util.assertions.Assertions;
 
 @NotThreadSafe
 public class InputsAndResultsTestInteger {
 
-    private final IScriptTaskRunner runner;
+    private final IScriptTaskRunnerR runner;
 
-    public InputsAndResultsTestInteger(final IScriptTaskRunner runner) {
+    public InputsAndResultsTestInteger(final IScriptTaskRunnerR runner) {
         this.runner = runner;
     }
 
@@ -50,7 +52,7 @@ public class InputsAndResultsTestInteger {
             putIntegerMatrixAsList.add(Arrays.asList(ArrayUtils.toObject(vector)));
         }
 
-        new AScriptTask<Void>() {
+        new AScriptTaskR<Void>() {
 
             @Override
             public Resource getScriptResource() {

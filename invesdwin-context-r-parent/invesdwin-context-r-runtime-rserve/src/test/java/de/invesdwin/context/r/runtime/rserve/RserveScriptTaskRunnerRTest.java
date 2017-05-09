@@ -1,4 +1,4 @@
-package de.invesdwin.context.r.runtime.cli;
+package de.invesdwin.context.r.runtime.rserve;
 
 import javax.annotation.concurrent.NotThreadSafe;
 import javax.inject.Inject;
@@ -9,10 +9,10 @@ import de.invesdwin.context.r.runtime.contract.InputsAndResultsTests;
 import de.invesdwin.context.test.ATest;
 
 @NotThreadSafe
-public class CliScriptTaskRunnerTest extends ATest {
+public class RserveScriptTaskRunnerRTest extends ATest {
 
     @Inject
-    private CliScriptTaskRunner runner;
+    private RserveScriptTaskRunnerR runner;
 
     @Test
     public void test() {

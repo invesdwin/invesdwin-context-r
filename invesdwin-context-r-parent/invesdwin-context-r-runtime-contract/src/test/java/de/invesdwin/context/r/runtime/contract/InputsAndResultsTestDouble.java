@@ -10,14 +10,16 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 
+import de.invesdwin.context.integration.script.IScriptTaskInputs;
+import de.invesdwin.context.integration.script.IScriptTaskResults;
 import de.invesdwin.util.assertions.Assertions;
 
 @NotThreadSafe
 public class InputsAndResultsTestDouble {
 
-    private final IScriptTaskRunner runner;
+    private final IScriptTaskRunnerR runner;
 
-    public InputsAndResultsTestDouble(final IScriptTaskRunner runner) {
+    public InputsAndResultsTestDouble(final IScriptTaskRunnerR runner) {
         this.runner = runner;
     }
 
@@ -50,7 +52,7 @@ public class InputsAndResultsTestDouble {
             putDoubleMatrixAsList.add(Arrays.asList(ArrayUtils.toObject(vector)));
         }
 
-        new AScriptTask<Void>() {
+        new AScriptTaskR<Void>() {
 
             @Override
             public Resource getScriptResource() {

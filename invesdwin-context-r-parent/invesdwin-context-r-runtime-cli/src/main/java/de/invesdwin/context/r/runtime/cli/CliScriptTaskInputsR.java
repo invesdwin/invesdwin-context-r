@@ -4,15 +4,15 @@ import javax.annotation.concurrent.NotThreadSafe;
 
 import com.github.rcaller.rstuff.RCaller;
 
-import de.invesdwin.context.r.runtime.contract.IScriptTaskInputs;
+import de.invesdwin.context.integration.script.IScriptTaskInputs;
 import de.invesdwin.util.assertions.Assertions;
 
 @NotThreadSafe
-public class CliScriptTaskInputs implements IScriptTaskInputs {
+public class CliScriptTaskInputsR implements IScriptTaskInputs {
 
     private RCaller rcaller;
 
-    public CliScriptTaskInputs(final RCaller rcaller) {
+    public CliScriptTaskInputsR(final RCaller rcaller) {
         this.rcaller = rcaller;
     }
 

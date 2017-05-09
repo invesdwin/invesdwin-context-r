@@ -10,16 +10,16 @@ import org.rosuda.JRI.REXP;
 import org.rosuda.JRI.Rengine;
 import org.springframework.beans.factory.FactoryBean;
 
-import de.invesdwin.context.r.runtime.contract.AScriptTask;
-import de.invesdwin.context.r.runtime.contract.IScriptTaskRunner;
+import de.invesdwin.context.r.runtime.contract.AScriptTaskR;
+import de.invesdwin.context.r.runtime.contract.IScriptTaskRunnerR;
 import de.invesdwin.context.r.runtime.jri.internal.LoggingRMainLoopCallbacks;
 import de.invesdwin.util.error.Throwables;
 
 @Immutable
 @Named
-public final class JriScriptTaskRunner implements IScriptTaskRunner, FactoryBean<JriScriptTaskRunner> {
+public final class JriScriptTaskRunnerR implements IScriptTaskRunnerR, FactoryBean<JriScriptTaskRunnerR> {
 
-    public static final JriScriptTaskRunner INSTANCE = new JriScriptTaskRunner();
+    public static final JriScriptTaskRunnerR INSTANCE = new JriScriptTaskRunnerR();
 
     @GuardedBy("RENGINE_LOCK")
     private static final Rengine RENGINE;
@@ -41,15 +41,15 @@ public final class JriScriptTaskRunner implements IScriptTaskRunner, FactoryBean
     /**
      * public for ServiceLoader support
      */
-    public JriScriptTaskRunner() {}
+    public JriScriptTaskRunnerR() {}
 
     @Override
-    public <T> T run(final AScriptTask<T> scriptTask) {
+    public <T> T run(final AScriptTaskR<T> scriptTask) {
         //get session
         RENGINE_LOCK.lock();
         try {
             //inputs
-            final JriScriptTaskInputs inputs = new JriScriptTaskInputs(RENGINE);
+            final JriScriptTaskInputsR inputs = new JriScriptTaskInputsR(RENGINE);
             scriptTask.populateInputs(inputs);
             inputs.close();
 
@@ -57,7 +57,7 @@ public final class JriScriptTaskRunner implements IScriptTaskRunner, FactoryBean
             eval(RENGINE, scriptTask.getScriptResourceAsString());
 
             //results
-            final JriScriptTaskResults results = new JriScriptTaskResults(RENGINE);
+            final JriScriptTaskResultsR results = new JriScriptTaskResultsR(RENGINE);
             final T result = scriptTask.extractResults(results);
             results.close();
 
@@ -80,13 +80,13 @@ public final class JriScriptTaskRunner implements IScriptTaskRunner, FactoryBean
     }
 
     @Override
-    public JriScriptTaskRunner getObject() throws Exception {
+    public JriScriptTaskRunnerR getObject() throws Exception {
         return INSTANCE;
     }
 
     @Override
     public Class<?> getObjectType() {
-        return JriScriptTaskRunner.class;
+        return JriScriptTaskRunnerR.class;
     }
 
     @Override

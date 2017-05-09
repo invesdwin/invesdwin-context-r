@@ -6,10 +6,10 @@ import javax.inject.Inject;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import de.invesdwin.context.r.runtime.cli.CliScriptTaskRunner;
-import de.invesdwin.context.r.runtime.jri.JriScriptTaskRunner;
-import de.invesdwin.context.r.runtime.renjin.RenjinScriptTaskRunner;
-import de.invesdwin.context.r.runtime.rserve.RserveScriptTaskRunner;
+import de.invesdwin.context.r.runtime.cli.CliScriptTaskRunnerR;
+import de.invesdwin.context.r.runtime.jri.JriScriptTaskRunnerR;
+import de.invesdwin.context.r.runtime.renjin.RenjinScriptTaskRunnerR;
+import de.invesdwin.context.r.runtime.rserve.RserveScriptTaskRunnerR;
 import de.invesdwin.context.test.ATest;
 
 @NotThreadSafe
@@ -17,13 +17,13 @@ public class OptimalfScriptTaskTest extends ATest {
 
     private static final int ITERATIONS = 10;
     @Inject
-    private CliScriptTaskRunner cliScriptTaskRunner;
+    private CliScriptTaskRunnerR cliScriptTaskRunner;
     @Inject
-    private RserveScriptTaskRunner rserveScriptTaskRunner;
+    private RserveScriptTaskRunnerR rserveScriptTaskRunner;
     @Inject
-    private JriScriptTaskRunner jriScriptTaskRunner;
+    private JriScriptTaskRunnerR jriScriptTaskRunner;
     @Inject
-    private RenjinScriptTaskRunner renjinScriptTaskRunner;
+    private RenjinScriptTaskRunnerR renjinScriptTaskRunner;
 
     @Test
     public void testCli() {

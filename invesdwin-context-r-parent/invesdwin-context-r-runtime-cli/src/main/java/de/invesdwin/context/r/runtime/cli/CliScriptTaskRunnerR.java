@@ -8,25 +8,25 @@ import org.springframework.beans.factory.FactoryBean;
 import com.github.rcaller.rstuff.RCaller;
 
 import de.invesdwin.context.r.runtime.cli.pool.RCallerObjectPool;
-import de.invesdwin.context.r.runtime.contract.AScriptTask;
-import de.invesdwin.context.r.runtime.contract.IScriptTaskRunner;
+import de.invesdwin.context.r.runtime.contract.AScriptTaskR;
+import de.invesdwin.context.r.runtime.contract.IScriptTaskRunnerR;
 import de.invesdwin.util.error.Throwables;
 
 @Immutable
 @Named
-public final class CliScriptTaskRunner implements IScriptTaskRunner, FactoryBean<CliScriptTaskRunner> {
+public final class CliScriptTaskRunnerR implements IScriptTaskRunnerR, FactoryBean<CliScriptTaskRunnerR> {
 
-    public static final CliScriptTaskRunner INSTANCE = new CliScriptTaskRunner();
+    public static final CliScriptTaskRunnerR INSTANCE = new CliScriptTaskRunnerR();
 
-    public static final String INTERNAL_RESULT_VARIABLE = CliScriptTaskRunner.class.getSimpleName() + "_result";
+    public static final String INTERNAL_RESULT_VARIABLE = CliScriptTaskRunnerR.class.getSimpleName() + "_result";
 
     /**
      * public for ServiceLoader support
      */
-    public CliScriptTaskRunner() {}
+    public CliScriptTaskRunnerR() {}
 
     @Override
-    public <T> T run(final AScriptTask<T> scriptTask) {
+    public <T> T run(final AScriptTaskR<T> scriptTask) {
         //get session
         final RCaller rcaller;
         try {
@@ -37,7 +37,7 @@ public final class CliScriptTaskRunner implements IScriptTaskRunner, FactoryBean
         try {
             //inputs
             rcaller.getRCode().clearOnline();
-            final CliScriptTaskInputs inputs = new CliScriptTaskInputs(rcaller);
+            final CliScriptTaskInputsR inputs = new CliScriptTaskInputsR(rcaller);
             scriptTask.populateInputs(inputs);
             inputs.close();
 
@@ -47,7 +47,7 @@ public final class CliScriptTaskRunner implements IScriptTaskRunner, FactoryBean
             rcaller.runAndReturnResultOnline(INTERNAL_RESULT_VARIABLE);
 
             //results
-            final CliScriptTaskResults results = new CliScriptTaskResults(rcaller);
+            final CliScriptTaskResultsR results = new CliScriptTaskResultsR(rcaller);
             final T result = scriptTask.extractResults(results);
             results.close();
 
@@ -65,13 +65,13 @@ public final class CliScriptTaskRunner implements IScriptTaskRunner, FactoryBean
     }
 
     @Override
-    public CliScriptTaskRunner getObject() throws Exception {
+    public CliScriptTaskRunnerR getObject() throws Exception {
         return INSTANCE;
     }
 
     @Override
     public Class<?> getObjectType() {
-        return CliScriptTaskRunner.class;
+        return CliScriptTaskRunnerR.class;
     }
 
     @Override

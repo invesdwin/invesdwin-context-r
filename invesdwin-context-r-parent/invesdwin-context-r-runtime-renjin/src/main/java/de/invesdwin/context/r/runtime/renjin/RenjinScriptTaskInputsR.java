@@ -9,14 +9,14 @@ import org.renjin.primitives.matrix.IntMatrixBuilder;
 import org.renjin.primitives.matrix.StringMatrixBuilder;
 import org.renjin.script.RenjinScriptEngine;
 
-import de.invesdwin.context.r.runtime.contract.IScriptTaskInputs;
+import de.invesdwin.context.integration.script.IScriptTaskInputs;
 
 @NotThreadSafe
-public class RenjinScriptTaskInputs implements IScriptTaskInputs {
+public class RenjinScriptTaskInputsR implements IScriptTaskInputs {
 
     private RenjinScriptEngine renjinScriptEngine;
 
-    public RenjinScriptTaskInputs(final RenjinScriptEngine renjinScriptEngine) {
+    public RenjinScriptTaskInputsR(final RenjinScriptEngine renjinScriptEngine) {
         this.renjinScriptEngine = renjinScriptEngine;
     }
 

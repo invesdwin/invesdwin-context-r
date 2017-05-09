@@ -20,31 +20,31 @@ import de.invesdwin.util.lang.Strings;
  */
 @Immutable
 @Named
-public final class ProvidedScriptTaskRunner implements IScriptTaskRunner, FactoryBean<ProvidedScriptTaskRunner> {
+public final class ProvidedScriptTaskRunnerR implements IScriptTaskRunnerR, FactoryBean<ProvidedScriptTaskRunnerR> {
 
-    public static final String PROVIDED_INSTANCE_KEY = IScriptTaskRunner.class.getName();
+    public static final String PROVIDED_INSTANCE_KEY = IScriptTaskRunnerR.class.getName();
 
-    public static final ProvidedScriptTaskRunner INSTANCE = new ProvidedScriptTaskRunner();
+    public static final ProvidedScriptTaskRunnerR INSTANCE = new ProvidedScriptTaskRunnerR();
 
     @GuardedBy("this.class")
-    private static IScriptTaskRunner providedInstance;
+    private static IScriptTaskRunnerR providedInstance;
 
-    private ProvidedScriptTaskRunner() {}
+    private ProvidedScriptTaskRunnerR() {}
 
-    public static synchronized IScriptTaskRunner getProvidedInstance() {
+    public static synchronized IScriptTaskRunnerR getProvidedInstance() {
         if (providedInstance == null) {
             final SystemProperties systemProperties = new SystemProperties();
             if (systemProperties.containsValue(PROVIDED_INSTANCE_KEY)) {
                 try {
                     final String runner = systemProperties.getString(PROVIDED_INSTANCE_KEY);
-                    return (IScriptTaskRunner) Reflections.classForName(runner).newInstance();
+                    return (IScriptTaskRunnerR) Reflections.classForName(runner).newInstance();
                 } catch (InstantiationException | IllegalAccessException e) {
                     throw new RuntimeException(e);
                 }
             } else {
-                final Map<String, IScriptTaskRunner> runners = new LinkedHashMap<String, IScriptTaskRunner>();
-                for (final IScriptTaskRunner runner : ServiceLoader.load(IScriptTaskRunner.class)) {
-                    final IScriptTaskRunner existing = runners.put(runner.getClass().getName(), runner);
+                final Map<String, IScriptTaskRunnerR> runners = new LinkedHashMap<String, IScriptTaskRunnerR>();
+                for (final IScriptTaskRunnerR runner : ServiceLoader.load(IScriptTaskRunnerR.class)) {
+                    final IScriptTaskRunnerR existing = runners.put(runner.getClass().getName(), runner);
                     if (existing != null) {
                         throw new IllegalStateException("Duplicate service provider found for [" + PROVIDED_INSTANCE_KEY
                                 + "=" + existing.getClass().getName()
@@ -75,8 +75,8 @@ public final class ProvidedScriptTaskRunner implements IScriptTaskRunner, Factor
         return providedInstance;
     }
 
-    public static synchronized void setProvidedInstance(final IScriptTaskRunner providedInstance) {
-        ProvidedScriptTaskRunner.providedInstance = providedInstance;
+    public static synchronized void setProvidedInstance(final IScriptTaskRunnerR providedInstance) {
+        ProvidedScriptTaskRunnerR.providedInstance = providedInstance;
         final SystemProperties systemProperties = new SystemProperties();
         if (providedInstance == null) {
             systemProperties.setString(PROVIDED_INSTANCE_KEY, null);
@@ -86,13 +86,13 @@ public final class ProvidedScriptTaskRunner implements IScriptTaskRunner, Factor
     }
 
     @Override
-    public <T> T run(final AScriptTask<T> scriptTask) {
+    public <T> T run(final AScriptTaskR<T> scriptTask) {
         return getProvidedInstance().run(scriptTask);
     }
 
     @Override
     public Class<?> getObjectType() {
-        return ProvidedScriptTaskRunner.class;
+        return ProvidedScriptTaskRunnerR.class;
     }
 
     @Override
@@ -101,7 +101,7 @@ public final class ProvidedScriptTaskRunner implements IScriptTaskRunner, Factor
     }
 
     @Override
-    public ProvidedScriptTaskRunner getObject() throws Exception {
+    public ProvidedScriptTaskRunnerR getObject() throws Exception {
         return INSTANCE;
     }
 

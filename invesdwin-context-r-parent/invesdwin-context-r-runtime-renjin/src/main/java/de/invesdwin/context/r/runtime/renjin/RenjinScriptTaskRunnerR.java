@@ -8,24 +8,24 @@ import javax.inject.Named;
 import org.renjin.script.RenjinScriptEngine;
 import org.springframework.beans.factory.FactoryBean;
 
-import de.invesdwin.context.r.runtime.contract.AScriptTask;
-import de.invesdwin.context.r.runtime.contract.IScriptTaskRunner;
+import de.invesdwin.context.r.runtime.contract.AScriptTaskR;
+import de.invesdwin.context.r.runtime.contract.IScriptTaskRunnerR;
 import de.invesdwin.context.r.runtime.renjin.pool.RenjinScriptEngineObjectPool;
 import de.invesdwin.util.error.Throwables;
 
 @Named
 @Immutable
-public final class RenjinScriptTaskRunner implements IScriptTaskRunner, FactoryBean<RenjinScriptTaskRunner> {
+public final class RenjinScriptTaskRunnerR implements IScriptTaskRunnerR, FactoryBean<RenjinScriptTaskRunnerR> {
 
-    public static final RenjinScriptTaskRunner INSTANCE = new RenjinScriptTaskRunner();
+    public static final RenjinScriptTaskRunnerR INSTANCE = new RenjinScriptTaskRunnerR();
 
     /**
      * public for ServiceLoader support
      */
-    public RenjinScriptTaskRunner() {}
+    public RenjinScriptTaskRunnerR() {}
 
     @Override
-    public <T> T run(final AScriptTask<T> scriptTask) {
+    public <T> T run(final AScriptTaskR<T> scriptTask) {
         //get session
         final RenjinScriptEngine renjinScriptEngine;
         try {
@@ -35,7 +35,7 @@ public final class RenjinScriptTaskRunner implements IScriptTaskRunner, FactoryB
         }
         try {
             //inputs
-            final RenjinScriptTaskInputs inputs = new RenjinScriptTaskInputs(renjinScriptEngine);
+            final RenjinScriptTaskInputsR inputs = new RenjinScriptTaskInputsR(renjinScriptEngine);
             scriptTask.populateInputs(inputs);
             inputs.close();
 
@@ -45,7 +45,7 @@ public final class RenjinScriptTaskRunner implements IScriptTaskRunner, FactoryB
             }
 
             //results
-            final RenjinScriptTaskResults results = new RenjinScriptTaskResults(renjinScriptEngine);
+            final RenjinScriptTaskResultsR results = new RenjinScriptTaskResultsR(renjinScriptEngine);
             final T result = scriptTask.extractResults(results);
             results.close();
 
@@ -63,13 +63,13 @@ public final class RenjinScriptTaskRunner implements IScriptTaskRunner, FactoryB
     }
 
     @Override
-    public RenjinScriptTaskRunner getObject() throws Exception {
+    public RenjinScriptTaskRunnerR getObject() throws Exception {
         return INSTANCE;
     }
 
     @Override
     public Class<?> getObjectType() {
-        return RenjinScriptTaskRunner.class;
+        return RenjinScriptTaskRunnerR.class;
     }
 
     @Override

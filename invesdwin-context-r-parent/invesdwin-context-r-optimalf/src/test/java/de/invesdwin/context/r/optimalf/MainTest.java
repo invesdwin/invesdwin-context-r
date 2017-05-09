@@ -4,8 +4,8 @@ import javax.annotation.concurrent.NotThreadSafe;
 
 import org.junit.Test;
 
-import de.invesdwin.context.r.runtime.cli.CliScriptTaskRunner;
-import de.invesdwin.context.r.runtime.contract.ProvidedScriptTaskRunner;
+import de.invesdwin.context.r.runtime.cli.CliScriptTaskRunnerR;
+import de.invesdwin.context.r.runtime.contract.ProvidedScriptTaskRunnerR;
 
 @NotThreadSafe
 public class MainTest {
@@ -13,7 +13,7 @@ public class MainTest {
     @Test
     public void test() {
         Main.main(new String[] {
-                "-D" + ProvidedScriptTaskRunner.PROVIDED_INSTANCE_KEY + "=" + CliScriptTaskRunner.class.getName() });
+                "-D" + ProvidedScriptTaskRunnerR.PROVIDED_INSTANCE_KEY + "=" + CliScriptTaskRunnerR.class.getName() });
     }
 
 }

@@ -6,15 +6,15 @@ import org.math.R.Rsession;
 import org.rosuda.REngine.REXP;
 import org.rosuda.REngine.REXPMismatchException;
 
-import de.invesdwin.context.r.runtime.contract.IScriptTaskResults;
+import de.invesdwin.context.integration.script.IScriptTaskResults;
 import de.invesdwin.util.assertions.Assertions;
 
 @NotThreadSafe
-public class RserveScriptTaskResults implements IScriptTaskResults {
+public class RserveScriptTaskResultsR implements IScriptTaskResults {
 
     private Rsession rsession;
 
-    public RserveScriptTaskResults(final Rsession rsession) {
+    public RserveScriptTaskResultsR(final Rsession rsession) {
         this.rsession = rsession;
     }
 

@@ -4,15 +4,15 @@ import javax.annotation.concurrent.NotThreadSafe;
 
 import org.math.R.Rsession;
 
-import de.invesdwin.context.r.runtime.contract.IScriptTaskInputs;
+import de.invesdwin.context.integration.script.IScriptTaskInputs;
 import de.invesdwin.util.assertions.Assertions;
 
 @NotThreadSafe
-public class RserveScriptTaskInputs implements IScriptTaskInputs {
+public class RserveScriptTaskInputsR implements IScriptTaskInputs {
 
     private Rsession rsession;
 
-    public RserveScriptTaskInputs(final Rsession rsession) {
+    public RserveScriptTaskInputsR(final Rsession rsession) {
         this.rsession = rsession;
     }
 
@@ -150,7 +150,7 @@ public class RserveScriptTaskInputs implements IScriptTaskInputs {
 
     @Override
     public void putExpression(final String variable, final String expression) {
-        RserveScriptTaskRunner.eval(rsession, variable + " <- " + expression);
+        RserveScriptTaskRunnerR.eval(rsession, variable + " <- " + expression);
     }
 
 }

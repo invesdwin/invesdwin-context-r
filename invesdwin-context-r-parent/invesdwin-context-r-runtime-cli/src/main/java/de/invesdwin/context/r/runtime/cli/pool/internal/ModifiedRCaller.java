@@ -16,8 +16,8 @@ import com.github.rcaller.rstuff.RCode;
 import com.github.rcaller.rstuff.ROutputParser;
 import com.github.rcaller.rstuff.RStreamHandler;
 
-import de.invesdwin.context.r.runtime.cli.CliScriptTaskRunner;
-import de.invesdwin.context.r.runtime.contract.IScriptTaskRunner;
+import de.invesdwin.context.r.runtime.cli.CliScriptTaskRunnerR;
+import de.invesdwin.context.r.runtime.contract.IScriptTaskRunnerR;
 import de.invesdwin.util.lang.Reflections;
 import de.invesdwin.util.lang.Strings;
 
@@ -51,8 +51,8 @@ public class ModifiedRCaller extends RCaller {
         //sleep 1 second in between so that the logs can be processed properly before the process quits
         getRCode().addRCode(
                 "options(error = function() { warning(geterrmessage()); Sys.sleep(1); quit(save = \"no\", status = 1, runLast = FALSE) } )");
-        getRCode().addRCode(CliScriptTaskRunner.INTERNAL_RESULT_VARIABLE + " <- c()");
-        runAndReturnResultOnline(CliScriptTaskRunner.INTERNAL_RESULT_VARIABLE);
+        getRCode().addRCode(CliScriptTaskRunnerR.INTERNAL_RESULT_VARIABLE + " <- c()");
+        runAndReturnResultOnline(CliScriptTaskRunnerR.INTERNAL_RESULT_VARIABLE);
     }
 
     private static RStreamHandler newOutputStreamHandler() {
@@ -61,7 +61,7 @@ public class ModifiedRCaller extends RCaller {
             @Override
             public void messageReceived(final String senderName, final String msg) {
                 if (Strings.isNotBlank(msg)) {
-                    IScriptTaskRunner.LOG.debug(msg);
+                    IScriptTaskRunnerR.LOG.debug(msg);
                 }
             }
         });
@@ -74,7 +74,7 @@ public class ModifiedRCaller extends RCaller {
             @Override
             public void messageReceived(final String senderName, final String msg) {
                 if (Strings.isNotBlank(msg)) {
-                    IScriptTaskRunner.LOG.warn(msg);
+                    IScriptTaskRunnerR.LOG.warn(msg);
                 }
             }
         });

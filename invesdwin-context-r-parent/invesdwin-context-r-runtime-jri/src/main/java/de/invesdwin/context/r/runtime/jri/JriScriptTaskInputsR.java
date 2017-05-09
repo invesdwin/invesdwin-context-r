@@ -4,15 +4,15 @@ import javax.annotation.concurrent.NotThreadSafe;
 
 import org.rosuda.JRI.Rengine;
 
-import de.invesdwin.context.r.runtime.contract.IScriptTaskInputs;
+import de.invesdwin.context.integration.script.IScriptTaskInputs;
 import de.invesdwin.util.assertions.Assertions;
 
 @NotThreadSafe
-public class JriScriptTaskInputs implements IScriptTaskInputs {
+public class JriScriptTaskInputsR implements IScriptTaskInputs {
 
     private Rengine rengine;
 
-    public JriScriptTaskInputs(final Rengine rengine) {
+    public JriScriptTaskInputsR(final Rengine rengine) {
         this.rengine = rengine;
     }
 
@@ -147,7 +147,7 @@ public class JriScriptTaskInputs implements IScriptTaskInputs {
 
     @Override
     public void putExpression(final String variable, final String expression) {
-        JriScriptTaskRunner.eval(rengine, variable + " <- " + expression);
+        JriScriptTaskRunnerR.eval(rengine, variable + " <- " + expression);
     }
 
 }

@@ -7,12 +7,12 @@ import javax.annotation.concurrent.NotThreadSafe;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 
-import de.invesdwin.context.r.runtime.contract.AScriptTask;
-import de.invesdwin.context.r.runtime.contract.IScriptTaskInputs;
-import de.invesdwin.context.r.runtime.contract.IScriptTaskResults;
+import de.invesdwin.context.integration.script.IScriptTaskInputs;
+import de.invesdwin.context.integration.script.IScriptTaskResults;
+import de.invesdwin.context.r.runtime.contract.AScriptTaskR;
 
 @NotThreadSafe
-public class OptimalfScriptTask extends AScriptTask<List<Double>> {
+public class OptimalfScriptTask extends AScriptTaskR<List<Double>> {
 
     private final List<? extends List<Double>> tradesPerStrategy;
 

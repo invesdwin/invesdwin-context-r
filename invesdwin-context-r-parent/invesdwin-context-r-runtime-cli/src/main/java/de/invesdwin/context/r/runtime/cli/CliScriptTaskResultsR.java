@@ -4,14 +4,14 @@ import javax.annotation.concurrent.NotThreadSafe;
 
 import com.github.rcaller.rstuff.RCaller;
 
-import de.invesdwin.context.r.runtime.contract.IScriptTaskResults;
+import de.invesdwin.context.integration.script.IScriptTaskResults;
 import de.invesdwin.util.assertions.Assertions;
 
 @NotThreadSafe
-public class CliScriptTaskResults implements IScriptTaskResults {
+public class CliScriptTaskResultsR implements IScriptTaskResults {
     private RCaller rcaller;
 
-    public CliScriptTaskResults(final RCaller rcaller) {
+    public CliScriptTaskResultsR(final RCaller rcaller) {
         this.rcaller = rcaller;
     }
 
@@ -58,8 +58,8 @@ public class CliScriptTaskResults implements IScriptTaskResults {
         if (ct == null) {
             return null;
         }
-        rcaller.getRCode().addRCode(CliScriptTaskRunner.INTERNAL_RESULT_VARIABLE + " <- dim(" + variable + ")");
-        final int[] ds = getIntegerVector(CliScriptTaskRunner.INTERNAL_RESULT_VARIABLE);
+        rcaller.getRCode().addRCode(CliScriptTaskRunnerR.INTERNAL_RESULT_VARIABLE + " <- dim(" + variable + ")");
+        final int[] ds = getIntegerVector(CliScriptTaskRunnerR.INTERNAL_RESULT_VARIABLE);
         if ((ds == null) || (ds.length != 2)) {
             return null;
         }
@@ -176,9 +176,9 @@ public class CliScriptTaskResults implements IScriptTaskResults {
 
     @Override
     public boolean[][] getBooleanMatrix(final String variable) {
-        rcaller.getRCode().addRCode(CliScriptTaskRunner.INTERNAL_RESULT_VARIABLE + " <- array(as.numeric(" + variable
+        rcaller.getRCode().addRCode(CliScriptTaskRunnerR.INTERNAL_RESULT_VARIABLE + " <- array(as.numeric(" + variable
                 + "), dim(" + variable + "))");
-        final double[][] matrix = getDoubleMatrix(CliScriptTaskRunner.INTERNAL_RESULT_VARIABLE);
+        final double[][] matrix = getDoubleMatrix(CliScriptTaskRunnerR.INTERNAL_RESULT_VARIABLE);
         final boolean[][] booleanMatrix = new boolean[matrix.length][];
         for (int i = 0; i < matrix.length; i++) {
             final double[] vector = matrix[i];

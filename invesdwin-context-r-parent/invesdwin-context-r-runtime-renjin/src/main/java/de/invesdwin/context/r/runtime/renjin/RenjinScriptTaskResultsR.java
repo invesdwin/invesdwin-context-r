@@ -9,15 +9,15 @@ import org.renjin.sexp.Logical;
 import org.renjin.sexp.SEXP;
 import org.renjin.sexp.Vector;
 
-import de.invesdwin.context.r.runtime.contract.IScriptTaskResults;
+import de.invesdwin.context.integration.script.IScriptTaskResults;
 import de.invesdwin.util.assertions.Assertions;
 
 @NotThreadSafe
-public class RenjinScriptTaskResults implements IScriptTaskResults {
+public class RenjinScriptTaskResultsR implements IScriptTaskResults {
 
     private RenjinScriptEngine renjinScriptEngine;
 
-    public RenjinScriptTaskResults(final RenjinScriptEngine renjinScriptEngine) {
+    public RenjinScriptTaskResultsR(final RenjinScriptEngine renjinScriptEngine) {
         this.renjinScriptEngine = renjinScriptEngine;
     }
 

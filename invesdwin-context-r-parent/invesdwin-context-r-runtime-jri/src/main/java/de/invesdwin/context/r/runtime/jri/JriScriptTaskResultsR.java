@@ -6,15 +6,15 @@ import org.rosuda.JRI.RBool;
 import org.rosuda.JRI.REXP;
 import org.rosuda.JRI.Rengine;
 
-import de.invesdwin.context.r.runtime.contract.IScriptTaskResults;
+import de.invesdwin.context.integration.script.IScriptTaskResults;
 import de.invesdwin.util.assertions.Assertions;
 
 @NotThreadSafe
-public class JriScriptTaskResults implements IScriptTaskResults {
+public class JriScriptTaskResultsR implements IScriptTaskResults {
 
     private Rengine rengine;
 
-    public JriScriptTaskResults(final Rengine rengine) {
+    public JriScriptTaskResultsR(final Rengine rengine) {
         this.rengine = rengine;
     }
 

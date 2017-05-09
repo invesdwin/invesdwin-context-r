@@ -9,15 +9,17 @@ import javax.annotation.concurrent.NotThreadSafe;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 
+import de.invesdwin.context.integration.script.IScriptTaskInputs;
+import de.invesdwin.context.integration.script.IScriptTaskResults;
 import de.invesdwin.util.assertions.Assertions;
 import de.invesdwin.util.lang.Objects;
 
 @NotThreadSafe
 public class InputsAndResultsTestString {
 
-    private final IScriptTaskRunner runner;
+    private final IScriptTaskRunnerR runner;
 
-    public InputsAndResultsTestString(final IScriptTaskRunner runner) {
+    public InputsAndResultsTestString(final IScriptTaskRunnerR runner) {
         this.runner = runner;
     }
 
@@ -63,7 +65,7 @@ public class InputsAndResultsTestString {
             putStringMatrixAsListNull.get(i).set(i, null);
         }
 
-        new AScriptTask<Void>() {
+        new AScriptTaskR<Void>() {
 
             @Override
             public Resource getScriptResource() {

@@ -10,14 +10,16 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 
+import de.invesdwin.context.integration.script.IScriptTaskInputs;
+import de.invesdwin.context.integration.script.IScriptTaskResults;
 import de.invesdwin.util.assertions.Assertions;
 
 @NotThreadSafe
 public class InputsAndResultsTestBoolean {
 
-    private final IScriptTaskRunner runner;
+    private final IScriptTaskRunnerR runner;
 
-    public InputsAndResultsTestBoolean(final IScriptTaskRunner runner) {
+    public InputsAndResultsTestBoolean(final IScriptTaskRunnerR runner) {
         this.runner = runner;
     }
 
@@ -50,7 +52,7 @@ public class InputsAndResultsTestBoolean {
             putBooleanMatrixAsList.add(Arrays.asList(ArrayUtils.toObject(vector)));
         }
 
-        new AScriptTask<Void>() {
+        new AScriptTaskR<Void>() {
 
             @Override
             public Resource getScriptResource() {

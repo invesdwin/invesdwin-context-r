@@ -7,24 +7,24 @@ import org.math.R.Rsession;
 import org.rosuda.REngine.REXP;
 import org.springframework.beans.factory.FactoryBean;
 
-import de.invesdwin.context.r.runtime.contract.AScriptTask;
-import de.invesdwin.context.r.runtime.contract.IScriptTaskRunner;
+import de.invesdwin.context.r.runtime.contract.AScriptTaskR;
+import de.invesdwin.context.r.runtime.contract.IScriptTaskRunnerR;
 import de.invesdwin.context.r.runtime.rserve.pool.RsessionObjectPool;
 import de.invesdwin.util.error.Throwables;
 
 @Immutable
 @Named
-public final class RserveScriptTaskRunner implements IScriptTaskRunner, FactoryBean<RserveScriptTaskRunner> {
+public final class RserveScriptTaskRunnerR implements IScriptTaskRunnerR, FactoryBean<RserveScriptTaskRunnerR> {
 
-    public static final RserveScriptTaskRunner INSTANCE = new RserveScriptTaskRunner();
+    public static final RserveScriptTaskRunnerR INSTANCE = new RserveScriptTaskRunnerR();
 
     /**
      * public for ServiceLoader support
      */
-    public RserveScriptTaskRunner() {}
+    public RserveScriptTaskRunnerR() {}
 
     @Override
-    public <T> T run(final AScriptTask<T> scriptTask) {
+    public <T> T run(final AScriptTaskR<T> scriptTask) {
         //get session
         final Rsession rsession;
         try {
@@ -34,7 +34,7 @@ public final class RserveScriptTaskRunner implements IScriptTaskRunner, FactoryB
         }
         try {
             //inputs
-            final RserveScriptTaskInputs inputs = new RserveScriptTaskInputs(rsession);
+            final RserveScriptTaskInputsR inputs = new RserveScriptTaskInputsR(rsession);
             scriptTask.populateInputs(inputs);
             inputs.close();
 
@@ -42,7 +42,7 @@ public final class RserveScriptTaskRunner implements IScriptTaskRunner, FactoryB
             eval(rsession, scriptTask.getScriptResourceAsString());
 
             //results
-            final RserveScriptTaskResults results = new RserveScriptTaskResults(rsession);
+            final RserveScriptTaskResultsR results = new RserveScriptTaskResultsR(rsession);
             final T result = scriptTask.extractResults(results);
             results.close();
 
@@ -69,13 +69,13 @@ public final class RserveScriptTaskRunner implements IScriptTaskRunner, FactoryB
     }
 
     @Override
-    public RserveScriptTaskRunner getObject() throws Exception {
+    public RserveScriptTaskRunnerR getObject() throws Exception {
         return INSTANCE;
     }
 
     @Override
     public Class<?> getObjectType() {
-        return RserveScriptTaskRunner.class;
+        return RserveScriptTaskRunnerR.class;
     }
 
     @Override
