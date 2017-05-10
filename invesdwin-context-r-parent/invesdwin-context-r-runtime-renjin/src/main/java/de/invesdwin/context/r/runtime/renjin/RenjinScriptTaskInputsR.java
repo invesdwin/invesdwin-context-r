@@ -1,33 +1,26 @@
 package de.invesdwin.context.r.runtime.renjin;
 
 import javax.annotation.concurrent.NotThreadSafe;
-import javax.script.ScriptException;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.renjin.primitives.matrix.DoubleMatrixBuilder;
 import org.renjin.primitives.matrix.IntMatrixBuilder;
 import org.renjin.primitives.matrix.StringMatrixBuilder;
-import org.renjin.script.RenjinScriptEngine;
 
 import de.invesdwin.context.integration.script.IScriptTaskInputs;
 
 @NotThreadSafe
 public class RenjinScriptTaskInputsR implements IScriptTaskInputs {
 
-    private RenjinScriptEngine renjinScriptEngine;
+    private final RenjinScriptTaskEngineR engine;
 
-    public RenjinScriptTaskInputsR(final RenjinScriptEngine renjinScriptEngine) {
-        this.renjinScriptEngine = renjinScriptEngine;
+    public RenjinScriptTaskInputsR(final RenjinScriptTaskEngineR engine) {
+        this.engine = engine;
     }
 
     @Override
-    public RenjinScriptEngine getEngine() {
-        return renjinScriptEngine;
-    }
-
-    @Override
-    public void close() {
-        renjinScriptEngine = null;
+    public RenjinScriptTaskEngineR getEngine() {
+        return engine;
     }
 
     @Override
@@ -35,13 +28,13 @@ public class RenjinScriptTaskInputsR implements IScriptTaskInputs {
         if (value == null) {
             putExpression(variable, "NA_character_");
         } else {
-            renjinScriptEngine.put(variable, value);
+            engine.unwrap().put(variable, value);
         }
     }
 
     @Override
     public void putStringVector(final String variable, final String[] value) {
-        renjinScriptEngine.put(variable, value);
+        engine.unwrap().put(variable, value);
     }
 
     @Override
@@ -54,17 +47,17 @@ public class RenjinScriptTaskInputsR implements IScriptTaskInputs {
                 matrix.setValue(row, col, value[row][col]);
             }
         }
-        renjinScriptEngine.put(variable, matrix.build());
+        engine.unwrap().put(variable, matrix.build());
     }
 
     @Override
     public void putDouble(final String variable, final double value) {
-        renjinScriptEngine.put(variable, value);
+        engine.unwrap().put(variable, value);
     }
 
     @Override
     public void putDoubleVector(final String variable, final double[] value) {
-        renjinScriptEngine.put(variable, value);
+        engine.unwrap().put(variable, value);
     }
 
     @Override
@@ -77,17 +70,17 @@ public class RenjinScriptTaskInputsR implements IScriptTaskInputs {
                 matrix.setValue(row, col, value[row][col]);
             }
         }
-        renjinScriptEngine.put(variable, matrix.build());
+        engine.unwrap().put(variable, matrix.build());
     }
 
     @Override
     public void putInteger(final String variable, final int value) {
-        renjinScriptEngine.put(variable, value);
+        engine.unwrap().put(variable, value);
     }
 
     @Override
     public void putIntegerVector(final String variable, final int[] value) {
-        renjinScriptEngine.put(variable, value);
+        engine.unwrap().put(variable, value);
     }
 
     @Override
@@ -100,17 +93,17 @@ public class RenjinScriptTaskInputsR implements IScriptTaskInputs {
                 matrix.setValue(row, col, value[row][col]);
             }
         }
-        renjinScriptEngine.put(variable, matrix.build());
+        engine.unwrap().put(variable, matrix.build());
     }
 
     @Override
     public void putBoolean(final String variable, final boolean value) {
-        renjinScriptEngine.put(variable, value);
+        engine.unwrap().put(variable, value);
     }
 
     @Override
     public void putBooleanVector(final String variable, final boolean[] value) {
-        renjinScriptEngine.put(variable, ArrayUtils.toObject(value));
+        engine.unwrap().put(variable, ArrayUtils.toObject(value));
     }
 
     @Override
@@ -129,17 +122,13 @@ public class RenjinScriptTaskInputsR implements IScriptTaskInputs {
                 matrix.setValue(row, col, intValue);
             }
         }
-        renjinScriptEngine.put(variable, matrix.build());
+        engine.unwrap().put(variable, matrix.build());
         putExpression(variable, "array(as.logical(" + variable + "), dim(" + variable + "))");
     }
 
     @Override
     public void putExpression(final String variable, final String expression) {
-        try {
-            renjinScriptEngine.eval(variable + " <- " + expression);
-        } catch (final ScriptException e) {
-            throw new RuntimeException(e);
-        }
+        engine.eval(variable + " <- " + expression);
     }
 
 }

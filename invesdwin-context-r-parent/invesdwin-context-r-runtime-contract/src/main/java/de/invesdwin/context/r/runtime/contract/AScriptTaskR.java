@@ -12,6 +12,7 @@ public abstract class AScriptTaskR<V> extends AScriptTask<V, IScriptTaskRunnerR>
         return runner.run(this);
     }
 
+    @Override
     public V run() {
         return run(ProvidedScriptTaskRunnerR.INSTANCE);
     }

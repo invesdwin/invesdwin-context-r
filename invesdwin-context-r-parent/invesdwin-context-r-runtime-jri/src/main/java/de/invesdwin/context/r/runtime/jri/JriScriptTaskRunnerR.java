@@ -6,13 +6,13 @@ import javax.annotation.concurrent.GuardedBy;
 import javax.annotation.concurrent.Immutable;
 import javax.inject.Named;
 
-import org.rosuda.JRI.REXP;
 import org.rosuda.JRI.Rengine;
 import org.springframework.beans.factory.FactoryBean;
 
 import de.invesdwin.context.r.runtime.contract.AScriptTaskR;
 import de.invesdwin.context.r.runtime.contract.IScriptTaskRunnerR;
 import de.invesdwin.context.r.runtime.jri.internal.LoggingRMainLoopCallbacks;
+import de.invesdwin.instrument.DynamicInstrumentationReflections;
 import de.invesdwin.util.error.Throwables;
 
 @Immutable
@@ -26,6 +26,7 @@ public final class JriScriptTaskRunnerR implements IScriptTaskRunnerR, FactoryBe
     private static final ReentrantLock RENGINE_LOCK;
 
     static {
+        DynamicInstrumentationReflections.addPathToJavaLibraryPath(JriProperties.JRI_LIBRARY_PATH);
         if (Rengine.getMainEngine() != null) {
             RENGINE = Rengine.getMainEngine();
         } else {
@@ -49,20 +50,17 @@ public final class JriScriptTaskRunnerR implements IScriptTaskRunnerR, FactoryBe
         RENGINE_LOCK.lock();
         try {
             //inputs
-            final JriScriptTaskInputsR inputs = new JriScriptTaskInputsR(RENGINE);
-            scriptTask.populateInputs(inputs);
-            inputs.close();
+            final JriScriptTaskEngineR engine = new JriScriptTaskEngineR(RENGINE);
+            scriptTask.populateInputs(engine.getInputs());
 
             //execute
-            eval(RENGINE, scriptTask.getScriptResourceAsString());
+            scriptTask.executeScript(engine);
 
             //results
-            final JriScriptTaskResultsR results = new JriScriptTaskResultsR(RENGINE);
-            final T result = scriptTask.extractResults(results);
-            results.close();
+            final T result = scriptTask.extractResults(engine.getResults());
+            engine.close();
 
             //return
-            eval(RENGINE, "rm(list = ls())");
             RENGINE_LOCK.unlock();
             return result;
         } catch (final Throwable t) {
@@ -70,13 +68,6 @@ public final class JriScriptTaskRunnerR implements IScriptTaskRunnerR, FactoryBe
             throw Throwables.propagate(t);
         } finally {
             LoggingRMainLoopCallbacks.INSTANCE.reset();
-        }
-    }
-
-    public static void eval(final Rengine rengine, final String expression) {
-        final REXP eval = RENGINE.eval("eval(parse(text=\"" + expression.replace("\"", "\\\"") + "\"))");
-        if (eval == null) {
-            throw new IllegalStateException(String.valueOf(LoggingRMainLoopCallbacks.INSTANCE.getErrorMessage()));
         }
     }
 

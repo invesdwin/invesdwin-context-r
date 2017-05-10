@@ -4,7 +4,6 @@ import javax.annotation.concurrent.Immutable;
 import javax.inject.Named;
 
 import org.math.R.Rsession;
-import org.rosuda.REngine.REXP;
 import org.springframework.beans.factory.FactoryBean;
 
 import de.invesdwin.context.r.runtime.contract.AScriptTaskR;
@@ -34,17 +33,15 @@ public final class RserveScriptTaskRunnerR implements IScriptTaskRunnerR, Factor
         }
         try {
             //inputs
-            final RserveScriptTaskInputsR inputs = new RserveScriptTaskInputsR(rsession);
-            scriptTask.populateInputs(inputs);
-            inputs.close();
+            final RserveScriptTaskEngineR engine = new RserveScriptTaskEngineR(rsession);
+            scriptTask.populateInputs(engine.getInputs());
 
             //execute
-            eval(rsession, scriptTask.getScriptResourceAsString());
+            scriptTask.executeScript(engine);
 
             //results
-            final RserveScriptTaskResultsR results = new RserveScriptTaskResultsR(rsession);
-            final T result = scriptTask.extractResults(results);
-            results.close();
+            final T result = scriptTask.extractResults(engine.getResults());
+            engine.close();
 
             //return
             RsessionObjectPool.INSTANCE.returnObject(rsession);
@@ -56,15 +53,6 @@ public final class RserveScriptTaskRunnerR implements IScriptTaskRunnerR, Factor
                 throw new RuntimeException(e);
             }
             throw Throwables.propagate(t);
-        }
-    }
-
-    public static void eval(final Rsession rsession, final String expression) {
-        final REXP eval = rsession.eval(expression);
-        if (eval == null) {
-            throw new IllegalStateException(
-                    String.valueOf(de.invesdwin.context.r.runtime.rserve.pool.internal.RsessionLogger.get(rsession)
-                            .getErrorMessage()));
         }
     }
 

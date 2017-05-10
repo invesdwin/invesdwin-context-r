@@ -2,28 +2,21 @@ package de.invesdwin.context.r.runtime.rserve;
 
 import javax.annotation.concurrent.NotThreadSafe;
 
-import org.math.R.Rsession;
-
 import de.invesdwin.context.integration.script.IScriptTaskInputs;
 import de.invesdwin.util.assertions.Assertions;
 
 @NotThreadSafe
 public class RserveScriptTaskInputsR implements IScriptTaskInputs {
 
-    private Rsession rsession;
+    private final RserveScriptTaskEngineR engine;
 
-    public RserveScriptTaskInputsR(final Rsession rsession) {
-        this.rsession = rsession;
+    public RserveScriptTaskInputsR(final RserveScriptTaskEngineR engine) {
+        this.engine = engine;
     }
 
     @Override
-    public Rsession getEngine() {
-        return rsession;
-    }
-
-    @Override
-    public void close() {
-        rsession = null;
+    public RserveScriptTaskEngineR getEngine() {
+        return engine;
     }
 
     @Override
@@ -31,13 +24,13 @@ public class RserveScriptTaskInputsR implements IScriptTaskInputs {
         if (value == null) {
             putExpression(variable, "NA_character_");
         } else {
-            rsession.set(variable, value);
+            engine.unwrap().set(variable, value);
         }
     }
 
     @Override
     public void putStringVector(final String variable, final String[] value) {
-        rsession.set(variable, value);
+        engine.unwrap().set(variable, value);
     }
 
     @Override
@@ -59,22 +52,22 @@ public class RserveScriptTaskInputsR implements IScriptTaskInputs {
 
     @Override
     public void putDouble(final String variable, final double value) {
-        rsession.set(variable, value);
+        engine.unwrap().set(variable, value);
     }
 
     @Override
     public void putDoubleVector(final String variable, final double[] value) {
-        rsession.set(variable, value);
+        engine.unwrap().set(variable, value);
     }
 
     @Override
     public void putDoubleMatrix(final String variable, final double[][] value) {
-        rsession.set(variable, value);
+        engine.unwrap().set(variable, value);
     }
 
     @Override
     public void putInteger(final String variable, final int value) {
-        rsession.set(variable, value);
+        engine.unwrap().set(variable, value);
         putExpression(variable, "as.integer(" + variable + ")");
     }
 
@@ -84,7 +77,7 @@ public class RserveScriptTaskInputsR implements IScriptTaskInputs {
         for (int i = 0; i < doubleValue.length; i++) {
             doubleValue[i] = value[i];
         }
-        rsession.set(variable, doubleValue);
+        engine.unwrap().set(variable, doubleValue);
         putExpression(variable, "as.integer(" + variable + ")");
     }
 
@@ -99,7 +92,7 @@ public class RserveScriptTaskInputsR implements IScriptTaskInputs {
             }
             doubleValue[i] = doubleVector;
         }
-        rsession.set(variable, doubleValue);
+        engine.unwrap().set(variable, doubleValue);
         putExpression(variable, "array(as.integer(" + variable + "), dim(" + variable + "))");
     }
 
@@ -111,7 +104,7 @@ public class RserveScriptTaskInputsR implements IScriptTaskInputs {
         } else {
             doubleValue = 0D;
         }
-        rsession.set(variable, doubleValue);
+        engine.unwrap().set(variable, doubleValue);
         putExpression(variable, "as.logical(" + variable + ")");
     }
 
@@ -125,7 +118,7 @@ public class RserveScriptTaskInputsR implements IScriptTaskInputs {
                 doubleValue[i] = 0D;
             }
         }
-        rsession.set(variable, doubleValue);
+        engine.unwrap().set(variable, doubleValue);
         putExpression(variable, "as.logical(" + variable + ")");
     }
 
@@ -144,13 +137,13 @@ public class RserveScriptTaskInputsR implements IScriptTaskInputs {
             }
             doubleValue[i] = doubleVector;
         }
-        rsession.set(variable, doubleValue);
+        engine.unwrap().set(variable, doubleValue);
         putExpression(variable, "array(as.logical(" + variable + "), dim(" + variable + "))");
     }
 
     @Override
     public void putExpression(final String variable, final String expression) {
-        RserveScriptTaskRunnerR.eval(rsession, variable + " <- " + expression);
+        engine.eval(variable + " <- " + expression);
     }
 
 }

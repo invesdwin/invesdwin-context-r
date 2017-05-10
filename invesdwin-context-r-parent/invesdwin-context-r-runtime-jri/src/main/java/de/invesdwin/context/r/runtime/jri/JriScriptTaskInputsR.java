@@ -2,38 +2,31 @@ package de.invesdwin.context.r.runtime.jri;
 
 import javax.annotation.concurrent.NotThreadSafe;
 
-import org.rosuda.JRI.Rengine;
-
 import de.invesdwin.context.integration.script.IScriptTaskInputs;
 import de.invesdwin.util.assertions.Assertions;
 
 @NotThreadSafe
 public class JriScriptTaskInputsR implements IScriptTaskInputs {
 
-    private Rengine rengine;
+    private final JriScriptTaskEngineR engine;
 
-    public JriScriptTaskInputsR(final Rengine rengine) {
-        this.rengine = rengine;
+    public JriScriptTaskInputsR(final JriScriptTaskEngineR engine) {
+        this.engine = engine;
     }
 
     @Override
-    public Rengine getEngine() {
-        return rengine;
-    }
-
-    @Override
-    public void close() {
-        rengine = null;
+    public JriScriptTaskEngineR getEngine() {
+        return engine;
     }
 
     @Override
     public void putString(final String variable, final String value) {
-        Assertions.checkTrue(rengine.assign(variable, value));
+        Assertions.checkTrue(engine.unwrap().assign(variable, value));
     }
 
     @Override
     public void putStringVector(final String variable, final String[] value) {
-        Assertions.checkTrue(rengine.assign(variable, value));
+        Assertions.checkTrue(engine.unwrap().assign(variable, value));
     }
 
     @Override
@@ -55,12 +48,12 @@ public class JriScriptTaskInputsR implements IScriptTaskInputs {
 
     @Override
     public void putDouble(final String variable, final double value) {
-        Assertions.checkTrue(rengine.assign(variable, new double[] { value }));
+        Assertions.checkTrue(engine.unwrap().assign(variable, new double[] { value }));
     }
 
     @Override
     public void putDoubleVector(final String variable, final double[] value) {
-        Assertions.checkTrue(rengine.assign(variable, value));
+        Assertions.checkTrue(engine.unwrap().assign(variable, value));
     }
 
     /**
@@ -79,18 +72,18 @@ public class JriScriptTaskInputsR implements IScriptTaskInputs {
                 i++;
             }
         }
-        rengine.assign(variable, flatMatrix);
+        engine.unwrap().assign(variable, flatMatrix);
         putExpression(variable, "matrix(" + variable + ", " + rows + ", " + cols + ", TRUE)");
     }
 
     @Override
     public void putInteger(final String variable, final int value) {
-        Assertions.checkTrue(rengine.assign(variable, new int[] { value }));
+        Assertions.checkTrue(engine.unwrap().assign(variable, new int[] { value }));
     }
 
     @Override
     public void putIntegerVector(final String variable, final int[] value) {
-        Assertions.checkTrue(rengine.assign(variable, value));
+        Assertions.checkTrue(engine.unwrap().assign(variable, value));
     }
 
     /**
@@ -109,18 +102,18 @@ public class JriScriptTaskInputsR implements IScriptTaskInputs {
                 i++;
             }
         }
-        rengine.assign(variable, flatMatrix);
+        engine.unwrap().assign(variable, flatMatrix);
         putExpression(variable, "matrix(" + variable + ", " + rows + ", " + cols + ", TRUE)");
     }
 
     @Override
     public void putBoolean(final String variable, final boolean value) {
-        Assertions.checkTrue(rengine.assign(variable, new boolean[] { value }));
+        Assertions.checkTrue(engine.unwrap().assign(variable, new boolean[] { value }));
     }
 
     @Override
     public void putBooleanVector(final String variable, final boolean[] value) {
-        Assertions.checkTrue(rengine.assign(variable, value));
+        Assertions.checkTrue(engine.unwrap().assign(variable, value));
     }
 
     @Override
@@ -140,14 +133,14 @@ public class JriScriptTaskInputsR implements IScriptTaskInputs {
                 i++;
             }
         }
-        rengine.assign(variable, flatMatrix);
+        engine.unwrap().assign(variable, flatMatrix);
         putExpression(variable, "matrix(" + variable + ", " + rows + ", " + cols + ", TRUE)");
         putExpression(variable, "array(as.logical(" + variable + "), dim(" + variable + "))");
     }
 
     @Override
     public void putExpression(final String variable, final String expression) {
-        JriScriptTaskRunnerR.eval(rengine, variable + " <- " + expression);
+        engine.eval(variable + " <- " + expression);
     }
 
 }

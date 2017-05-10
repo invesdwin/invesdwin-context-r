@@ -9,7 +9,8 @@ import javax.annotation.concurrent.Immutable;
 @Immutable
 public final class RenjinProperties {
 
-    private static final Set<String> EXTENDED_PACKAGE_SEARCH_GROUP_IDS = new LinkedHashSet<String>();
+    private static final Set<String> EXTENDED_PACKAGE_SEARCH_GROUP_IDS = Collections
+            .synchronizedSet(new LinkedHashSet<String>());
 
     static {
         EXTENDED_PACKAGE_SEARCH_GROUP_IDS.add("de.invesdwin.context.r.runtime.renjin.packages");

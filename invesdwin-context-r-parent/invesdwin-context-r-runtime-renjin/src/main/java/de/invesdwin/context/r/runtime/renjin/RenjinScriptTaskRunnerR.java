@@ -1,7 +1,5 @@
 package de.invesdwin.context.r.runtime.renjin;
 
-import java.io.Reader;
-
 import javax.annotation.concurrent.Immutable;
 import javax.inject.Named;
 
@@ -35,19 +33,15 @@ public final class RenjinScriptTaskRunnerR implements IScriptTaskRunnerR, Factor
         }
         try {
             //inputs
-            final RenjinScriptTaskInputsR inputs = new RenjinScriptTaskInputsR(renjinScriptEngine);
-            scriptTask.populateInputs(inputs);
-            inputs.close();
+            final RenjinScriptTaskEngineR engine = new RenjinScriptTaskEngineR(renjinScriptEngine);
+            scriptTask.populateInputs(engine.getInputs());
 
             //execute
-            try (Reader reader = scriptTask.getScriptResourceAsReader()) {
-                renjinScriptEngine.eval(reader);
-            }
+            scriptTask.executeScript(engine);
 
             //results
-            final RenjinScriptTaskResultsR results = new RenjinScriptTaskResultsR(renjinScriptEngine);
-            final T result = scriptTask.extractResults(results);
-            results.close();
+            final T result = scriptTask.extractResults(engine.getResults());
+            engine.close();
 
             //return
             RenjinScriptEngineObjectPool.INSTANCE.returnObject(renjinScriptEngine);

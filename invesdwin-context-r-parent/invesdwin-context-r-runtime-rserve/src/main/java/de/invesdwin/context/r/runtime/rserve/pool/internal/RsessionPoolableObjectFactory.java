@@ -7,7 +7,9 @@ import org.math.R.Rsession;
 import org.springframework.beans.factory.FactoryBean;
 
 import de.invesdwin.context.pool.IPoolableObjectFactory;
+import de.invesdwin.context.r.runtime.contract.IScriptTaskRunnerR;
 import de.invesdwin.context.r.runtime.rserve.RserveProperties;
+import de.invesdwin.context.r.runtime.rserve.RserveScriptTaskEngineR;
 import de.invesdwin.context.r.runtime.rserve.RserverConfMode;
 import de.invesdwin.util.error.UnknownArgumentException;
 
@@ -49,7 +51,9 @@ public final class RsessionPoolableObjectFactory
 
     @Override
     public void passivateObject(final Rsession obj) throws Exception {
-        obj.rmAll();
+        final RserveScriptTaskEngineR engine = new RserveScriptTaskEngineR(obj);
+        engine.eval(IScriptTaskRunnerR.CLEANUP_SCRIPT);
+        engine.close();
         obj.close(); //reset logger
     }
 

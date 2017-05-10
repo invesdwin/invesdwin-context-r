@@ -4,7 +4,6 @@ import javax.annotation.concurrent.NotThreadSafe;
 
 import org.rosuda.JRI.RBool;
 import org.rosuda.JRI.REXP;
-import org.rosuda.JRI.Rengine;
 
 import de.invesdwin.context.integration.script.IScriptTaskResults;
 import de.invesdwin.util.assertions.Assertions;
@@ -12,37 +11,32 @@ import de.invesdwin.util.assertions.Assertions;
 @NotThreadSafe
 public class JriScriptTaskResultsR implements IScriptTaskResults {
 
-    private Rengine rengine;
+    private final JriScriptTaskEngineR engine;
 
-    public JriScriptTaskResultsR(final Rengine rengine) {
-        this.rengine = rengine;
+    public JriScriptTaskResultsR(final JriScriptTaskEngineR engine) {
+        this.engine = engine;
     }
 
     @Override
-    public void close() {
-        rengine = null;
-    }
-
-    @Override
-    public Rengine getEngine() {
-        return rengine;
+    public JriScriptTaskEngineR getEngine() {
+        return engine;
     }
 
     @Override
     public String getString(final String variable) {
-        final REXP rexp = rengine.eval(variable);
+        final REXP rexp = engine.unwrap().eval(variable);
         return rexp.asString();
     }
 
     @Override
     public String[] getStringVector(final String variable) {
-        final REXP rexp = rengine.eval(variable);
+        final REXP rexp = engine.unwrap().eval(variable);
         return rexp.asStringArray();
     }
 
     @Override
     public String[][] getStringMatrix(final String variable) {
-        final REXP rexp = rengine.eval(variable);
+        final REXP rexp = engine.unwrap().eval(variable);
         return asStringMatrix(rexp);
     }
 
@@ -77,25 +71,25 @@ public class JriScriptTaskResultsR implements IScriptTaskResults {
 
     @Override
     public double getDouble(final String variable) {
-        final REXP rexp = rengine.eval(variable);
+        final REXP rexp = engine.unwrap().eval(variable);
         return rexp.asDouble();
     }
 
     @Override
     public double[] getDoubleVector(final String variable) {
-        final REXP rexp = rengine.eval(variable);
+        final REXP rexp = engine.unwrap().eval(variable);
         return rexp.asDoubleArray();
     }
 
     @Override
     public double[][] getDoubleMatrix(final String variable) {
-        final REXP rexp = rengine.eval(variable);
+        final REXP rexp = engine.unwrap().eval(variable);
         return rexp.asDoubleMatrix();
     }
 
     @Override
     public int getInteger(final String variable) {
-        final REXP rexp = rengine.eval(variable);
+        final REXP rexp = engine.unwrap().eval(variable);
         final int[] array = rexp.asIntArray();
         Assertions.checkEquals(array.length, 1);
         return array[0];
@@ -103,13 +97,13 @@ public class JriScriptTaskResultsR implements IScriptTaskResults {
 
     @Override
     public int[] getIntegerVector(final String variable) {
-        final REXP rexp = rengine.eval(variable);
+        final REXP rexp = engine.unwrap().eval(variable);
         return rexp.asIntArray();
     }
 
     @Override
     public int[][] getIntegerMatrix(final String variable) {
-        final REXP rexp = rengine.eval(variable);
+        final REXP rexp = engine.unwrap().eval(variable);
         return asIntMatrix(rexp);
     }
 
@@ -144,14 +138,14 @@ public class JriScriptTaskResultsR implements IScriptTaskResults {
 
     @Override
     public boolean getBoolean(final String variable) {
-        final REXP rexp = rengine.eval(variable);
+        final REXP rexp = engine.unwrap().eval(variable);
         final RBool bool = rexp.asBool();
         return bool.isTRUE();
     }
 
     @Override
     public boolean[] getBooleanVector(final String variable) {
-        final REXP rexp = rengine.eval(variable);
+        final REXP rexp = engine.unwrap().eval(variable);
         final int[] boolArray = rexp.asIntArray();
         final boolean[] booleanVector = new boolean[boolArray.length];
         for (int i = 0; i < boolArray.length; i++) {
@@ -162,7 +156,7 @@ public class JriScriptTaskResultsR implements IScriptTaskResults {
 
     @Override
     public boolean[][] getBooleanMatrix(final String variable) {
-        final REXP rexp = rengine.eval(variable);
+        final REXP rexp = engine.unwrap().eval(variable);
         final int[][] matrix = asIntMatrix(rexp);
         final boolean[][] booleanMatrix = new boolean[matrix.length][];
         for (int i = 0; i < matrix.length; i++) {

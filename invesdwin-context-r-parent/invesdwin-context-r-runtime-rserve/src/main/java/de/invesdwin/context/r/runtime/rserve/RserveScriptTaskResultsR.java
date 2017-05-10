@@ -2,7 +2,6 @@ package de.invesdwin.context.r.runtime.rserve;
 
 import javax.annotation.concurrent.NotThreadSafe;
 
-import org.math.R.Rsession;
 import org.rosuda.REngine.REXP;
 import org.rosuda.REngine.REXPMismatchException;
 
@@ -12,26 +11,21 @@ import de.invesdwin.util.assertions.Assertions;
 @NotThreadSafe
 public class RserveScriptTaskResultsR implements IScriptTaskResults {
 
-    private Rsession rsession;
+    private final RserveScriptTaskEngineR engine;
 
-    public RserveScriptTaskResultsR(final Rsession rsession) {
-        this.rsession = rsession;
+    public RserveScriptTaskResultsR(final RserveScriptTaskEngineR engine) {
+        this.engine = engine;
     }
 
     @Override
-    public Rsession getEngine() {
-        return rsession;
-    }
-
-    @Override
-    public void close() {
-        rsession = null;
+    public RserveScriptTaskEngineR getEngine() {
+        return engine;
     }
 
     @Override
     public String getString(final String variable) {
         try {
-            final REXP rexp = rsession.eval(variable);
+            final REXP rexp = engine.unwrap().eval(variable);
             final boolean[] na = rexp.isNA();
             Assertions.checkEquals(na.length, 1);
             if (na[0]) {
@@ -47,7 +41,7 @@ public class RserveScriptTaskResultsR implements IScriptTaskResults {
     @Override
     public String[] getStringVector(final String variable) {
         try {
-            return rsession.eval(variable).asStrings();
+            return engine.unwrap().eval(variable).asStrings();
         } catch (final REXPMismatchException e) {
             throw new RuntimeException(e);
         }
@@ -56,7 +50,7 @@ public class RserveScriptTaskResultsR implements IScriptTaskResults {
     @Override
     public String[][] getStringMatrix(final String variable) {
         try {
-            final REXP rexp = rsession.eval(variable);
+            final REXP rexp = engine.unwrap().eval(variable);
             return asStringMatrix(rexp);
         } catch (final REXPMismatchException e) {
             throw new RuntimeException(e);
@@ -90,7 +84,7 @@ public class RserveScriptTaskResultsR implements IScriptTaskResults {
     @Override
     public double getDouble(final String variable) {
         try {
-            return rsession.eval(variable).asDouble();
+            return engine.unwrap().eval(variable).asDouble();
         } catch (final REXPMismatchException e) {
             throw new RuntimeException(e);
         }
@@ -99,7 +93,7 @@ public class RserveScriptTaskResultsR implements IScriptTaskResults {
     @Override
     public double[] getDoubleVector(final String variable) {
         try {
-            return rsession.eval(variable).asDoubles();
+            return engine.unwrap().eval(variable).asDoubles();
         } catch (final REXPMismatchException e) {
             throw new RuntimeException(e);
         }
@@ -108,7 +102,7 @@ public class RserveScriptTaskResultsR implements IScriptTaskResults {
     @Override
     public double[][] getDoubleMatrix(final String variable) {
         try {
-            return rsession.eval(variable).asDoubleMatrix();
+            return engine.unwrap().eval(variable).asDoubleMatrix();
         } catch (final REXPMismatchException e) {
             throw new RuntimeException(e);
         }
@@ -117,7 +111,7 @@ public class RserveScriptTaskResultsR implements IScriptTaskResults {
     @Override
     public int getInteger(final String variable) {
         try {
-            return rsession.eval(variable).asInteger();
+            return engine.unwrap().eval(variable).asInteger();
         } catch (final REXPMismatchException e) {
             throw new RuntimeException(e);
         }
@@ -126,7 +120,7 @@ public class RserveScriptTaskResultsR implements IScriptTaskResults {
     @Override
     public int[] getIntegerVector(final String variable) {
         try {
-            return rsession.eval(variable).asIntegers();
+            return engine.unwrap().eval(variable).asIntegers();
         } catch (final REXPMismatchException e) {
             throw new RuntimeException(e);
         }
@@ -135,7 +129,7 @@ public class RserveScriptTaskResultsR implements IScriptTaskResults {
     @Override
     public int[][] getIntegerMatrix(final String variable) {
         try {
-            return asIntegerMatrix(rsession.eval(variable));
+            return asIntegerMatrix(engine.unwrap().eval(variable));
         } catch (final REXPMismatchException e) {
             throw new RuntimeException(e);
         }
@@ -168,7 +162,7 @@ public class RserveScriptTaskResultsR implements IScriptTaskResults {
     @Override
     public boolean getBoolean(final String variable) {
         try {
-            return rsession.eval(variable).asInteger() > 0;
+            return engine.unwrap().eval(variable).asInteger() > 0;
         } catch (final REXPMismatchException e) {
             throw new RuntimeException(e);
         }
@@ -177,7 +171,7 @@ public class RserveScriptTaskResultsR implements IScriptTaskResults {
     @Override
     public boolean[] getBooleanVector(final String variable) {
         try {
-            final int[] ints = rsession.eval(variable).asIntegers();
+            final int[] ints = engine.unwrap().eval(variable).asIntegers();
             final boolean[] booleanVector = new boolean[ints.length];
             for (int i = 0; i < ints.length; i++) {
                 booleanVector[i] = ints[i] > 0;
@@ -191,7 +185,7 @@ public class RserveScriptTaskResultsR implements IScriptTaskResults {
     @Override
     public boolean[][] getBooleanMatrix(final String variable) {
         try {
-            final double[][] matrix = rsession.eval(variable).asDoubleMatrix();
+            final double[][] matrix = engine.unwrap().eval(variable).asDoubleMatrix();
             final boolean[][] booleanMatrix = new boolean[matrix.length][];
             for (int i = 0; i < matrix.length; i++) {
                 final double[] vector = matrix[i];

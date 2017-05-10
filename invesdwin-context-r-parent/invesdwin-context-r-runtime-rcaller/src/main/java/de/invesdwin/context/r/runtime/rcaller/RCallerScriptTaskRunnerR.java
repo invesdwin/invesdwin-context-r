@@ -37,19 +37,15 @@ public final class RCallerScriptTaskRunnerR implements IScriptTaskRunnerR, Facto
         try {
             //inputs
             rcaller.getRCode().clearOnline();
-            final RCallerScriptTaskInputsR inputs = new RCallerScriptTaskInputsR(rcaller);
-            scriptTask.populateInputs(inputs);
-            inputs.close();
+            final RCallerScriptTaskEngineR engine = new RCallerScriptTaskEngineR(rcaller);
+            scriptTask.populateInputs(engine.getInputs());
 
             //execute
-            rcaller.getRCode().addRCode(scriptTask.getScriptResourceAsString());
-            rcaller.getRCode().addRCode(INTERNAL_RESULT_VARIABLE + " <- c()");
-            rcaller.runAndReturnResultOnline(INTERNAL_RESULT_VARIABLE);
+            scriptTask.executeScript(engine);
 
             //results
-            final RCallerScriptTaskResultsR results = new RCallerScriptTaskResultsR(rcaller);
-            final T result = scriptTask.extractResults(results);
-            results.close();
+            final T result = scriptTask.extractResults(engine.getResults());
+            engine.close();
 
             //return
             RCallerObjectPool.INSTANCE.returnObject(rcaller);

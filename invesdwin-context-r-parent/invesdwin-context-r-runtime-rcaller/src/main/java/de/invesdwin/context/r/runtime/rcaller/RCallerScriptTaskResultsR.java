@@ -2,37 +2,30 @@ package de.invesdwin.context.r.runtime.rcaller;
 
 import javax.annotation.concurrent.NotThreadSafe;
 
-import com.github.rcaller.rstuff.RCaller;
-
 import de.invesdwin.context.integration.script.IScriptTaskResults;
 import de.invesdwin.util.assertions.Assertions;
 
 @NotThreadSafe
 public class RCallerScriptTaskResultsR implements IScriptTaskResults {
-    private RCaller rcaller;
+    private final RCallerScriptTaskEngineR engine;
 
-    public RCallerScriptTaskResultsR(final RCaller rcaller) {
-        this.rcaller = rcaller;
+    public RCallerScriptTaskResultsR(final RCallerScriptTaskEngineR engine) {
+        this.engine = engine;
     }
 
     @Override
-    public RCaller getEngine() {
-        return rcaller;
-    }
-
-    @Override
-    public void close() {
-        rcaller = null;
+    public RCallerScriptTaskEngineR getEngine() {
+        return engine;
     }
 
     private void requestVariable(final String variable) {
-        rcaller.runAndReturnResultOnline(variable);
+        engine.unwrap().runAndReturnResultOnline(variable);
     }
 
     @Override
     public String getString(final String variable) {
         requestVariable(variable);
-        final String[] array = replaceNaWithNull(rcaller.getParser().getAsStringArray(variable));
+        final String[] array = replaceNaWithNull(engine.unwrap().getParser().getAsStringArray(variable));
         Assertions.checkEquals(array.length, 1);
         return array[0];
     }
@@ -49,7 +42,7 @@ public class RCallerScriptTaskResultsR implements IScriptTaskResults {
     @Override
     public String[] getStringVector(final String variable) {
         requestVariable(variable);
-        return replaceNaWithNull(rcaller.getParser().getAsStringArray(variable));
+        return replaceNaWithNull(engine.unwrap().getParser().getAsStringArray(variable));
     }
 
     @Override
@@ -58,7 +51,9 @@ public class RCallerScriptTaskResultsR implements IScriptTaskResults {
         if (ct == null) {
             return null;
         }
-        rcaller.getRCode().addRCode(RCallerScriptTaskRunnerR.INTERNAL_RESULT_VARIABLE + " <- dim(" + variable + ")");
+        engine.unwrap()
+                .getRCode()
+                .addRCode(RCallerScriptTaskRunnerR.INTERNAL_RESULT_VARIABLE + " <- dim(" + variable + ")");
         final int[] ds = getIntegerVector(RCallerScriptTaskRunnerR.INTERNAL_RESULT_VARIABLE);
         if ((ds == null) || (ds.length != 2)) {
             return null;
@@ -82,7 +77,7 @@ public class RCallerScriptTaskResultsR implements IScriptTaskResults {
     @Override
     public double getDouble(final String variable) {
         requestVariable(variable);
-        final double[] array = rcaller.getParser().getAsDoubleArray(variable);
+        final double[] array = engine.unwrap().getParser().getAsDoubleArray(variable);
         Assertions.checkEquals(array.length, 1);
         return array[0];
     }
@@ -90,17 +85,17 @@ public class RCallerScriptTaskResultsR implements IScriptTaskResults {
     @Override
     public double[] getDoubleVector(final String variable) {
         requestVariable(variable);
-        return rcaller.getParser().getAsDoubleArray(variable);
+        return engine.unwrap().getParser().getAsDoubleArray(variable);
     }
 
     @Override
     public double[][] getDoubleMatrix(final String variable) {
-        //not using rcaller getDoubleMatrix since it transposes the matrix as a side effect...
+        //not using engine getDoubleMatrix since it transposes the matrix as a side effect...
         final double[] ct = getDoubleVector(variable);
         if (ct == null) {
             return null;
         }
-        final int[] ds = rcaller.getParser().getDimensions(variable);
+        final int[] ds = engine.unwrap().getParser().getDimensions(variable);
         if ((ds == null) || (ds.length != 2)) {
             return null;
         }
@@ -123,7 +118,7 @@ public class RCallerScriptTaskResultsR implements IScriptTaskResults {
     @Override
     public int getInteger(final String variable) {
         requestVariable(variable);
-        final int[] array = rcaller.getParser().getAsIntArray(variable);
+        final int[] array = engine.unwrap().getParser().getAsIntArray(variable);
         Assertions.checkEquals(array.length, 1);
         return array[0];
     }
@@ -131,7 +126,7 @@ public class RCallerScriptTaskResultsR implements IScriptTaskResults {
     @Override
     public int[] getIntegerVector(final String variable) {
         requestVariable(variable);
-        return rcaller.getParser().getAsIntArray(variable);
+        return engine.unwrap().getParser().getAsIntArray(variable);
     }
 
     @Override
@@ -140,7 +135,7 @@ public class RCallerScriptTaskResultsR implements IScriptTaskResults {
         if (ct == null) {
             return null;
         }
-        final int[] ds = rcaller.getParser().getDimensions(variable);
+        final int[] ds = engine.unwrap().getParser().getDimensions(variable);
         if ((ds == null) || (ds.length != 2)) {
             return null;
         }
@@ -163,7 +158,7 @@ public class RCallerScriptTaskResultsR implements IScriptTaskResults {
     @Override
     public boolean getBoolean(final String variable) {
         requestVariable(variable);
-        final boolean[] array = rcaller.getParser().getAsLogicalArray(variable);
+        final boolean[] array = engine.unwrap().getParser().getAsLogicalArray(variable);
         Assertions.checkEquals(array.length, 1);
         return array[0];
     }
@@ -171,13 +166,13 @@ public class RCallerScriptTaskResultsR implements IScriptTaskResults {
     @Override
     public boolean[] getBooleanVector(final String variable) {
         requestVariable(variable);
-        return rcaller.getParser().getAsLogicalArray(variable);
+        return engine.unwrap().getParser().getAsLogicalArray(variable);
     }
 
     @Override
     public boolean[][] getBooleanMatrix(final String variable) {
-        rcaller.getRCode().addRCode(RCallerScriptTaskRunnerR.INTERNAL_RESULT_VARIABLE + " <- array(as.numeric(" + variable
-                + "), dim(" + variable + "))");
+        engine.unwrap().getRCode().addRCode(RCallerScriptTaskRunnerR.INTERNAL_RESULT_VARIABLE + " <- array(as.numeric("
+                + variable + "), dim(" + variable + "))");
         final double[][] matrix = getDoubleMatrix(RCallerScriptTaskRunnerR.INTERNAL_RESULT_VARIABLE);
         final boolean[][] booleanMatrix = new boolean[matrix.length][];
         for (int i = 0; i < matrix.length; i++) {

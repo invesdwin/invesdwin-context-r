@@ -7,8 +7,8 @@ import java.util.List;
 import javax.annotation.concurrent.NotThreadSafe;
 
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
 
+import de.invesdwin.context.integration.script.IScriptTaskEngine;
 import de.invesdwin.context.integration.script.IScriptTaskInputs;
 import de.invesdwin.context.integration.script.IScriptTaskResults;
 import de.invesdwin.util.assertions.Assertions;
@@ -68,12 +68,6 @@ public class InputsAndResultsTestString {
         new AScriptTaskR<Void>() {
 
             @Override
-            public Resource getScriptResource() {
-                return new ClassPathResource(InputsAndResultsTestString.class.getSimpleName() + ".R",
-                        InputsAndResultsTestString.class);
-            }
-
-            @Override
             public void populateInputs(final IScriptTaskInputs inputs) {
                 inputs.putString("putString", putString);
                 inputs.putString("putStringWithNull", putStringWithNull);
@@ -89,6 +83,12 @@ public class InputsAndResultsTestString {
 
                 inputs.putStringMatrixAsList("putStringMatrixAsList", putStringMatrixAsList);
                 inputs.putStringMatrixAsList("putStringMatrixAsListWithNull", putStringMatrixAsListWithNull);
+            }
+
+            @Override
+            public void executeScript(final IScriptTaskEngine engine) {
+                engine.eval(new ClassPathResource(InputsAndResultsTestString.class.getSimpleName() + ".R",
+                        InputsAndResultsTestString.class));
             }
 
             @Override

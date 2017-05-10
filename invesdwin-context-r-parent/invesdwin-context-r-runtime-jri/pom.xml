@@ -11,8 +11,7 @@
 	<packaging>jar</packaging>
 	
 	<!-- sudo apt-get install r-cran-rjava -->
-	<!-- sudo ln -s /usr/lib/R/site-library/rJava/jri/libjri.so /usr/lib/libjri.so -->
-	<!-- sudo echo "R_HOME=/usr/lib/R" >> /etc/environment -->
+	<!-- sudo echo 'R_HOME="/usr/lib/R"' >> /etc/environment -->
 
 	<dependencies>
 		<dependency>

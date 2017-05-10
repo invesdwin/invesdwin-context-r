@@ -9,6 +9,7 @@ import org.renjin.script.RenjinScriptEngineFactory;
 import org.springframework.beans.factory.FactoryBean;
 
 import de.invesdwin.context.pool.IPoolableObjectFactory;
+import de.invesdwin.context.r.runtime.contract.IScriptTaskRunnerR;
 
 @ThreadSafe
 @Named
@@ -42,7 +43,7 @@ public final class RenjinScriptEnginePoolableObjectFactory
 
     @Override
     public void passivateObject(final RenjinScriptEngine obj) throws Exception {
-        obj.eval("rm(list = ls())");
+        obj.eval(IScriptTaskRunnerR.CLEANUP_SCRIPT);
     }
 
     @Override

@@ -2,28 +2,21 @@ package de.invesdwin.context.r.runtime.rcaller;
 
 import javax.annotation.concurrent.NotThreadSafe;
 
-import com.github.rcaller.rstuff.RCaller;
-
 import de.invesdwin.context.integration.script.IScriptTaskInputs;
 import de.invesdwin.util.assertions.Assertions;
 
 @NotThreadSafe
 public class RCallerScriptTaskInputsR implements IScriptTaskInputs {
 
-    private RCaller rcaller;
+    private final RCallerScriptTaskEngineR engine;
 
-    public RCallerScriptTaskInputsR(final RCaller rcaller) {
-        this.rcaller = rcaller;
+    public RCallerScriptTaskInputsR(final RCallerScriptTaskEngineR engine) {
+        this.engine = engine;
     }
 
     @Override
-    public RCaller getEngine() {
-        return rcaller;
-    }
-
-    @Override
-    public void close() {
-        rcaller = null;
+    public RCallerScriptTaskEngineR getEngine() {
+        return engine;
     }
 
     @Override
@@ -31,14 +24,14 @@ public class RCallerScriptTaskInputsR implements IScriptTaskInputs {
         if (value == null) {
             putExpression(variable, "NA_character_");
         } else {
-            rcaller.getRCode().addString(variable, value);
+            engine.unwrap().getRCode().addString(variable, value);
         }
     }
 
     @Override
     public void putStringVector(final String variable, final String[] value) {
-        rcaller.getRCode().addStringArray(variable, replaceNullWithNa(value));
-        rcaller.getRCode().addRCode(variable + "[ " + variable + " == \"NA_character_\" ] <- NA_character_");
+        engine.unwrap().getRCode().addStringArray(variable, replaceNullWithNa(value));
+        engine.unwrap().getRCode().addRCode(variable + "[ " + variable + " == \"NA_character_\" ] <- NA_character_");
     }
 
     @Override
@@ -70,28 +63,28 @@ public class RCallerScriptTaskInputsR implements IScriptTaskInputs {
 
     @Override
     public void putDouble(final String variable, final double value) {
-        rcaller.getRCode().addDouble(variable, value);
+        engine.unwrap().getRCode().addDouble(variable, value);
     }
 
     @Override
     public void putDoubleVector(final String variable, final double[] value) {
-        rcaller.getRCode().addDoubleArray(variable, value);
+        engine.unwrap().getRCode().addDoubleArray(variable, value);
     }
 
     @Override
     public void putDoubleMatrix(final String variable, final double[][] value) {
-        rcaller.getRCode().addDoubleMatrix(variable, value);
+        engine.unwrap().getRCode().addDoubleMatrix(variable, value);
     }
 
     @Override
     public void putInteger(final String variable, final int value) {
-        rcaller.getRCode().addInt(variable, value);
+        engine.unwrap().getRCode().addInt(variable, value);
         putExpression(variable, "as.integer(" + variable + ")");
     }
 
     @Override
     public void putIntegerVector(final String variable, final int[] value) {
-        rcaller.getRCode().addIntArray(variable, value);
+        engine.unwrap().getRCode().addIntArray(variable, value);
         putExpression(variable, "as.integer(" + variable + ")");
     }
 
@@ -106,18 +99,18 @@ public class RCallerScriptTaskInputsR implements IScriptTaskInputs {
             }
             matrix[i] = vector;
         }
-        rcaller.getRCode().addDoubleMatrix(variable, matrix);
+        engine.unwrap().getRCode().addDoubleMatrix(variable, matrix);
         putExpression(variable, "array(as.integer(" + variable + "), dim(" + variable + "))");
     }
 
     @Override
     public void putBoolean(final String variable, final boolean value) {
-        rcaller.getRCode().addLogical(variable, value);
+        engine.unwrap().getRCode().addLogical(variable, value);
     }
 
     @Override
     public void putBooleanVector(final String variable, final boolean[] value) {
-        rcaller.getRCode().addLogicalArray(variable, value);
+        engine.unwrap().getRCode().addLogicalArray(variable, value);
     }
 
     @Override
@@ -136,13 +129,13 @@ public class RCallerScriptTaskInputsR implements IScriptTaskInputs {
             }
             matrix[i] = vector;
         }
-        rcaller.getRCode().addDoubleMatrix(variable, matrix);
+        engine.unwrap().getRCode().addDoubleMatrix(variable, matrix);
         putExpression(variable, "array(as.logical(" + variable + "), dim(" + variable + "))");
     }
 
     @Override
     public void putExpression(final String variable, final String expression) {
-        rcaller.getRCode().addRCode(variable + " <- " + expression);
+        engine.unwrap().getRCode().addRCode(variable + " <- " + expression);
     }
 
 }

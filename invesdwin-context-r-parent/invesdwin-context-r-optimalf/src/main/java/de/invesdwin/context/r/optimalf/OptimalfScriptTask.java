@@ -5,8 +5,8 @@ import java.util.List;
 import javax.annotation.concurrent.NotThreadSafe;
 
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
 
+import de.invesdwin.context.integration.script.IScriptTaskEngine;
 import de.invesdwin.context.integration.script.IScriptTaskInputs;
 import de.invesdwin.context.integration.script.IScriptTaskResults;
 import de.invesdwin.context.r.runtime.contract.AScriptTaskR;
@@ -21,13 +21,13 @@ public class OptimalfScriptTask extends AScriptTaskR<List<Double>> {
     }
 
     @Override
-    public Resource getScriptResource() {
-        return new ClassPathResource(OptimalfScriptTask.class.getSimpleName() + ".R", getClass());
+    public void populateInputs(final IScriptTaskInputs inputs) {
+        inputs.putDoubleMatrixAsList("asd", tradesPerStrategy);
     }
 
     @Override
-    public void populateInputs(final IScriptTaskInputs inputs) {
-        inputs.putDoubleMatrixAsList("asd", tradesPerStrategy);
+    public void executeScript(final IScriptTaskEngine engine) {
+        engine.eval(new ClassPathResource(OptimalfScriptTask.class.getSimpleName() + ".R", getClass()));
     }
 
     @Override

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.FactoryBean;
 import com.github.rcaller.rstuff.RCaller;
 
 import de.invesdwin.context.pool.IPoolableObjectFactory;
+import de.invesdwin.context.r.runtime.contract.IScriptTaskRunnerR;
 import de.invesdwin.context.r.runtime.rcaller.RCallerScriptTaskRunnerR;
 
 @ThreadSafe
@@ -40,7 +41,7 @@ public final class RCallerPoolableObjectFactory
     @Override
     public void passivateObject(final RCaller obj) throws Exception {
         obj.getRCode().clear();
-        obj.getRCode().getCode().insert(0, "rm(list = ls())\n");
+        obj.getRCode().getCode().insert(0, IScriptTaskRunnerR.CLEANUP_SCRIPT + "\n");
         obj.getRCode().addRCode(RCallerScriptTaskRunnerR.INTERNAL_RESULT_VARIABLE + " <- c()");
         obj.runAndReturnResultOnline(RCallerScriptTaskRunnerR.INTERNAL_RESULT_VARIABLE);
         obj.deleteTempFiles();
