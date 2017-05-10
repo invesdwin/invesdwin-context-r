@@ -38,4 +38,4 @@ For an example R script integration, have a look at the `invesdwin-context-r-opt
 
 ## Recommended Editors
 
-For working with R we recommend using in [StatET](http://www.walware.de/goto/statet) if you are mainly using Eclipse and/or [RStudio](https://www.rstudio.com/) for experimenting in a standalone development environment.
+For working with R we recommend using in [StatET](http://www.walware.de/goto/statet) if you are mainly using Eclipse (the editor suffices if you only run the scripts using invesdwin, so no complicated R setup with eclipse is needed, just install the plugin from the marketplace) and/or [RStudio](https://www.rstudio.com/) for experimenting in a standalone development environment.
