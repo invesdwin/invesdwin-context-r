@@ -1,5 +1,5 @@
 print("getBoolean")
-if(exists(getBoolean)){
+if(exists("getBoolean")){
 	stop("getBoolean already defined!")
 }
 getBoolean <- putBoolean
@@ -10,7 +10,7 @@ if(typeof(getBoolean) != "logical"){
 }
 
 print("getBooleanVector")
-if(exists(getBooleanVector)){
+if(exists("getBooleanVector")){
 	stop("getBooleanVector already defined!")
 }
 getBooleanVector <- putBooleanVector
@@ -21,7 +21,7 @@ if(typeof(getBooleanVector) != "logical"){
 }
 
 print("getBooleanVectorAsList")
-if(exists(getBooleanVectorAsList)){
+if(exists("getBooleanVectorAsList")){
 	stop("getBooleanVectorAsList already defined!")
 }
 getBooleanVectorAsList <- putBooleanVectorAsList
@@ -32,7 +32,7 @@ if(typeof(getBooleanVectorAsList) != "logical"){
 }
 
 print("getBooleanMatrix")
-if(exists(getBooleanMatrix)){
+if(exists("getBooleanMatrix")){
 	stop("getBooleanMatrix already defined!")
 }
 getBooleanMatrix <- putBooleanMatrix
@@ -43,7 +43,7 @@ if(typeof(getBooleanMatrix) != "logical"){
 }
 
 print("getBooleanMatrixAsList")
-if(exists(getBooleanMatrixAsList)){
+if(exists("getBooleanMatrixAsList")){
 	stop("getBooleanMatrixAsList already defined!")
 }
 getBooleanMatrixAsList <- putBooleanMatrixAsList

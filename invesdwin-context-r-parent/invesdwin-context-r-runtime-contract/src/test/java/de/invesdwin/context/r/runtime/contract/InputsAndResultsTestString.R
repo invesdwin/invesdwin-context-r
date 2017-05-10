@@ -1,5 +1,5 @@
 print("getString")
-if(exists(getString)){
+if(exists("getString")){
 	stop("getString already defined!")
 }
 getString <- putString
@@ -10,7 +10,7 @@ if(typeof(getString) != "character"){
 }
 
 print("getStringWithNull")
-if(exists(getStringWithNull)){
+if(exists("getStringWithNull")){
 	stop("getStringWithNull already defined!")
 }
 getStringWithNull <- putStringWithNull
@@ -24,7 +24,7 @@ if(!is.na(getStringWithNull)){
 }
 
 print("getStringVector")
-if(exists(getStringVector)){
+if(exists("getStringVector")){
 	stop("getStringVector already defined!")
 }
 getStringVector <- putStringVector
@@ -36,7 +36,7 @@ if(typeof(getStringVector) != "character"){
 
 
 print("getStringVectorWithNull")
-if(exists(getStringVectorWithNull)){
+if(exists("getStringVectorWithNull")){
 	stop("getStringVectorWithNull already defined!")
 }
 getStringVectorWithNull <- putStringVectorWithNull
@@ -50,7 +50,7 @@ if(!is.na(getStringVectorWithNull[2])){
 }
 
 print("getStringVectorAsList")
-if(exists(getStringVectorAsList)){
+if(exists("getStringVectorAsList")){
 	stop("getStringVectorAsList already defined!")
 }
 getStringVectorAsList <- putStringVectorAsList
@@ -61,7 +61,7 @@ if(typeof(getStringVectorAsList) != "character"){
 }
 
 print("getStringVectorAsListWithNull")
-if(exists(getStringVectorAsListWithNull)){
+if(exists("getStringVectorAsListWithNull")){
 	stop("getStringVectorAsListWithNull already defined!")
 }
 getStringVectorAsListWithNull <- putStringVectorAsListWithNull
@@ -75,7 +75,7 @@ if(!is.na(getStringVectorAsListWithNull[2])){
 }
 
 print("getStringMatrix")
-if(exists(getStringMatrix)){
+if(exists("getStringMatrix")){
 	stop("getStringMatrix already defined!")
 }
 getStringMatrix <- putStringMatrix
@@ -87,7 +87,7 @@ if(typeof(getStringMatrix) != "character"){
 
 
 print("getStringMatrixWithNull")
-if(exists(getStringMatrixWithNull)){
+if(exists("getStringMatrixWithNull")){
 	stop("getStringMatrixWithNull already defined!")
 }
 getStringMatrixWithNull <- putStringMatrixWithNull
@@ -107,7 +107,7 @@ if(!is.na(getStringMatrixWithNull[3][3])){
 }
 
 print("getStringMatrixAsList")
-if(exists(getStringMatrixAsList)){
+if(exists("getStringMatrixAsList")){
 	stop("getStringMatrixAsList already defined!")
 }
 getStringMatrixAsList <- putStringMatrixAsList
@@ -118,7 +118,7 @@ if(typeof(getStringMatrixAsList) != "character"){
 }
 
 print("getStringMatrixAsListWithNull")
-if(exists(getStringMatrixAsListWithNull)){
+if(exists("getStringMatrixAsListWithNull")){
 	stop("getStringMatrixAsListWithNull already defined!")
 }
 getStringMatrixAsListWithNull <- putStringMatrixAsListWithNull

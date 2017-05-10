@@ -62,6 +62,7 @@ public final class JriScriptTaskRunnerR implements IScriptTaskRunnerR, FactoryBe
             results.close();
 
             //return
+            eval(RENGINE, "rm(list = ls())");
             RENGINE_LOCK.unlock();
             return result;
         } catch (final Throwable t) {

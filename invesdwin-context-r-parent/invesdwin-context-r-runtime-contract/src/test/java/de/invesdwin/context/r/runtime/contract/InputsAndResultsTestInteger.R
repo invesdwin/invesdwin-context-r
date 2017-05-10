@@ -1,5 +1,5 @@
 print("getInteger")
-if(exists(getInteger)){
+if(exists("getInteger")){
 	stop("getInteger already defined!")
 }
 getInteger <- putInteger
@@ -10,7 +10,7 @@ if(typeof(getInteger) != "integer"){
 }
 
 print("getIntegerVector")
-if(exists(getIntegerVector)){
+if(exists("getIntegerVector")){
 	stop("getIntegerVector already defined!")
 }
 getIntegerVector <- putIntegerVector
@@ -21,7 +21,7 @@ if(typeof(getIntegerVector) != "integer"){
 }
 
 print("getIntegerVectorAsList")
-if(exists(getIntegerVectorAsList)){
+if(exists("getIntegerVectorAsList")){
 	stop("getIntegerVectorAsList already defined!")
 }
 getIntegerVectorAsList <- putIntegerVectorAsList
@@ -32,7 +32,7 @@ if(typeof(getIntegerVectorAsList) != "integer"){
 }
 
 print("getIntegerMatrix")
-if(exists(getIntegerMatrix)){
+if(exists("getIntegerMatrix")){
 	stop("getIntegerMatrix already defined!")
 }
 getIntegerMatrix <- putIntegerMatrix
@@ -43,7 +43,7 @@ if(typeof(getIntegerMatrix) != "integer"){
 }
 
 print("getIntegerMatrixAsList")
-if(exists(getIntegerMatrixAsList)){
+if(exists("getIntegerMatrixAsList")){
 	stop("getIntegerMatrixAsList already defined!")
 }
 getIntegerMatrixAsList <- putIntegerMatrixAsList

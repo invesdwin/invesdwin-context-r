@@ -1,5 +1,5 @@
 print("getDouble")
-if(exists(getDouble)){
+if(exists("getDouble")){
 	stop("getDouble already defined!")
 }
 getDouble <- putDouble
@@ -10,7 +10,7 @@ if(typeof(getDouble) != "double"){
 }
 
 print("getDoubleVector")
-if(exists(getDoubleVector)){
+if(exists("getDoubleVector")){
 	stop("getDoubleVector already defined!")
 }
 getDoubleVector <- putDoubleVector
@@ -21,7 +21,7 @@ if(typeof(getDoubleVector) != "double"){
 }
 
 print("getDoubleVectorAsList")
-if(exists(getDoubleVectorAsList)){
+if(exists("getDoubleVectorAsList")){
 	stop("getDoubleVectorAsList already defined!")
 }
 getDoubleVectorAsList <- putDoubleVectorAsList
@@ -32,7 +32,7 @@ if(typeof(getDoubleVectorAsList) != "double"){
 }
 
 print("getDoubleMatrix")
-if(exists(getDoubleMatrix)){
+if(exists("getDoubleMatrix")){
 	stop("getDoubleMatrix already defined!")
 }
 getDoubleMatrix <- putDoubleMatrix
@@ -43,7 +43,7 @@ if(typeof(getDoubleMatrix) != "double"){
 }
 
 print("getDoubleMatrixAsList")
-if(exists(getDoubleMatrixAsList)){
+if(exists("getDoubleMatrixAsList")){
 	stop("getDoubleMatrixAsList already defined!")
 }
 getDoubleMatrixAsList <- putDoubleMatrixAsList
