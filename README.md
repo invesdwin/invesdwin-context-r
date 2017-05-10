@@ -31,7 +31,7 @@ We have a few options available for integrating R:
 
 You are free to choose which integration method you prefer by selecting the appropriate runtime module as a dependency for your application. The `invesdwin-context-r-runtime-contract` module defines interfaces for integrating your R scripts in a way that works with all of the above runtime modules. So you have the benefit of being able to write your R scripts once and easily test against different runtimes in order to: 
 - verify that Renjin produces the same results as R itself
-- to measure the performance impact of the different solutions
+- to measure the performance impact of the different runtime solutions
 - to gain flexibility in various deployment scenarios
 
 For an example R script integration, have a look at the `invesdwin-context-r-optimalf` module.
