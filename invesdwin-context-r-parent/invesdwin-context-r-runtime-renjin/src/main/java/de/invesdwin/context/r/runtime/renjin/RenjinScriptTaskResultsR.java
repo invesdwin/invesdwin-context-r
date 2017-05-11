@@ -199,4 +199,14 @@ public class RenjinScriptTaskResultsR implements IScriptTaskResults {
         }
     }
 
+    @Override
+    public boolean isDefined(final String variable) {
+        return getBoolean("exists(\"" + variable + "\")");
+    }
+
+    @Override
+    public boolean isNull(final String variable) {
+        return getBoolean("is.na(" + variable + ")");
+    }
+
 }
