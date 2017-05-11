@@ -3,6 +3,7 @@ package de.invesdwin.context.r.runtime.contract;
 import de.invesdwin.context.integration.script.IScriptTaskResults;
 import de.invesdwin.util.math.Floats;
 import de.invesdwin.util.math.Longs;
+import de.invesdwin.util.math.Shorts;
 
 public interface IScriptTaskResultsR extends IScriptTaskResults {
 
@@ -22,6 +23,24 @@ public interface IScriptTaskResultsR extends IScriptTaskResults {
     default float[][] getFloatMatrix(final String variable) {
         final double[][] doubleValue = getDoubleMatrix(variable);
         return Floats.checkedCastMatrix(doubleValue);
+    }
+
+    @Override
+    default short getShort(final String variable) {
+        final int integerValue = getInteger(variable);
+        return Shorts.checkedCast(integerValue);
+    }
+
+    @Override
+    default short[] getShortVector(final String variable) {
+        final int[] integerValue = getIntegerVector(variable);
+        return Shorts.checkedCastVector(integerValue);
+    }
+
+    @Override
+    default short[][] getShortMatrix(final String variable) {
+        final int[][] integerValue = getIntegerMatrix(variable);
+        return Shorts.checkedCastMatrix(integerValue);
     }
 
     @Override
