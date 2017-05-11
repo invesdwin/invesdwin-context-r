@@ -1,11 +1,49 @@
 package de.invesdwin.context.r.runtime.contract;
 
 import de.invesdwin.context.integration.script.IScriptTaskResults;
+import de.invesdwin.util.math.Bytes;
+import de.invesdwin.util.math.Characters;
 import de.invesdwin.util.math.Floats;
 import de.invesdwin.util.math.Longs;
 import de.invesdwin.util.math.Shorts;
 
 public interface IScriptTaskResultsR extends IScriptTaskResults {
+
+    @Override
+    default byte getByte(final String variable) {
+        final int integerValue = getInteger(variable);
+        return Bytes.checkedCast(integerValue);
+    }
+
+    @Override
+    default byte[] getByteVector(final String variable) {
+        final int[] integerValue = getIntegerVector(variable);
+        return Bytes.checkedCastVector(integerValue);
+    }
+
+    @Override
+    default byte[][] getByteMatrix(final String variable) {
+        final int[][] integerValue = getIntegerMatrix(variable);
+        return Bytes.checkedCastMatrix(integerValue);
+    }
+
+    @Override
+    default char getCharacter(final String variable) {
+        final String doubleValue = getString(variable);
+        return Characters.checkedCast(doubleValue);
+    }
+
+    @Override
+    default char[] getCharacterVector(final String variable) {
+        final String[] doubleValue = getStringVector(variable);
+        return Characters.checkedCastVector(doubleValue);
+    }
+
+    @Override
+    default char[][] getCharacterMatrix(final String variable) {
+        final String[][] doubleValue = getStringMatrix(variable);
+        return Characters.checkedCastMatrix(doubleValue);
+    }
 
     @Override
     default float getFloat(final String variable) {
