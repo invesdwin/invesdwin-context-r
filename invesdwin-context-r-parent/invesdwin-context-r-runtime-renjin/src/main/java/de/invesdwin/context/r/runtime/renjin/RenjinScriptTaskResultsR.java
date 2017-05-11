@@ -8,11 +8,11 @@ import org.renjin.sexp.Logical;
 import org.renjin.sexp.SEXP;
 import org.renjin.sexp.Vector;
 
-import de.invesdwin.context.integration.script.IScriptTaskResults;
+import de.invesdwin.context.r.runtime.contract.IScriptTaskResultsR;
 import de.invesdwin.util.assertions.Assertions;
 
 @NotThreadSafe
-public class RenjinScriptTaskResultsR implements IScriptTaskResults {
+public class RenjinScriptTaskResultsR implements IScriptTaskResultsR {
 
     private final RenjinScriptTaskEngineR engine;
 
@@ -197,16 +197,6 @@ public class RenjinScriptTaskResultsR implements IScriptTaskResults {
         } catch (final ScriptException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    @Override
-    public boolean isDefined(final String variable) {
-        return getBoolean("exists(\"" + variable + "\")");
-    }
-
-    @Override
-    public boolean isNull(final String variable) {
-        return getBoolean("is.na(" + variable + ")");
     }
 
 }

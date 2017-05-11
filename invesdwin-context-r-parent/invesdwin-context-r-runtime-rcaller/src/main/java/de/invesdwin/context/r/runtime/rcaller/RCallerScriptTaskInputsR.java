@@ -2,11 +2,11 @@ package de.invesdwin.context.r.runtime.rcaller;
 
 import javax.annotation.concurrent.NotThreadSafe;
 
-import de.invesdwin.context.integration.script.IScriptTaskInputs;
+import de.invesdwin.context.r.runtime.contract.IScriptTaskInputsR;
 import de.invesdwin.util.assertions.Assertions;
 
 @NotThreadSafe
-public class RCallerScriptTaskInputsR implements IScriptTaskInputs {
+public class RCallerScriptTaskInputsR implements IScriptTaskInputsR {
 
     private final RCallerScriptTaskEngineR engine;
 

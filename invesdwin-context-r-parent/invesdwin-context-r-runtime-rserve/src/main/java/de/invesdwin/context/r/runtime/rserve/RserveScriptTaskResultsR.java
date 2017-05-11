@@ -5,11 +5,11 @@ import javax.annotation.concurrent.NotThreadSafe;
 import org.rosuda.REngine.REXP;
 import org.rosuda.REngine.REXPMismatchException;
 
-import de.invesdwin.context.integration.script.IScriptTaskResults;
+import de.invesdwin.context.r.runtime.contract.IScriptTaskResultsR;
 import de.invesdwin.util.assertions.Assertions;
 
 @NotThreadSafe
-public class RserveScriptTaskResultsR implements IScriptTaskResults {
+public class RserveScriptTaskResultsR implements IScriptTaskResultsR {
 
     private final RserveScriptTaskEngineR engine;
 
@@ -199,16 +199,6 @@ public class RserveScriptTaskResultsR implements IScriptTaskResults {
         } catch (final REXPMismatchException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    @Override
-    public boolean isDefined(final String variable) {
-        return getBoolean("exists(\"" + variable + "\")");
-    }
-
-    @Override
-    public boolean isNull(final String variable) {
-        return getBoolean("is.na(" + variable + ")");
     }
 
 }

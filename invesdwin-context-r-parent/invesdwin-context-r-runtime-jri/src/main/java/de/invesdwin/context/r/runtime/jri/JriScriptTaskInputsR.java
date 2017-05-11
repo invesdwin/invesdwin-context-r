@@ -2,11 +2,11 @@ package de.invesdwin.context.r.runtime.jri;
 
 import javax.annotation.concurrent.NotThreadSafe;
 
-import de.invesdwin.context.integration.script.IScriptTaskInputs;
+import de.invesdwin.context.r.runtime.contract.IScriptTaskInputsR;
 import de.invesdwin.util.assertions.Assertions;
 
 @NotThreadSafe
-public class JriScriptTaskInputsR implements IScriptTaskInputs {
+public class JriScriptTaskInputsR implements IScriptTaskInputsR {
 
     private final JriScriptTaskEngineR engine;
 
@@ -136,11 +136,6 @@ public class JriScriptTaskInputsR implements IScriptTaskInputs {
         engine.unwrap().assign(variable, flatMatrix);
         putExpression(variable, "matrix(" + variable + ", " + rows + ", " + cols + ", TRUE)");
         putExpression(variable, "array(as.logical(" + variable + "), dim(" + variable + "))");
-    }
-
-    @Override
-    public void putExpression(final String variable, final String expression) {
-        engine.eval(variable + " <- " + expression);
     }
 
 }

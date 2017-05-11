@@ -7,10 +7,10 @@ import org.renjin.primitives.matrix.DoubleMatrixBuilder;
 import org.renjin.primitives.matrix.IntMatrixBuilder;
 import org.renjin.primitives.matrix.StringMatrixBuilder;
 
-import de.invesdwin.context.integration.script.IScriptTaskInputs;
+import de.invesdwin.context.r.runtime.contract.IScriptTaskInputsR;
 
 @NotThreadSafe
-public class RenjinScriptTaskInputsR implements IScriptTaskInputs {
+public class RenjinScriptTaskInputsR implements IScriptTaskInputsR {
 
     private final RenjinScriptTaskEngineR engine;
 
@@ -124,11 +124,6 @@ public class RenjinScriptTaskInputsR implements IScriptTaskInputs {
         }
         engine.unwrap().put(variable, matrix.build());
         putExpression(variable, "array(as.logical(" + variable + "), dim(" + variable + "))");
-    }
-
-    @Override
-    public void putExpression(final String variable, final String expression) {
-        engine.eval(variable + " <- " + expression);
     }
 
 }

@@ -5,11 +5,11 @@ import javax.annotation.concurrent.NotThreadSafe;
 import org.rosuda.JRI.RBool;
 import org.rosuda.JRI.REXP;
 
-import de.invesdwin.context.integration.script.IScriptTaskResults;
+import de.invesdwin.context.r.runtime.contract.IScriptTaskResultsR;
 import de.invesdwin.util.assertions.Assertions;
 
 @NotThreadSafe
-public class JriScriptTaskResultsR implements IScriptTaskResults {
+public class JriScriptTaskResultsR implements IScriptTaskResultsR {
 
     private final JriScriptTaskEngineR engine;
 
@@ -168,16 +168,6 @@ public class JriScriptTaskResultsR implements IScriptTaskResults {
             booleanMatrix[i] = booleanVector;
         }
         return booleanMatrix;
-    }
-
-    @Override
-    public boolean isDefined(final String variable) {
-        return getBoolean("exists(\"" + variable + "\")");
-    }
-
-    @Override
-    public boolean isNull(final String variable) {
-        return getBoolean("is.na(" + variable + ")");
     }
 
 }

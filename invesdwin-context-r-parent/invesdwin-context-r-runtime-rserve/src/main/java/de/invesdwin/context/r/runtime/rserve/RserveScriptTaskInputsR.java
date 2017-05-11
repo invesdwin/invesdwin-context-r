@@ -2,11 +2,11 @@ package de.invesdwin.context.r.runtime.rserve;
 
 import javax.annotation.concurrent.NotThreadSafe;
 
-import de.invesdwin.context.integration.script.IScriptTaskInputs;
+import de.invesdwin.context.r.runtime.contract.IScriptTaskInputsR;
 import de.invesdwin.util.assertions.Assertions;
 
 @NotThreadSafe
-public class RserveScriptTaskInputsR implements IScriptTaskInputs {
+public class RserveScriptTaskInputsR implements IScriptTaskInputsR {
 
     private final RserveScriptTaskEngineR engine;
 
@@ -139,11 +139,6 @@ public class RserveScriptTaskInputsR implements IScriptTaskInputs {
         }
         engine.unwrap().set(variable, doubleValue);
         putExpression(variable, "array(as.logical(" + variable + "), dim(" + variable + "))");
-    }
-
-    @Override
-    public void putExpression(final String variable, final String expression) {
-        engine.eval(variable + " <- " + expression);
     }
 
 }

@@ -2,11 +2,11 @@ package de.invesdwin.context.r.runtime.rcaller;
 
 import javax.annotation.concurrent.NotThreadSafe;
 
-import de.invesdwin.context.integration.script.IScriptTaskResults;
+import de.invesdwin.context.r.runtime.contract.IScriptTaskResultsR;
 import de.invesdwin.util.assertions.Assertions;
 
 @NotThreadSafe
-public class RCallerScriptTaskResultsR implements IScriptTaskResults {
+public class RCallerScriptTaskResultsR implements IScriptTaskResultsR {
     private final RCallerScriptTaskEngineR engine;
 
     public RCallerScriptTaskResultsR(final RCallerScriptTaskEngineR engine) {
@@ -184,16 +184,6 @@ public class RCallerScriptTaskResultsR implements IScriptTaskResults {
             booleanMatrix[i] = booleanVector;
         }
         return booleanMatrix;
-    }
-
-    @Override
-    public boolean isDefined(final String variable) {
-        return getBoolean("exists(\"" + variable + "\")");
-    }
-
-    @Override
-    public boolean isNull(final String variable) {
-        return getBoolean("is.na(" + variable + ")");
     }
 
 }
