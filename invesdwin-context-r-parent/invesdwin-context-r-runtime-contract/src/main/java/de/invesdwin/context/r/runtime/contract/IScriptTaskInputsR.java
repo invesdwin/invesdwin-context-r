@@ -26,19 +26,19 @@ public interface IScriptTaskInputsR extends IScriptTaskInputs {
 
     @Override
     default void putCharacter(final String variable, final char value) {
-        final String stringValue = Strings.toString(value);
+        final String stringValue = Strings.checkedCast(value);
         putString(variable, stringValue);
     }
 
     @Override
     default void putCharacterVector(final String variable, final char[] value) {
-        final String[] stringValue = Strings.toStringVector(value);
+        final String[] stringValue = Strings.checkedCastVector(value);
         putStringVector(variable, stringValue);
     }
 
     @Override
     default void putCharacterMatrix(final String variable, final char[][] value) {
-        final String[][] stringValue = Strings.toStringMatrix(value);
+        final String[][] stringValue = Strings.checkedCastMatrix(value);
         putStringMatrix(variable, stringValue);
     }
 
