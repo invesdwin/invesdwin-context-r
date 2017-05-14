@@ -98,4 +98,14 @@ public interface IScriptTaskInputsR extends IScriptTaskInputs {
         getEngine().eval(variable + " <- " + expression);
     }
 
+    @Override
+    default void putNull(final String variable) {
+        putExpression(variable, "NA");
+    }
+
+    @Override
+    default void remove(final String variable) {
+        getEngine().eval("rm " + variable);
+    }
+
 }
