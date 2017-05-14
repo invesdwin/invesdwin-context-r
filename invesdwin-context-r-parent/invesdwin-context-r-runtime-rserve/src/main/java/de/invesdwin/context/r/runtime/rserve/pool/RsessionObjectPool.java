@@ -27,14 +27,14 @@ public final class RsessionObjectPool extends AObjectPool<Rsession> implements F
 
     public static final RsessionObjectPool INSTANCE = new RsessionObjectPool();
 
-    private final WrappedExecutorService proxyCooldownMonitorExecutor = Executors
+    private final WrappedExecutorService timeoutMonitorExecutor = Executors
             .newFixedCallerRunsThreadPool(getClass().getSimpleName() + "_timeout", 1);
     @GuardedBy("this")
     private final List<RsessionWrapper> rsessionRotation = new ArrayList<RsessionWrapper>();
 
     private RsessionObjectPool() {
         super(RsessionPoolableObjectFactory.INSTANCE);
-        proxyCooldownMonitorExecutor.execute(new RsessionTimoutMonitor());
+        timeoutMonitorExecutor.execute(new RsessionTimoutMonitor());
     }
 
     @Override

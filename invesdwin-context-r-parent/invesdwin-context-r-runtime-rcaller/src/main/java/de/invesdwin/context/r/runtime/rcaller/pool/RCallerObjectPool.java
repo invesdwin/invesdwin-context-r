@@ -28,14 +28,14 @@ public final class RCallerObjectPool extends AObjectPool<RCaller> implements Fac
 
     public static final RCallerObjectPool INSTANCE = new RCallerObjectPool();
 
-    private final WrappedExecutorService proxyCooldownMonitorExecutor = Executors
+    private final WrappedExecutorService timeoutMonitorExecutor = Executors
             .newFixedCallerRunsThreadPool(getClass().getSimpleName() + "_timeout", 1);
     @GuardedBy("this")
     private final List<RCallerWrapper> rCallerRotation = new ArrayList<RCallerWrapper>();
 
     private RCallerObjectPool() {
         super(RCallerPoolableObjectFactory.INSTANCE);
-        proxyCooldownMonitorExecutor.execute(new RCallerTimoutMonitor());
+        timeoutMonitorExecutor.execute(new RCallerTimoutMonitor());
     }
 
     @Override
