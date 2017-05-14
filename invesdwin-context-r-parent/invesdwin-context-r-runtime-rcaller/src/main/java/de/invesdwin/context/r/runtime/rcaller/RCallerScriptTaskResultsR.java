@@ -4,6 +4,7 @@ import javax.annotation.concurrent.NotThreadSafe;
 
 import de.invesdwin.context.r.runtime.contract.IScriptTaskResultsR;
 import de.invesdwin.util.assertions.Assertions;
+import de.invesdwin.util.lang.Strings;
 
 @NotThreadSafe
 public class RCallerScriptTaskResultsR implements IScriptTaskResultsR {
@@ -18,14 +19,22 @@ public class RCallerScriptTaskResultsR implements IScriptTaskResultsR {
         return engine;
     }
 
-    private void requestVariable(final String variable) {
-        engine.unwrap().runAndReturnResultOnline(variable);
+    private String requestVariable(final String variable) {
+        if (Strings.containsAny(variable, "[", ".", "(")) {
+            //we have to support expressions here
+            engine.unwrap().getRCode().addRCode(RCallerScriptTaskRunnerR.INTERNAL_RESULT_VARIABLE + " <- " + variable);
+            engine.unwrap().runAndReturnResultOnline(RCallerScriptTaskRunnerR.INTERNAL_RESULT_VARIABLE);
+            return RCallerScriptTaskRunnerR.INTERNAL_RESULT_VARIABLE;
+        } else {
+            engine.unwrap().runAndReturnResultOnline(variable);
+            return variable;
+        }
     }
 
     @Override
     public String getString(final String variable) {
-        requestVariable(variable);
-        final String[] array = replaceNaWithNull(engine.unwrap().getParser().getAsStringArray(variable));
+        final String[] array = replaceNaWithNull(
+                engine.unwrap().getParser().getAsStringArray(requestVariable(variable)));
         Assertions.checkEquals(array.length, 1);
         return array[0];
     }
@@ -41,8 +50,7 @@ public class RCallerScriptTaskResultsR implements IScriptTaskResultsR {
 
     @Override
     public String[] getStringVector(final String variable) {
-        requestVariable(variable);
-        return replaceNaWithNull(engine.unwrap().getParser().getAsStringArray(variable));
+        return replaceNaWithNull(engine.unwrap().getParser().getAsStringArray(requestVariable(variable)));
     }
 
     @Override
@@ -76,16 +84,14 @@ public class RCallerScriptTaskResultsR implements IScriptTaskResultsR {
 
     @Override
     public double getDouble(final String variable) {
-        requestVariable(variable);
-        final double[] array = engine.unwrap().getParser().getAsDoubleArray(variable);
+        final double[] array = engine.unwrap().getParser().getAsDoubleArray(requestVariable(variable));
         Assertions.checkEquals(array.length, 1);
         return array[0];
     }
 
     @Override
     public double[] getDoubleVector(final String variable) {
-        requestVariable(variable);
-        return engine.unwrap().getParser().getAsDoubleArray(variable);
+        return engine.unwrap().getParser().getAsDoubleArray(requestVariable(variable));
     }
 
     @Override
@@ -117,16 +123,14 @@ public class RCallerScriptTaskResultsR implements IScriptTaskResultsR {
 
     @Override
     public int getInteger(final String variable) {
-        requestVariable(variable);
-        final int[] array = engine.unwrap().getParser().getAsIntArray(variable);
+        final int[] array = engine.unwrap().getParser().getAsIntArray(requestVariable(variable));
         Assertions.checkEquals(array.length, 1);
         return array[0];
     }
 
     @Override
     public int[] getIntegerVector(final String variable) {
-        requestVariable(variable);
-        return engine.unwrap().getParser().getAsIntArray(variable);
+        return engine.unwrap().getParser().getAsIntArray(requestVariable(variable));
     }
 
     @Override
@@ -157,16 +161,14 @@ public class RCallerScriptTaskResultsR implements IScriptTaskResultsR {
 
     @Override
     public boolean getBoolean(final String variable) {
-        requestVariable(variable);
-        final boolean[] array = engine.unwrap().getParser().getAsLogicalArray(variable);
+        final boolean[] array = engine.unwrap().getParser().getAsLogicalArray(requestVariable(variable));
         Assertions.checkEquals(array.length, 1);
         return array[0];
     }
 
     @Override
     public boolean[] getBooleanVector(final String variable) {
-        requestVariable(variable);
-        return engine.unwrap().getParser().getAsLogicalArray(variable);
+        return engine.unwrap().getParser().getAsLogicalArray(requestVariable(variable));
     }
 
     @Override

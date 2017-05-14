@@ -105,7 +105,7 @@ public interface IScriptTaskInputsR extends IScriptTaskInputs {
 
     @Override
     default void remove(final String variable) {
-        getEngine().eval("rm " + variable);
+        getEngine().eval("rm(list=c(\"" + variable + "\"))");
     }
 
 }
