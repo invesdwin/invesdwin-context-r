@@ -1,5 +1,7 @@
 package de.invesdwin.context.r.runtime.renjin.pool.internal;
 
+import java.io.PrintWriter;
+
 import javax.annotation.concurrent.ThreadSafe;
 import javax.inject.Named;
 
@@ -7,6 +9,8 @@ import org.renjin.eval.SessionBuilder;
 import org.renjin.script.RenjinScriptEngine;
 import org.renjin.script.RenjinScriptEngineFactory;
 import org.springframework.beans.factory.FactoryBean;
+import org.zeroturnaround.exec.stream.slf4j.Slf4jDebugOutputStream;
+import org.zeroturnaround.exec.stream.slf4j.Slf4jWarnOutputStream;
 
 import de.invesdwin.context.pool.IPoolableObjectFactory;
 import de.invesdwin.context.r.runtime.contract.IScriptTaskRunnerR;
@@ -25,6 +29,8 @@ public final class RenjinScriptEnginePoolableObjectFactory
     public RenjinScriptEngine makeObject() {
         final RenjinScriptEngine engine = FACTORY.getScriptEngine(
                 new SessionBuilder().withDefaultPackages().setPackageLoader(ExtendedPackageLoader.INSTANCE).build());
+        engine.getContext().setWriter(new PrintWriter(new Slf4jDebugOutputStream(IScriptTaskRunnerR.LOG)));
+        engine.getContext().setErrorWriter(new PrintWriter(new Slf4jWarnOutputStream(IScriptTaskRunnerR.LOG)));
         return engine;
     }
 

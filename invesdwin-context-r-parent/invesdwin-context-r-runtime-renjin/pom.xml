@@ -35,8 +35,8 @@
 			<artifactId>renjin-script-engine</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>io.onetapbeyond</groupId>
-			<artifactId>renjin-r-executor</artifactId>
+			<groupId>org.zeroturnaround</groupId>
+			<artifactId>zt-exec</artifactId>
 		</dependency>
 	</dependencies>
 
