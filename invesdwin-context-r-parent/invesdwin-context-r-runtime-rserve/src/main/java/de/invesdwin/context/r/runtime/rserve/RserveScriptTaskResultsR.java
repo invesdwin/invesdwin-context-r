@@ -41,17 +41,42 @@ public class RserveScriptTaskResultsR implements IScriptTaskResultsR {
     @Override
     public String[] getStringVector(final String variable) {
         try {
-            return engine.unwrap().eval(variable).asStrings();
+            final REXP rexp = engine.unwrap().eval(variable);
+            if (allIsNa(rexp)) {
+                return null;
+            } else {
+                return rexp.asStrings();
+            }
         } catch (final REXPMismatchException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private boolean allIsNa(final REXP rexp) throws REXPMismatchException {
+        if (rexp == null) {
+            return true;
+        }
+        final boolean[] nas = rexp.isNA();
+        if (nas.length == 0) {
+            return false;
+        }
+        for (final boolean na : nas) {
+            if (!na) {
+                return false;
+            }
+        }
+        return true;
     }
 
     @Override
     public String[][] getStringMatrix(final String variable) {
         try {
             final REXP rexp = engine.unwrap().eval(variable);
-            return asStringMatrix(rexp);
+            if (allIsNa(rexp)) {
+                return null;
+            } else {
+                return asStringMatrix(rexp);
+            }
         } catch (final REXPMismatchException e) {
             throw new RuntimeException(e);
         }
@@ -93,7 +118,12 @@ public class RserveScriptTaskResultsR implements IScriptTaskResultsR {
     @Override
     public double[] getDoubleVector(final String variable) {
         try {
-            return engine.unwrap().eval(variable).asDoubles();
+            final REXP rexp = engine.unwrap().eval(variable);
+            if (allIsNa(rexp)) {
+                return null;
+            } else {
+                return rexp.asDoubles();
+            }
         } catch (final REXPMismatchException e) {
             throw new RuntimeException(e);
         }
@@ -102,7 +132,12 @@ public class RserveScriptTaskResultsR implements IScriptTaskResultsR {
     @Override
     public double[][] getDoubleMatrix(final String variable) {
         try {
-            return engine.unwrap().eval(variable).asDoubleMatrix();
+            final REXP rexp = engine.unwrap().eval(variable);
+            if (allIsNa(rexp)) {
+                return null;
+            } else {
+                return rexp.asDoubleMatrix();
+            }
         } catch (final REXPMismatchException e) {
             throw new RuntimeException(e);
         }
@@ -120,7 +155,12 @@ public class RserveScriptTaskResultsR implements IScriptTaskResultsR {
     @Override
     public int[] getIntegerVector(final String variable) {
         try {
-            return engine.unwrap().eval(variable).asIntegers();
+            final REXP rexp = engine.unwrap().eval(variable);
+            if (allIsNa(rexp)) {
+                return null;
+            } else {
+                return rexp.asIntegers();
+            }
         } catch (final REXPMismatchException e) {
             throw new RuntimeException(e);
         }
@@ -129,7 +169,12 @@ public class RserveScriptTaskResultsR implements IScriptTaskResultsR {
     @Override
     public int[][] getIntegerMatrix(final String variable) {
         try {
-            return asIntegerMatrix(engine.unwrap().eval(variable));
+            final REXP rexp = engine.unwrap().eval(variable);
+            if (allIsNa(rexp)) {
+                return null;
+            } else {
+                return asIntegerMatrix(rexp);
+            }
         } catch (final REXPMismatchException e) {
             throw new RuntimeException(e);
         }
@@ -162,7 +207,8 @@ public class RserveScriptTaskResultsR implements IScriptTaskResultsR {
     @Override
     public boolean getBoolean(final String variable) {
         try {
-            return engine.unwrap().eval(variable).asInteger() > 0;
+            final REXP rexp = engine.unwrap().eval(variable);
+            return rexp.asInteger() > 0;
         } catch (final REXPMismatchException e) {
             throw new RuntimeException(e);
         }
@@ -171,12 +217,17 @@ public class RserveScriptTaskResultsR implements IScriptTaskResultsR {
     @Override
     public boolean[] getBooleanVector(final String variable) {
         try {
-            final int[] ints = engine.unwrap().eval(variable).asIntegers();
-            final boolean[] booleanVector = new boolean[ints.length];
-            for (int i = 0; i < ints.length; i++) {
-                booleanVector[i] = ints[i] > 0;
+            final REXP rexp = engine.unwrap().eval(variable);
+            if (allIsNa(rexp)) {
+                return null;
+            } else {
+                final int[] ints = rexp.asIntegers();
+                final boolean[] booleanVector = new boolean[ints.length];
+                for (int i = 0; i < ints.length; i++) {
+                    booleanVector[i] = ints[i] > 0;
+                }
+                return booleanVector;
             }
-            return booleanVector;
         } catch (final REXPMismatchException e) {
             throw new RuntimeException(e);
         }
@@ -185,17 +236,22 @@ public class RserveScriptTaskResultsR implements IScriptTaskResultsR {
     @Override
     public boolean[][] getBooleanMatrix(final String variable) {
         try {
-            final double[][] matrix = engine.unwrap().eval(variable).asDoubleMatrix();
-            final boolean[][] booleanMatrix = new boolean[matrix.length][];
-            for (int i = 0; i < matrix.length; i++) {
-                final double[] vector = matrix[i];
-                final boolean[] booleanVector = new boolean[vector.length];
-                for (int j = 0; j < vector.length; j++) {
-                    booleanVector[j] = vector[j] > 0;
+            final REXP rexp = engine.unwrap().eval(variable);
+            if (allIsNa(rexp)) {
+                return null;
+            } else {
+                final double[][] matrix = rexp.asDoubleMatrix();
+                final boolean[][] booleanMatrix = new boolean[matrix.length][];
+                for (int i = 0; i < matrix.length; i++) {
+                    final double[] vector = matrix[i];
+                    final boolean[] booleanVector = new boolean[vector.length];
+                    for (int j = 0; j < vector.length; j++) {
+                        booleanVector[j] = vector[j] > 0;
+                    }
+                    booleanMatrix[i] = booleanVector;
                 }
-                booleanMatrix[i] = booleanVector;
+                return booleanMatrix;
             }
-            return booleanMatrix;
         } catch (final REXPMismatchException e) {
             throw new RuntimeException(e);
         }

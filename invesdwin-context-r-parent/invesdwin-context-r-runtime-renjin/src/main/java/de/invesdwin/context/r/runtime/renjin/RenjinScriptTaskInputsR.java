@@ -34,20 +34,28 @@ public class RenjinScriptTaskInputsR implements IScriptTaskInputsR {
 
     @Override
     public void putStringVector(final String variable, final String[] value) {
-        engine.unwrap().put(variable, value);
+        if (value == null) {
+            putNull(variable);
+        } else {
+            engine.unwrap().put(variable, value);
+        }
     }
 
     @Override
     public void putStringMatrix(final String variable, final String[][] value) {
-        final int rows = value.length;
-        final int cols = value[0].length;
-        final StringMatrixBuilder matrix = new StringMatrixBuilder(rows, cols);
-        for (int row = 0; row < rows; row++) {
-            for (int col = 0; col < cols; col++) {
-                matrix.setValue(row, col, value[row][col]);
+        if (value == null) {
+            putNull(variable);
+        } else {
+            final int rows = value.length;
+            final int cols = value[0].length;
+            final StringMatrixBuilder matrix = new StringMatrixBuilder(rows, cols);
+            for (int row = 0; row < rows; row++) {
+                for (int col = 0; col < cols; col++) {
+                    matrix.setValue(row, col, value[row][col]);
+                }
             }
+            engine.unwrap().put(variable, matrix.build());
         }
-        engine.unwrap().put(variable, matrix.build());
     }
 
     @Override
@@ -57,20 +65,28 @@ public class RenjinScriptTaskInputsR implements IScriptTaskInputsR {
 
     @Override
     public void putDoubleVector(final String variable, final double[] value) {
-        engine.unwrap().put(variable, value);
+        if (value == null) {
+            putNull(variable);
+        } else {
+            engine.unwrap().put(variable, value);
+        }
     }
 
     @Override
     public void putDoubleMatrix(final String variable, final double[][] value) {
-        final int rows = value.length;
-        final int cols = value[0].length;
-        final DoubleMatrixBuilder matrix = new DoubleMatrixBuilder(rows, cols);
-        for (int row = 0; row < rows; row++) {
-            for (int col = 0; col < cols; col++) {
-                matrix.setValue(row, col, value[row][col]);
+        if (value == null) {
+            putNull(variable);
+        } else {
+            final int rows = value.length;
+            final int cols = value[0].length;
+            final DoubleMatrixBuilder matrix = new DoubleMatrixBuilder(rows, cols);
+            for (int row = 0; row < rows; row++) {
+                for (int col = 0; col < cols; col++) {
+                    matrix.setValue(row, col, value[row][col]);
+                }
             }
+            engine.unwrap().put(variable, matrix.build());
         }
-        engine.unwrap().put(variable, matrix.build());
     }
 
     @Override
@@ -80,20 +96,28 @@ public class RenjinScriptTaskInputsR implements IScriptTaskInputsR {
 
     @Override
     public void putIntegerVector(final String variable, final int[] value) {
-        engine.unwrap().put(variable, value);
+        if (value == null) {
+            putNull(variable);
+        } else {
+            engine.unwrap().put(variable, value);
+        }
     }
 
     @Override
     public void putIntegerMatrix(final String variable, final int[][] value) {
-        final int rows = value.length;
-        final int cols = value[0].length;
-        final IntMatrixBuilder matrix = new IntMatrixBuilder(rows, cols);
-        for (int row = 0; row < rows; row++) {
-            for (int col = 0; col < cols; col++) {
-                matrix.setValue(row, col, value[row][col]);
+        if (value == null) {
+            putNull(variable);
+        } else {
+            final int rows = value.length;
+            final int cols = value[0].length;
+            final IntMatrixBuilder matrix = new IntMatrixBuilder(rows, cols);
+            for (int row = 0; row < rows; row++) {
+                for (int col = 0; col < cols; col++) {
+                    matrix.setValue(row, col, value[row][col]);
+                }
             }
+            engine.unwrap().put(variable, matrix.build());
         }
-        engine.unwrap().put(variable, matrix.build());
     }
 
     @Override
@@ -103,27 +127,35 @@ public class RenjinScriptTaskInputsR implements IScriptTaskInputsR {
 
     @Override
     public void putBooleanVector(final String variable, final boolean[] value) {
-        engine.unwrap().put(variable, ArrayUtils.toObject(value));
+        if (value == null) {
+            putNull(variable);
+        } else {
+            engine.unwrap().put(variable, ArrayUtils.toObject(value));
+        }
     }
 
     @Override
     public void putBooleanMatrix(final String variable, final boolean[][] value) {
-        final int rows = value.length;
-        final int cols = value[0].length;
-        final IntMatrixBuilder matrix = new IntMatrixBuilder(rows, cols);
-        for (int row = 0; row < rows; row++) {
-            for (int col = 0; col < cols; col++) {
-                final int intValue;
-                if (value[row][col]) {
-                    intValue = 1;
-                } else {
-                    intValue = 0;
+        if (value == null) {
+            putNull(variable);
+        } else {
+            final int rows = value.length;
+            final int cols = value[0].length;
+            final IntMatrixBuilder matrix = new IntMatrixBuilder(rows, cols);
+            for (int row = 0; row < rows; row++) {
+                for (int col = 0; col < cols; col++) {
+                    final int intValue;
+                    if (value[row][col]) {
+                        intValue = 1;
+                    } else {
+                        intValue = 0;
+                    }
+                    matrix.setValue(row, col, intValue);
                 }
-                matrix.setValue(row, col, intValue);
             }
+            engine.unwrap().put(variable, matrix.build());
+            putExpression(variable, "array(as.logical(" + variable + "), dim(" + variable + "))");
         }
-        engine.unwrap().put(variable, matrix.build());
-        putExpression(variable, "array(as.logical(" + variable + "), dim(" + variable + "))");
     }
 
 }

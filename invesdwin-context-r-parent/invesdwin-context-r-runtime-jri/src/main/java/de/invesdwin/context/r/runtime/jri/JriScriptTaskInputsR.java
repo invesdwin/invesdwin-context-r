@@ -26,24 +26,32 @@ public class JriScriptTaskInputsR implements IScriptTaskInputsR {
 
     @Override
     public void putStringVector(final String variable, final String[] value) {
-        Assertions.checkTrue(engine.unwrap().assign(variable, value));
+        if (value == null) {
+            putNull(variable);
+        } else {
+            Assertions.checkTrue(engine.unwrap().assign(variable, value));
+        }
     }
 
     @Override
     public void putStringMatrix(final String variable, final String[][] value) {
-        final int rows = value.length;
-        final int cols = value[0].length;
-        final String[] flatMatrix = new String[rows * cols];
-        int i = 0;
-        for (int row = 0; row < rows; row++) {
-            Assertions.checkEquals(value[row].length, cols);
-            for (int col = 0; col < cols; col++) {
-                flatMatrix[i] = value[row][col];
-                i++;
+        if (value == null) {
+            putNull(variable);
+        } else {
+            final int rows = value.length;
+            final int cols = value[0].length;
+            final String[] flatMatrix = new String[rows * cols];
+            int i = 0;
+            for (int row = 0; row < rows; row++) {
+                Assertions.checkEquals(value[row].length, cols);
+                for (int col = 0; col < cols; col++) {
+                    flatMatrix[i] = value[row][col];
+                    i++;
+                }
             }
+            putStringVector(variable, flatMatrix);
+            putExpression(variable, "matrix(" + variable + ", " + rows + ", " + cols + ", TRUE)");
         }
-        putStringVector(variable, flatMatrix);
-        putExpression(variable, "matrix(" + variable + ", " + rows + ", " + cols + ", TRUE)");
     }
 
     @Override
@@ -53,7 +61,11 @@ public class JriScriptTaskInputsR implements IScriptTaskInputsR {
 
     @Override
     public void putDoubleVector(final String variable, final double[] value) {
-        Assertions.checkTrue(engine.unwrap().assign(variable, value));
+        if (value == null) {
+            putNull(variable);
+        } else {
+            Assertions.checkTrue(engine.unwrap().assign(variable, value));
+        }
     }
 
     /**
@@ -61,19 +73,23 @@ public class JriScriptTaskInputsR implements IScriptTaskInputsR {
      */
     @Override
     public void putDoubleMatrix(final String variable, final double[][] value) {
-        final int rows = value.length;
-        final int cols = value[0].length;
-        final double[] flatMatrix = new double[rows * cols];
-        int i = 0;
-        for (int row = 0; row < rows; row++) {
-            Assertions.checkEquals(value[row].length, cols);
-            for (int col = 0; col < cols; col++) {
-                flatMatrix[i] = value[row][col];
-                i++;
+        if (value == null) {
+            putNull(variable);
+        } else {
+            final int rows = value.length;
+            final int cols = value[0].length;
+            final double[] flatMatrix = new double[rows * cols];
+            int i = 0;
+            for (int row = 0; row < rows; row++) {
+                Assertions.checkEquals(value[row].length, cols);
+                for (int col = 0; col < cols; col++) {
+                    flatMatrix[i] = value[row][col];
+                    i++;
+                }
             }
+            engine.unwrap().assign(variable, flatMatrix);
+            putExpression(variable, "matrix(" + variable + ", " + rows + ", " + cols + ", TRUE)");
         }
-        engine.unwrap().assign(variable, flatMatrix);
-        putExpression(variable, "matrix(" + variable + ", " + rows + ", " + cols + ", TRUE)");
     }
 
     @Override
@@ -83,7 +99,11 @@ public class JriScriptTaskInputsR implements IScriptTaskInputsR {
 
     @Override
     public void putIntegerVector(final String variable, final int[] value) {
-        Assertions.checkTrue(engine.unwrap().assign(variable, value));
+        if (value == null) {
+            putNull(variable);
+        } else {
+            Assertions.checkTrue(engine.unwrap().assign(variable, value));
+        }
     }
 
     /**
@@ -91,19 +111,23 @@ public class JriScriptTaskInputsR implements IScriptTaskInputsR {
      */
     @Override
     public void putIntegerMatrix(final String variable, final int[][] value) {
-        final int rows = value.length;
-        final int cols = value[0].length;
-        final int[] flatMatrix = new int[rows * cols];
-        int i = 0;
-        for (int row = 0; row < rows; row++) {
-            Assertions.checkEquals(value[row].length, cols);
-            for (int col = 0; col < cols; col++) {
-                flatMatrix[i] = value[row][col];
-                i++;
+        if (value == null) {
+            putNull(variable);
+        } else {
+            final int rows = value.length;
+            final int cols = value[0].length;
+            final int[] flatMatrix = new int[rows * cols];
+            int i = 0;
+            for (int row = 0; row < rows; row++) {
+                Assertions.checkEquals(value[row].length, cols);
+                for (int col = 0; col < cols; col++) {
+                    flatMatrix[i] = value[row][col];
+                    i++;
+                }
             }
+            engine.unwrap().assign(variable, flatMatrix);
+            putExpression(variable, "matrix(" + variable + ", " + rows + ", " + cols + ", TRUE)");
         }
-        engine.unwrap().assign(variable, flatMatrix);
-        putExpression(variable, "matrix(" + variable + ", " + rows + ", " + cols + ", TRUE)");
     }
 
     @Override
@@ -113,29 +137,37 @@ public class JriScriptTaskInputsR implements IScriptTaskInputsR {
 
     @Override
     public void putBooleanVector(final String variable, final boolean[] value) {
-        Assertions.checkTrue(engine.unwrap().assign(variable, value));
+        if (value == null) {
+            putNull(variable);
+        } else {
+            Assertions.checkTrue(engine.unwrap().assign(variable, value));
+        }
     }
 
     @Override
     public void putBooleanMatrix(final String variable, final boolean[][] value) {
-        final int rows = value.length;
-        final int cols = value[0].length;
-        final int[] flatMatrix = new int[rows * cols];
-        int i = 0;
-        for (int row = 0; row < rows; row++) {
-            Assertions.checkEquals(value[row].length, cols);
-            for (int col = 0; col < cols; col++) {
-                if (value[row][col]) {
-                    flatMatrix[i] = 1;
-                } else {
-                    flatMatrix[i] = 0;
+        if (value == null) {
+            putNull(variable);
+        } else {
+            final int rows = value.length;
+            final int cols = value[0].length;
+            final int[] flatMatrix = new int[rows * cols];
+            int i = 0;
+            for (int row = 0; row < rows; row++) {
+                Assertions.checkEquals(value[row].length, cols);
+                for (int col = 0; col < cols; col++) {
+                    if (value[row][col]) {
+                        flatMatrix[i] = 1;
+                    } else {
+                        flatMatrix[i] = 0;
+                    }
+                    i++;
                 }
-                i++;
             }
+            engine.unwrap().assign(variable, flatMatrix);
+            putExpression(variable, "matrix(" + variable + ", " + rows + ", " + cols + ", TRUE)");
+            putExpression(variable, "array(as.logical(" + variable + "), dim(" + variable + "))");
         }
-        engine.unwrap().assign(variable, flatMatrix);
-        putExpression(variable, "matrix(" + variable + ", " + rows + ", " + cols + ", TRUE)");
-        putExpression(variable, "array(as.logical(" + variable + "), dim(" + variable + "))");
     }
 
 }

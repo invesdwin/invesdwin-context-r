@@ -41,34 +41,42 @@ public class RenjinScriptTaskResultsR implements IScriptTaskResultsR {
 
     @Override
     public String[] getStringVector(final String variable) {
-        try {
-            final Vector sexp = (Vector) engine.unwrap().eval(variable);
-            final String[] array = new String[sexp.length()];
-            for (int i = 0; i < array.length; i++) {
-                array[i] = sexp.getElementAsString(i);
+        if (isNull(variable)) {
+            return null;
+        } else {
+            try {
+                final Vector sexp = (Vector) engine.unwrap().eval(variable);
+                final String[] array = new String[sexp.length()];
+                for (int i = 0; i < array.length; i++) {
+                    array[i] = sexp.getElementAsString(i);
+                }
+                return array;
+            } catch (final ScriptException e) {
+                throw new RuntimeException(e);
             }
-            return array;
-        } catch (final ScriptException e) {
-            throw new RuntimeException(e);
         }
     }
 
     @Override
     public String[][] getStringMatrix(final String variable) {
-        try {
-            final Matrix sexp = new Matrix((Vector) engine.unwrap().eval(variable));
-            final String[][] matrix = new String[sexp.getNumRows()][];
-            for (int row = 0; row < matrix.length; row++) {
-                final String[] vector = new String[sexp.getNumCols()];
-                for (int col = 0; col < vector.length; col++) {
-                    vector[col] = sexp.getVector().getElementAsString(org.renjin.primitives.Indexes
-                            .matrixIndexToVectorIndex(row, col, sexp.getNumRows(), sexp.getNumCols()));
+        if (isNull(variable)) {
+            return null;
+        } else {
+            try {
+                final Matrix sexp = new Matrix((Vector) engine.unwrap().eval(variable));
+                final String[][] matrix = new String[sexp.getNumRows()][];
+                for (int row = 0; row < matrix.length; row++) {
+                    final String[] vector = new String[sexp.getNumCols()];
+                    for (int col = 0; col < vector.length; col++) {
+                        vector[col] = sexp.getVector().getElementAsString(org.renjin.primitives.Indexes
+                                .matrixIndexToVectorIndex(row, col, sexp.getNumRows(), sexp.getNumCols()));
+                    }
+                    matrix[row] = vector;
                 }
-                matrix[row] = vector;
+                return matrix;
+            } catch (final ScriptException e) {
+                throw new RuntimeException(e);
             }
-            return matrix;
-        } catch (final ScriptException e) {
-            throw new RuntimeException(e);
         }
     }
 
@@ -84,33 +92,41 @@ public class RenjinScriptTaskResultsR implements IScriptTaskResultsR {
 
     @Override
     public double[] getDoubleVector(final String variable) {
-        try {
-            final Vector sexp = (Vector) engine.unwrap().eval(variable);
-            final double[] array = new double[sexp.length()];
-            for (int i = 0; i < array.length; i++) {
-                array[i] = sexp.getElementAsDouble(i);
+        if (isNull(variable)) {
+            return null;
+        } else {
+            try {
+                final Vector sexp = (Vector) engine.unwrap().eval(variable);
+                final double[] array = new double[sexp.length()];
+                for (int i = 0; i < array.length; i++) {
+                    array[i] = sexp.getElementAsDouble(i);
+                }
+                return array;
+            } catch (final ScriptException e) {
+                throw new RuntimeException(e);
             }
-            return array;
-        } catch (final ScriptException e) {
-            throw new RuntimeException(e);
         }
     }
 
     @Override
     public double[][] getDoubleMatrix(final String variable) {
-        try {
-            final Matrix sexp = new Matrix((Vector) engine.unwrap().eval(variable));
-            final double[][] matrix = new double[sexp.getNumRows()][];
-            for (int row = 0; row < matrix.length; row++) {
-                final double[] vector = new double[sexp.getNumCols()];
-                for (int col = 0; col < vector.length; col++) {
-                    vector[col] = sexp.getElementAsDouble(row, col);
+        if (isNull(variable)) {
+            return null;
+        } else {
+            try {
+                final Matrix sexp = new Matrix((Vector) engine.unwrap().eval(variable));
+                final double[][] matrix = new double[sexp.getNumRows()][];
+                for (int row = 0; row < matrix.length; row++) {
+                    final double[] vector = new double[sexp.getNumCols()];
+                    for (int col = 0; col < vector.length; col++) {
+                        vector[col] = sexp.getElementAsDouble(row, col);
+                    }
+                    matrix[row] = vector;
                 }
-                matrix[row] = vector;
+                return matrix;
+            } catch (final ScriptException e) {
+                throw new RuntimeException(e);
             }
-            return matrix;
-        } catch (final ScriptException e) {
-            throw new RuntimeException(e);
         }
     }
 
@@ -127,33 +143,41 @@ public class RenjinScriptTaskResultsR implements IScriptTaskResultsR {
 
     @Override
     public int[] getIntegerVector(final String variable) {
-        try {
-            final Vector sexp = (Vector) engine.unwrap().eval(variable);
-            final int[] array = new int[sexp.length()];
-            for (int i = 0; i < array.length; i++) {
-                array[i] = sexp.getElementAsInt(i);
+        if (isNull(variable)) {
+            return null;
+        } else {
+            try {
+                final Vector sexp = (Vector) engine.unwrap().eval(variable);
+                final int[] array = new int[sexp.length()];
+                for (int i = 0; i < array.length; i++) {
+                    array[i] = sexp.getElementAsInt(i);
+                }
+                return array;
+            } catch (final ScriptException e) {
+                throw new RuntimeException(e);
             }
-            return array;
-        } catch (final ScriptException e) {
-            throw new RuntimeException(e);
         }
     }
 
     @Override
     public int[][] getIntegerMatrix(final String variable) {
-        try {
-            final Matrix sexp = new Matrix((Vector) engine.unwrap().eval(variable));
-            final int[][] matrix = new int[sexp.getNumRows()][];
-            for (int row = 0; row < matrix.length; row++) {
-                final int[] vector = new int[sexp.getNumCols()];
-                for (int col = 0; col < vector.length; col++) {
-                    vector[col] = sexp.getElementAsInt(row, col);
+        if (isNull(variable)) {
+            return null;
+        } else {
+            try {
+                final Matrix sexp = new Matrix((Vector) engine.unwrap().eval(variable));
+                final int[][] matrix = new int[sexp.getNumRows()][];
+                for (int row = 0; row < matrix.length; row++) {
+                    final int[] vector = new int[sexp.getNumCols()];
+                    for (int col = 0; col < vector.length; col++) {
+                        vector[col] = sexp.getElementAsInt(row, col);
+                    }
+                    matrix[row] = vector;
                 }
-                matrix[row] = vector;
+                return matrix;
+            } catch (final ScriptException e) {
+                throw new RuntimeException(e);
             }
-            return matrix;
-        } catch (final ScriptException e) {
-            throw new RuntimeException(e);
         }
     }
 
@@ -169,33 +193,41 @@ public class RenjinScriptTaskResultsR implements IScriptTaskResultsR {
 
     @Override
     public boolean[] getBooleanVector(final String variable) {
-        try {
-            final Vector sexp = (Vector) engine.unwrap().eval(variable);
-            final boolean[] array = new boolean[sexp.length()];
-            for (int i = 0; i < array.length; i++) {
-                array[i] = sexp.getElementAsLogical(i) == Logical.TRUE;
+        if (isNull(variable)) {
+            return null;
+        } else {
+            try {
+                final Vector sexp = (Vector) engine.unwrap().eval(variable);
+                final boolean[] array = new boolean[sexp.length()];
+                for (int i = 0; i < array.length; i++) {
+                    array[i] = sexp.getElementAsLogical(i) == Logical.TRUE;
+                }
+                return array;
+            } catch (final ScriptException e) {
+                throw new RuntimeException(e);
             }
-            return array;
-        } catch (final ScriptException e) {
-            throw new RuntimeException(e);
         }
     }
 
     @Override
     public boolean[][] getBooleanMatrix(final String variable) {
-        try {
-            final Matrix sexp = new Matrix((Vector) engine.unwrap().eval(variable));
-            final boolean[][] matrix = new boolean[sexp.getNumRows()][];
-            for (int row = 0; row < matrix.length; row++) {
-                final boolean[] vector = new boolean[sexp.getNumCols()];
-                for (int col = 0; col < vector.length; col++) {
-                    vector[col] = sexp.getElementAsInt(row, col) > 0;
+        if (isNull(variable)) {
+            return null;
+        } else {
+            try {
+                final Matrix sexp = new Matrix((Vector) engine.unwrap().eval(variable));
+                final boolean[][] matrix = new boolean[sexp.getNumRows()][];
+                for (int row = 0; row < matrix.length; row++) {
+                    final boolean[] vector = new boolean[sexp.getNumCols()];
+                    for (int col = 0; col < vector.length; col++) {
+                        vector[col] = sexp.getElementAsInt(row, col) > 0;
+                    }
+                    matrix[row] = vector;
                 }
-                matrix[row] = vector;
+                return matrix;
+            } catch (final ScriptException e) {
+                throw new RuntimeException(e);
             }
-            return matrix;
-        } catch (final ScriptException e) {
-            throw new RuntimeException(e);
         }
     }
 

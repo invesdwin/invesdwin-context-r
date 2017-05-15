@@ -8,6 +8,10 @@ import de.invesdwin.util.lang.Strings;
 
 @NotThreadSafe
 public class RCallerScriptTaskResultsR implements IScriptTaskResultsR {
+
+    private static final String INTERNAL_RESULT_VARIABLE_EXPRESSION = RCallerScriptTaskRunnerR.INTERNAL_RESULT_VARIABLE
+            + "_expression";
+
     private final RCallerScriptTaskEngineR engine;
 
     public RCallerScriptTaskResultsR(final RCallerScriptTaskEngineR engine) {
@@ -20,11 +24,11 @@ public class RCallerScriptTaskResultsR implements IScriptTaskResultsR {
     }
 
     private String requestVariable(final String variable) {
-        if (Strings.containsAny(variable, "[", ".", "(")) {
+        if (Strings.containsAny(variable, '[', '.', '(')) {
             //we have to support expressions here
-            engine.unwrap().getRCode().addRCode(RCallerScriptTaskRunnerR.INTERNAL_RESULT_VARIABLE + " <- " + variable);
-            engine.unwrap().runAndReturnResultOnline(RCallerScriptTaskRunnerR.INTERNAL_RESULT_VARIABLE);
-            return RCallerScriptTaskRunnerR.INTERNAL_RESULT_VARIABLE;
+            engine.unwrap().getRCode().addRCode(INTERNAL_RESULT_VARIABLE_EXPRESSION + " <- " + variable);
+            engine.unwrap().runAndReturnResultOnline(INTERNAL_RESULT_VARIABLE_EXPRESSION);
+            return INTERNAL_RESULT_VARIABLE_EXPRESSION;
         } else {
             engine.unwrap().runAndReturnResultOnline(variable);
             return variable;
@@ -50,7 +54,11 @@ public class RCallerScriptTaskResultsR implements IScriptTaskResultsR {
 
     @Override
     public String[] getStringVector(final String variable) {
-        return replaceNaWithNull(engine.unwrap().getParser().getAsStringArray(requestVariable(variable)));
+        if (isNull(variable)) {
+            return null;
+        } else {
+            return replaceNaWithNull(engine.unwrap().getParser().getAsStringArray(requestVariable(variable)));
+        }
     }
 
     @Override
@@ -91,7 +99,11 @@ public class RCallerScriptTaskResultsR implements IScriptTaskResultsR {
 
     @Override
     public double[] getDoubleVector(final String variable) {
-        return engine.unwrap().getParser().getAsDoubleArray(requestVariable(variable));
+        if (isNull(variable)) {
+            return null;
+        } else {
+            return engine.unwrap().getParser().getAsDoubleArray(requestVariable(variable));
+        }
     }
 
     @Override
@@ -130,7 +142,11 @@ public class RCallerScriptTaskResultsR implements IScriptTaskResultsR {
 
     @Override
     public int[] getIntegerVector(final String variable) {
-        return engine.unwrap().getParser().getAsIntArray(requestVariable(variable));
+        if (isNull(variable)) {
+            return null;
+        } else {
+            return engine.unwrap().getParser().getAsIntArray(requestVariable(variable));
+        }
     }
 
     @Override
@@ -168,24 +184,32 @@ public class RCallerScriptTaskResultsR implements IScriptTaskResultsR {
 
     @Override
     public boolean[] getBooleanVector(final String variable) {
-        return engine.unwrap().getParser().getAsLogicalArray(requestVariable(variable));
+        if (isNull(variable)) {
+            return null;
+        } else {
+            return engine.unwrap().getParser().getAsLogicalArray(requestVariable(variable));
+        }
     }
 
     @Override
     public boolean[][] getBooleanMatrix(final String variable) {
-        engine.unwrap().getRCode().addRCode(RCallerScriptTaskRunnerR.INTERNAL_RESULT_VARIABLE + " <- array(as.numeric("
-                + variable + "), dim(" + variable + "))");
-        final double[][] matrix = getDoubleMatrix(RCallerScriptTaskRunnerR.INTERNAL_RESULT_VARIABLE);
-        final boolean[][] booleanMatrix = new boolean[matrix.length][];
-        for (int i = 0; i < matrix.length; i++) {
-            final double[] vector = matrix[i];
-            final boolean[] booleanVector = new boolean[vector.length];
-            for (int j = 0; j < vector.length; j++) {
-                booleanVector[j] = vector[j] > 0;
+        if (isNull(variable)) {
+            return null;
+        } else {
+            engine.unwrap().getRCode().addRCode(RCallerScriptTaskRunnerR.INTERNAL_RESULT_VARIABLE
+                    + " <- array(as.numeric(" + variable + "), dim(" + variable + "))");
+            final double[][] matrix = getDoubleMatrix(RCallerScriptTaskRunnerR.INTERNAL_RESULT_VARIABLE);
+            final boolean[][] booleanMatrix = new boolean[matrix.length][];
+            for (int i = 0; i < matrix.length; i++) {
+                final double[] vector = matrix[i];
+                final boolean[] booleanVector = new boolean[vector.length];
+                for (int j = 0; j < vector.length; j++) {
+                    booleanVector[j] = vector[j] > 0;
+                }
+                booleanMatrix[i] = booleanVector;
             }
-            booleanMatrix[i] = booleanVector;
+            return booleanMatrix;
         }
-        return booleanMatrix;
     }
 
 }

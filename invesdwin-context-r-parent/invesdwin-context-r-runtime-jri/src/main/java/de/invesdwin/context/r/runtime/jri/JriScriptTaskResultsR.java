@@ -30,14 +30,22 @@ public class JriScriptTaskResultsR implements IScriptTaskResultsR {
 
     @Override
     public String[] getStringVector(final String variable) {
-        final REXP rexp = engine.unwrap().eval(variable);
-        return rexp.asStringArray();
+        if (isNull(variable)) {
+            return null;
+        } else {
+            final REXP rexp = engine.unwrap().eval(variable);
+            return rexp.asStringArray();
+        }
     }
 
     @Override
     public String[][] getStringMatrix(final String variable) {
-        final REXP rexp = engine.unwrap().eval(variable);
-        return asStringMatrix(rexp);
+        if (isNull(variable)) {
+            return null;
+        } else {
+            final REXP rexp = engine.unwrap().eval(variable);
+            return asStringMatrix(rexp);
+        }
     }
 
     private String[][] asStringMatrix(final REXP rexp) {
@@ -77,14 +85,22 @@ public class JriScriptTaskResultsR implements IScriptTaskResultsR {
 
     @Override
     public double[] getDoubleVector(final String variable) {
-        final REXP rexp = engine.unwrap().eval(variable);
-        return rexp.asDoubleArray();
+        if (isNull(variable)) {
+            return null;
+        } else {
+            final REXP rexp = engine.unwrap().eval(variable);
+            return rexp.asDoubleArray();
+        }
     }
 
     @Override
     public double[][] getDoubleMatrix(final String variable) {
-        final REXP rexp = engine.unwrap().eval(variable);
-        return rexp.asDoubleMatrix();
+        if (isNull(variable)) {
+            return null;
+        } else {
+            final REXP rexp = engine.unwrap().eval(variable);
+            return rexp.asDoubleMatrix();
+        }
     }
 
     @Override
@@ -97,14 +113,22 @@ public class JriScriptTaskResultsR implements IScriptTaskResultsR {
 
     @Override
     public int[] getIntegerVector(final String variable) {
-        final REXP rexp = engine.unwrap().eval(variable);
-        return rexp.asIntArray();
+        if (isNull(variable)) {
+            return null;
+        } else {
+            final REXP rexp = engine.unwrap().eval(variable);
+            return rexp.asIntArray();
+        }
     }
 
     @Override
     public int[][] getIntegerMatrix(final String variable) {
-        final REXP rexp = engine.unwrap().eval(variable);
-        return asIntMatrix(rexp);
+        if (isNull(variable)) {
+            return null;
+        } else {
+            final REXP rexp = engine.unwrap().eval(variable);
+            return asIntMatrix(rexp);
+        }
     }
 
     private int[][] asIntMatrix(final REXP rexp) {
@@ -145,29 +169,37 @@ public class JriScriptTaskResultsR implements IScriptTaskResultsR {
 
     @Override
     public boolean[] getBooleanVector(final String variable) {
-        final REXP rexp = engine.unwrap().eval(variable);
-        final int[] boolArray = rexp.asIntArray();
-        final boolean[] booleanVector = new boolean[boolArray.length];
-        for (int i = 0; i < boolArray.length; i++) {
-            booleanVector[i] = boolArray[i] > 0;
+        if (isNull(variable)) {
+            return null;
+        } else {
+            final REXP rexp = engine.unwrap().eval(variable);
+            final int[] boolArray = rexp.asIntArray();
+            final boolean[] booleanVector = new boolean[boolArray.length];
+            for (int i = 0; i < boolArray.length; i++) {
+                booleanVector[i] = boolArray[i] > 0;
+            }
+            return booleanVector;
         }
-        return booleanVector;
     }
 
     @Override
     public boolean[][] getBooleanMatrix(final String variable) {
-        final REXP rexp = engine.unwrap().eval(variable);
-        final int[][] matrix = asIntMatrix(rexp);
-        final boolean[][] booleanMatrix = new boolean[matrix.length][];
-        for (int i = 0; i < matrix.length; i++) {
-            final int[] vector = matrix[i];
-            final boolean[] booleanVector = new boolean[vector.length];
-            for (int j = 0; j < vector.length; j++) {
-                booleanVector[j] = vector[j] > 0;
+        if (isNull(variable)) {
+            return null;
+        } else {
+            final REXP rexp = engine.unwrap().eval(variable);
+            final int[][] matrix = asIntMatrix(rexp);
+            final boolean[][] booleanMatrix = new boolean[matrix.length][];
+            for (int i = 0; i < matrix.length; i++) {
+                final int[] vector = matrix[i];
+                final boolean[] booleanVector = new boolean[vector.length];
+                for (int j = 0; j < vector.length; j++) {
+                    booleanVector[j] = vector[j] > 0;
+                }
+                booleanMatrix[i] = booleanVector;
             }
-            booleanMatrix[i] = booleanVector;
+            return booleanMatrix;
         }
-        return booleanMatrix;
     }
 
 }

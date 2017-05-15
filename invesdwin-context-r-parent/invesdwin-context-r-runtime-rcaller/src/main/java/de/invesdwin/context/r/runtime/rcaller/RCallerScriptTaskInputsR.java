@@ -30,25 +30,35 @@ public class RCallerScriptTaskInputsR implements IScriptTaskInputsR {
 
     @Override
     public void putStringVector(final String variable, final String[] value) {
-        engine.unwrap().getRCode().addStringArray(variable, replaceNullWithNa(value));
-        engine.unwrap().getRCode().addRCode(variable + "[ " + variable + " == \"NA_character_\" ] <- NA_character_");
+        if (value == null) {
+            putNull(variable);
+        } else {
+            engine.unwrap().getRCode().addStringArray(variable, replaceNullWithNa(value));
+            engine.unwrap()
+                    .getRCode()
+                    .addRCode(variable + "[ " + variable + " == \"NA_character_\" ] <- NA_character_");
+        }
     }
 
     @Override
     public void putStringMatrix(final String variable, final String[][] value) {
-        final int rows = value.length;
-        final int cols = value[0].length;
-        final String[] flatMatrix = new String[rows * cols];
-        int i = 0;
-        for (int row = 0; row < rows; row++) {
-            Assertions.checkEquals(value[row].length, cols);
-            for (int col = 0; col < cols; col++) {
-                flatMatrix[i] = value[row][col];
-                i++;
+        if (value == null) {
+            putNull(variable);
+        } else {
+            final int rows = value.length;
+            final int cols = value[0].length;
+            final String[] flatMatrix = new String[rows * cols];
+            int i = 0;
+            for (int row = 0; row < rows; row++) {
+                Assertions.checkEquals(value[row].length, cols);
+                for (int col = 0; col < cols; col++) {
+                    flatMatrix[i] = value[row][col];
+                    i++;
+                }
             }
+            putStringVector(variable, flatMatrix);
+            putExpression(variable, "matrix(" + variable + ", " + rows + ", " + cols + ", TRUE)");
         }
-        putStringVector(variable, flatMatrix);
-        putExpression(variable, "matrix(" + variable + ", " + rows + ", " + cols + ", TRUE)");
     }
 
     private String[] replaceNullWithNa(final String[] value) {
@@ -68,12 +78,20 @@ public class RCallerScriptTaskInputsR implements IScriptTaskInputsR {
 
     @Override
     public void putDoubleVector(final String variable, final double[] value) {
-        engine.unwrap().getRCode().addDoubleArray(variable, value);
+        if (value == null) {
+            putNull(variable);
+        } else {
+            engine.unwrap().getRCode().addDoubleArray(variable, value);
+        }
     }
 
     @Override
     public void putDoubleMatrix(final String variable, final double[][] value) {
-        engine.unwrap().getRCode().addDoubleMatrix(variable, value);
+        if (value == null) {
+            putNull(variable);
+        } else {
+            engine.unwrap().getRCode().addDoubleMatrix(variable, value);
+        }
     }
 
     @Override
@@ -84,23 +102,31 @@ public class RCallerScriptTaskInputsR implements IScriptTaskInputsR {
 
     @Override
     public void putIntegerVector(final String variable, final int[] value) {
-        engine.unwrap().getRCode().addIntArray(variable, value);
-        putExpression(variable, "as.integer(" + variable + ")");
+        if (value == null) {
+            putNull(variable);
+        } else {
+            engine.unwrap().getRCode().addIntArray(variable, value);
+            putExpression(variable, "as.integer(" + variable + ")");
+        }
     }
 
     @Override
     public void putIntegerMatrix(final String variable, final int[][] value) {
-        final double[][] matrix = new double[value.length][];
-        for (int i = 0; i < matrix.length; i++) {
-            final int[] intVector = value[i];
-            final double[] vector = new double[intVector.length];
-            for (int j = 0; j < vector.length; j++) {
-                vector[j] = intVector[j];
+        if (value == null) {
+            putNull(variable);
+        } else {
+            final double[][] matrix = new double[value.length][];
+            for (int i = 0; i < matrix.length; i++) {
+                final int[] intVector = value[i];
+                final double[] vector = new double[intVector.length];
+                for (int j = 0; j < vector.length; j++) {
+                    vector[j] = intVector[j];
+                }
+                matrix[i] = vector;
             }
-            matrix[i] = vector;
+            engine.unwrap().getRCode().addDoubleMatrix(variable, matrix);
+            putExpression(variable, "array(as.integer(" + variable + "), dim(" + variable + "))");
         }
-        engine.unwrap().getRCode().addDoubleMatrix(variable, matrix);
-        putExpression(variable, "array(as.integer(" + variable + "), dim(" + variable + "))");
     }
 
     @Override
@@ -110,27 +136,35 @@ public class RCallerScriptTaskInputsR implements IScriptTaskInputsR {
 
     @Override
     public void putBooleanVector(final String variable, final boolean[] value) {
-        engine.unwrap().getRCode().addLogicalArray(variable, value);
+        if (value == null) {
+            putNull(variable);
+        } else {
+            engine.unwrap().getRCode().addLogicalArray(variable, value);
+        }
     }
 
     @Override
     public void putBooleanMatrix(final String variable, final boolean[][] value) {
-        final double[][] matrix = new double[value.length][];
-        for (int i = 0; i < matrix.length; i++) {
-            final boolean[] boolVector = value[i];
-            final double[] vector = new double[boolVector.length];
-            for (int j = 0; j < vector.length; j++) {
-                final boolean bool = boolVector[j];
-                if (bool) {
-                    vector[j] = 1D;
-                } else {
-                    vector[j] = 0D;
+        if (value == null) {
+            putNull(variable);
+        } else {
+            final double[][] matrix = new double[value.length][];
+            for (int i = 0; i < matrix.length; i++) {
+                final boolean[] boolVector = value[i];
+                final double[] vector = new double[boolVector.length];
+                for (int j = 0; j < vector.length; j++) {
+                    final boolean bool = boolVector[j];
+                    if (bool) {
+                        vector[j] = 1D;
+                    } else {
+                        vector[j] = 0D;
+                    }
                 }
+                matrix[i] = vector;
             }
-            matrix[i] = vector;
+            engine.unwrap().getRCode().addDoubleMatrix(variable, matrix);
+            putExpression(variable, "array(as.logical(" + variable + "), dim(" + variable + "))");
         }
-        engine.unwrap().getRCode().addDoubleMatrix(variable, matrix);
-        putExpression(variable, "array(as.logical(" + variable + "), dim(" + variable + "))");
     }
 
     @Override
