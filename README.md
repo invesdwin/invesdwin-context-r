@@ -1,5 +1,5 @@
 # invesdwin-context-r
-Integrate R functionality with these modules for invesdwin-context 
+Integrate R functionality with these modules for the [invesdwin-context](https://github.com/subes/invesdwin-context) module system.
 
 ## Maven
 
