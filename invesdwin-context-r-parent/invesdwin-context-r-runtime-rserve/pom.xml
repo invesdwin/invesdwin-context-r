@@ -10,6 +10,8 @@
 	<artifactId>invesdwin-context-r-runtime-rserve</artifactId>
 	<packaging>jar</packaging>
 
+	<!-- sudo apt-get install r-cran-rserve -->
+
 	<dependencies>
 		<dependency>
 			<groupId>de.invesdwin</groupId>
