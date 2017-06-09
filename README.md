@@ -53,9 +53,9 @@ final AScriptTaskR<String> script = new AScriptTaskR<String>() {
     @Override
     public void executeScript(final IScriptTaskEngine engine) {
 	//execute this script inline:
-	//                engine.eval("world <- paste(\"Hello \", hello, \"!\", sep=\"\")");
+	engine.eval("world <- paste(\"Hello \", hello, \"!\", sep=\"\")");
 	//or run it from a file:
-	engine.eval(new ClassPathResource(HelloWorldScript.class.getSimpleName() + ".R", getClass()));
+	//engine.eval(new ClassPathResource(HelloWorldScript.class.getSimpleName() + ".R", getClass()));
     }
 
     @Override
