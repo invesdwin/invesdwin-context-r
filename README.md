@@ -63,7 +63,7 @@ final AScriptTaskR<String> script = new AScriptTaskR<String>() {
         return results.getString("world");
     }
 };
-final String result = script.run(runner);
+final String result = script.run(); //optionally pass a specific runner as an argument here
 Assertions.assertThat(result).isEqualTo("Hello World!");
 ```
 
