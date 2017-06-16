@@ -1,16 +1,19 @@
 package de.invesdwin.context.r.optimalf;
 
+import java.io.File;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.concurrent.Immutable;
 
+import org.apache.commons.io.FileUtils;
 import org.kohsuke.args4j.CmdLineParser;
+import org.kohsuke.args4j.Option;
 
 import de.invesdwin.context.PlatformInitializerProperties;
 import de.invesdwin.context.beans.init.AMain;
-import de.invesdwin.util.assertions.Assertions;
-import de.invesdwin.util.math.decimal.Decimal;
+import de.invesdwin.util.lang.Strings;
 
 @Immutable
 public class Main extends AMain {
@@ -18,6 +21,12 @@ public class Main extends AMain {
     static {
         PlatformInitializerProperties.setAllowed(false);
     }
+
+    @Option(required = true, name = "-i", aliases = "--input", usage = "The CSV file containing one or more strategy per line with its trades being comma separated", metaVar = "<some/directory/file.csv>")
+    private File input;
+
+    @Option(required = true, name = "-o", aliases = "--output", usage = "This is the CSV file that will be written as a result, containing the optimal-f values for each strategy in a separate line", metaVar = "<some/directory/file.csv>")
+    private File output;
 
     protected Main(final String[] args) {
         super(args, false);
@@ -29,14 +38,23 @@ public class Main extends AMain {
 
     @Override
     protected void startApplication(final CmdLineParser parser) throws Exception {
-        final List<List<Double>> tradesPerStrategy = new ArrayList<List<Double>>();
-        final ArrayList<Double> tradesPerStrategy1 = new ArrayList<Double>();
-        tradesPerStrategy.add(tradesPerStrategy1);
-        tradesPerStrategy1.add(2D);
-        tradesPerStrategy1.add(-1D);
-        final List<Double> run = new OptimalfScriptTask(tradesPerStrategy).run();
-        Assertions.checkEquals(run.size(), 1);
-        Assertions.assertThat(new Decimal(run.get(0)).round(2)).isEqualTo(new Decimal("0.25"));
+        final List<String> lines = FileUtils.readLines(input, Charset.defaultCharset());
+        final List<List<Double>> tradesPerStrategy = new ArrayList<List<Double>>(lines.size());
+        for (final String line : lines) {
+            final String[] tradeStrs = Strings.split(line, ",");
+            final List<Double> trades = new ArrayList<Double>(tradeStrs.length);
+            for (final String tradeStr : tradeStrs) {
+                trades.add(Double.parseDouble(tradeStr));
+            }
+            tradesPerStrategy.add(trades);
+        }
+        final List<Double> optimalFs = new OptimalfScriptTask(tradesPerStrategy).run();
+        final StringBuilder optimalFsStr = new StringBuilder();
+        for (final Double optimalF : optimalFs) {
+            optimalFsStr.append(optimalF);
+            optimalFsStr.append("\n");
+        }
+        FileUtils.writeStringToFile(output, optimalFsStr.toString(), Charset.defaultCharset());
     }
 
 }
