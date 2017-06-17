@@ -103,9 +103,37 @@ public class OptimalfScriptTaskTest extends ATest {
         tradesPerStrategy.add(Arrays.asList(0.1, 0.15, 0.4, 0.1));
         try {
             new OptimalfScriptTask(tradesPerStrategy).run(rcallerScriptTaskRunner);
+            Assertions.failExceptionExpected();
         } catch (final Throwable t) {
             Assertions.assertThat(t.getMessage())
                     .contains("all 'events' columns must have at least one negative trade");
+        }
+    }
+
+    @Test
+    public void testEmptyTrades() {
+        final List<List<Double>> tradesPerStrategy = new ArrayList<>();
+        //        0.5,-0.3,0.4,-0.2
+        tradesPerStrategy.add(Arrays.asList());
+        //        0.1,-0.15,0.4,-0.1
+        tradesPerStrategy.add(Arrays.asList());
+        try {
+            new OptimalfScriptTask(tradesPerStrategy).run(rcallerScriptTaskRunner);
+            Assertions.failExceptionExpected();
+        } catch (final Throwable t) {
+            Assertions.assertThat(t.getMessage())
+                    .contains("all 'events' columns must have at least one negative trade");
+        }
+    }
+
+    @Test
+    public void testEmptyStrategies() {
+        final List<List<Double>> tradesPerStrategy = new ArrayList<>();
+        try {
+            new OptimalfScriptTask(tradesPerStrategy).run(rcallerScriptTaskRunner);
+            Assertions.failExceptionExpected();
+        } catch (final Throwable t) {
+            Assertions.assertThat(t.getMessage()).contains("No trades!");
         }
     }
 

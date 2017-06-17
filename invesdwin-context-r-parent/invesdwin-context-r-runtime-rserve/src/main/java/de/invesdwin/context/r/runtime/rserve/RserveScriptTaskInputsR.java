@@ -41,6 +41,8 @@ public class RserveScriptTaskInputsR implements IScriptTaskInputsR {
     public void putStringMatrix(final String variable, final String[][] value) {
         if (value == null) {
             putNull(variable);
+        } else if (value.length == 0 || value[0].length == 0) {
+            putExpression(variable, "matrix(character(), " + value.length + ", 0, TRUE)");
         } else {
             final int rows = value.length;
             final int cols = value[0].length;
@@ -76,6 +78,8 @@ public class RserveScriptTaskInputsR implements IScriptTaskInputsR {
     public void putDoubleMatrix(final String variable, final double[][] value) {
         if (value == null) {
             putNull(variable);
+        } else if (value.length == 0 || value[0].length == 0) {
+            putExpression(variable, "matrix(double(), " + value.length + ", 0, TRUE)");
         } else {
             engine.unwrap().set(variable, value);
         }
@@ -105,6 +109,8 @@ public class RserveScriptTaskInputsR implements IScriptTaskInputsR {
     public void putIntegerMatrix(final String variable, final int[][] value) {
         if (value == null) {
             putNull(variable);
+        } else if (value.length == 0 || value[0].length == 0) {
+            putExpression(variable, "matrix(integer(), " + value.length + ", 0, TRUE)");
         } else {
             final double[][] doubleValue = new double[value.length][];
             for (int i = 0; i < value.length; i++) {
@@ -154,6 +160,8 @@ public class RserveScriptTaskInputsR implements IScriptTaskInputsR {
     public void putBooleanMatrix(final String variable, final boolean[][] value) {
         if (value == null) {
             putNull(variable);
+        } else if (value.length == 0 || value[0].length == 0) {
+            putExpression(variable, "matrix(logical(), " + value.length + ", 0, TRUE)");
         } else {
             final double[][] doubleValue = new double[value.length][];
             for (int i = 0; i < value.length; i++) {

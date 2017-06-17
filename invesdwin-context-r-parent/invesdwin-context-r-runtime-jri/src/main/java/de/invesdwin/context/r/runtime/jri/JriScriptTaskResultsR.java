@@ -32,6 +32,8 @@ public class JriScriptTaskResultsR implements IScriptTaskResultsR {
     public String[] getStringVector(final String variable) {
         if (isNull(variable)) {
             return null;
+        } else if (isEmpty(variable)) {
+            return new String[0];
         } else {
             final REXP rexp = engine.unwrap().eval(variable);
             return rexp.asStringArray();
@@ -87,6 +89,8 @@ public class JriScriptTaskResultsR implements IScriptTaskResultsR {
     public double[] getDoubleVector(final String variable) {
         if (isNull(variable)) {
             return null;
+        } else if (isEmpty(variable)) {
+            return new double[0];
         } else {
             final REXP rexp = engine.unwrap().eval(variable);
             return rexp.asDoubleArray();
@@ -115,6 +119,8 @@ public class JriScriptTaskResultsR implements IScriptTaskResultsR {
     public int[] getIntegerVector(final String variable) {
         if (isNull(variable)) {
             return null;
+        } else if (isEmpty(variable)) {
+            return new int[0];
         } else {
             final REXP rexp = engine.unwrap().eval(variable);
             return rexp.asIntArray();
@@ -171,6 +177,8 @@ public class JriScriptTaskResultsR implements IScriptTaskResultsR {
     public boolean[] getBooleanVector(final String variable) {
         if (isNull(variable)) {
             return null;
+        } else if (isEmpty(variable)) {
+            return new boolean[0];
         } else {
             final REXP rexp = engine.unwrap().eval(variable);
             final int[] boolArray = rexp.asIntArray();

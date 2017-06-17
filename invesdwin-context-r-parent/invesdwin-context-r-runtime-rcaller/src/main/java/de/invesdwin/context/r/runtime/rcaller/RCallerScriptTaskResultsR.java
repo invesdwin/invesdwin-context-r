@@ -56,6 +56,8 @@ public class RCallerScriptTaskResultsR implements IScriptTaskResultsR {
     public String[] getStringVector(final String variable) {
         if (isNull(variable)) {
             return null;
+        } else if (isEmpty(variable)) {
+            return new String[0];
         } else {
             return replaceNaWithNull(engine.unwrap().getParser().getAsStringArray(requestVariable(variable)));
         }
@@ -63,31 +65,39 @@ public class RCallerScriptTaskResultsR implements IScriptTaskResultsR {
 
     @Override
     public String[][] getStringMatrix(final String variable) {
-        final String[] ct = getStringVector(variable);
-        if (ct == null) {
-            return null;
-        }
-        engine.unwrap()
-                .getRCode()
-                .addRCode(RCallerScriptTaskRunnerR.INTERNAL_RESULT_VARIABLE + " <- dim(" + variable + ")");
-        final int[] ds = getIntegerVector(RCallerScriptTaskRunnerR.INTERNAL_RESULT_VARIABLE);
-        if ((ds == null) || (ds.length != 2)) {
-            return null;
-        }
-        final int m = ds[0];
-        final int n = ds[1];
-        final String[][] r = new String[m][n];
-
-        int i = 0;
-        int k = 0;
-        while (i < n) {
-            int j = 0;
-            while (j < m) {
-                r[(j++)][i] = ct[(k++)];
+        if (isEmpty(variable)) {
+            final int rows = getInteger("nrow(" + variable + ")");
+            final String[][] matrix = new String[rows][];
+            for (int i = 0; i < rows; i++) {
+                matrix[i] = new String[0];
             }
-            i++;
+            return matrix;
+        } else {
+            final String[] ct = getStringVector(variable);
+            if (ct == null) {
+                return null;
+            }
+            engine.unwrap().getRCode().addRCode(
+                    RCallerScriptTaskRunnerR.INTERNAL_RESULT_VARIABLE + " <- dim(" + variable + ")");
+            final int[] ds = getIntegerVector(RCallerScriptTaskRunnerR.INTERNAL_RESULT_VARIABLE);
+            if ((ds == null) || (ds.length != 2)) {
+                return null;
+            }
+            final int m = ds[0];
+            final int n = ds[1];
+            final String[][] r = new String[m][n];
+
+            int i = 0;
+            int k = 0;
+            while (i < n) {
+                int j = 0;
+                while (j < m) {
+                    r[(j++)][i] = ct[(k++)];
+                }
+                i++;
+            }
+            return r;
         }
-        return r;
     }
 
     @Override
@@ -101,6 +111,8 @@ public class RCallerScriptTaskResultsR implements IScriptTaskResultsR {
     public double[] getDoubleVector(final String variable) {
         if (isNull(variable)) {
             return null;
+        } else if (isEmpty(variable)) {
+            return new double[0];
         } else {
             return engine.unwrap().getParser().getAsDoubleArray(requestVariable(variable));
         }
@@ -108,29 +120,38 @@ public class RCallerScriptTaskResultsR implements IScriptTaskResultsR {
 
     @Override
     public double[][] getDoubleMatrix(final String variable) {
-        //not using engine getDoubleMatrix since it transposes the matrix as a side effect...
-        final double[] ct = getDoubleVector(variable);
-        if (ct == null) {
-            return null;
-        }
-        final int[] ds = engine.unwrap().getParser().getDimensions(variable);
-        if ((ds == null) || (ds.length != 2)) {
-            return null;
-        }
-        final int m = ds[0];
-        final int n = ds[1];
-        final double[][] r = new double[m][n];
-
-        int i = 0;
-        int k = 0;
-        while (i < n) {
-            int j = 0;
-            while (j < m) {
-                r[(j++)][i] = ct[(k++)];
+        if (isEmpty(variable)) {
+            final int rows = getInteger("nrow(" + variable + ")");
+            final double[][] matrix = new double[rows][];
+            for (int i = 0; i < rows; i++) {
+                matrix[i] = new double[0];
             }
-            i++;
+            return matrix;
+        } else {
+            //not using engine getDoubleMatrix since it transposes the matrix as a side effect...
+            final double[] ct = getDoubleVector(variable);
+            if (ct == null) {
+                return null;
+            }
+            final int[] ds = engine.unwrap().getParser().getDimensions(variable);
+            if ((ds == null) || (ds.length != 2)) {
+                return null;
+            }
+            final int m = ds[0];
+            final int n = ds[1];
+            final double[][] r = new double[m][n];
+
+            int i = 0;
+            int k = 0;
+            while (i < n) {
+                int j = 0;
+                while (j < m) {
+                    r[(j++)][i] = ct[(k++)];
+                }
+                i++;
+            }
+            return r;
         }
-        return r;
     }
 
     @Override
@@ -144,6 +165,8 @@ public class RCallerScriptTaskResultsR implements IScriptTaskResultsR {
     public int[] getIntegerVector(final String variable) {
         if (isNull(variable)) {
             return null;
+        } else if (isEmpty(variable)) {
+            return new int[0];
         } else {
             return engine.unwrap().getParser().getAsIntArray(requestVariable(variable));
         }
@@ -151,28 +174,37 @@ public class RCallerScriptTaskResultsR implements IScriptTaskResultsR {
 
     @Override
     public int[][] getIntegerMatrix(final String variable) {
-        final int[] ct = getIntegerVector(variable);
-        if (ct == null) {
-            return null;
-        }
-        final int[] ds = engine.unwrap().getParser().getDimensions(variable);
-        if ((ds == null) || (ds.length != 2)) {
-            return null;
-        }
-        final int m = ds[0];
-        final int n = ds[1];
-        final int[][] r = new int[m][n];
-
-        int i = 0;
-        int k = 0;
-        while (i < n) {
-            int j = 0;
-            while (j < m) {
-                r[(j++)][i] = ct[(k++)];
+        if (isEmpty(variable)) {
+            final int rows = getInteger("nrow(" + variable + ")");
+            final int[][] matrix = new int[rows][];
+            for (int i = 0; i < rows; i++) {
+                matrix[i] = new int[0];
             }
-            i++;
+            return matrix;
+        } else {
+            final int[] ct = getIntegerVector(variable);
+            if (ct == null) {
+                return null;
+            }
+            final int[] ds = engine.unwrap().getParser().getDimensions(variable);
+            if ((ds == null) || (ds.length != 2)) {
+                return null;
+            }
+            final int m = ds[0];
+            final int n = ds[1];
+            final int[][] r = new int[m][n];
+
+            int i = 0;
+            int k = 0;
+            while (i < n) {
+                int j = 0;
+                while (j < m) {
+                    r[(j++)][i] = ct[(k++)];
+                }
+                i++;
+            }
+            return r;
         }
-        return r;
     }
 
     @Override
@@ -186,6 +218,8 @@ public class RCallerScriptTaskResultsR implements IScriptTaskResultsR {
     public boolean[] getBooleanVector(final String variable) {
         if (isNull(variable)) {
             return null;
+        } else if (isEmpty(variable)) {
+            return new boolean[0];
         } else {
             return engine.unwrap().getParser().getAsLogicalArray(requestVariable(variable));
         }

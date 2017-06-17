@@ -34,11 +34,13 @@ public class InputsAndResultsTests {
         new InputsAndResultsTestBoolean(runner).testBoolean();
         new InputsAndResultsTestNull(runner).testNull();
         new InputsAndResultsTestNullPutGet(runner).testNullPutGet();
+        new InputsAndResultsTestEmpty(runner).testEmpty();
+        new InputsAndResultsTestEmptyMatrixValue(runner).testEmptyMatrixValue();
     }
 
     public void testParallel() {
         final List<Runnable> tasks = new ArrayList<Runnable>();
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 10; i++) {
             tasks.add(new Runnable() {
                 @Override
                 public void run() {

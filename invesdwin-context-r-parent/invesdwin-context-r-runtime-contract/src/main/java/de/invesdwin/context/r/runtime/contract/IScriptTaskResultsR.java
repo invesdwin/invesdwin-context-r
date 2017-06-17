@@ -106,7 +106,11 @@ public interface IScriptTaskResultsR extends IScriptTaskResults {
 
     @Override
     default boolean isNull(final String variable) {
-        return getBoolean("all(is.na(" + variable + "))");
+        return getBoolean("length(" + variable + ") != 0 && all(is.na(" + variable + "))");
+    }
+
+    default boolean isEmpty(final String variable) {
+        return getBoolean("length(" + variable + ") == 0");
     }
 
 }

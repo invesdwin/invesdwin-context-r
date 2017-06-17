@@ -9,6 +9,10 @@ clust <- NULL
 #trades <- c(2, -3, 10, -5)
 #probabilities <- cbind(c(0.25,0.25,0.25,0.25), c(0.25,0.25,0.25,0.25))
 
+if(length(trades) == 0){
+	stop("No trades!")
+}
+
 portfolio <- lsp(trades,probabilities)
 
 DEctrl <- list(NP=30,itermax=200)
