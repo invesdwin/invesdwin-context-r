@@ -22,7 +22,7 @@ public class Main extends AMain {
         PlatformInitializerProperties.setAllowed(false);
     }
 
-    @Option(required = true, name = "-i", aliases = "--input", usage = "The CSV file containing one or more strategy per line with its trades being comma separated", metaVar = "<some/directory/file.csv>")
+    @Option(required = true, name = "-i", aliases = "--input", usage = "The CSV file containing one or more strategy per line with its trades (holding period returns) being comma separated", metaVar = "<some/directory/file.csv>")
     private File input;
 
     @Option(required = true, name = "-o", aliases = "--output", usage = "This is the CSV file that will be written as a result, containing the optimal-f values for each strategy in a separate line", metaVar = "<some/directory/file.csv>")
