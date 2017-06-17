@@ -39,9 +39,9 @@ public class MainTest {
         final List<String> optimalFStrs = FileUtils.readLines(new File(outputFile), Charset.defaultCharset());
         final List<Decimal> optimalFs = new ArrayList<Decimal>();
         for (final String optimalFStr : optimalFStrs) {
-            optimalFs.add(new Decimal(optimalFStr).round(2));
+            optimalFs.add(new Decimal(optimalFStr).round(3));
         }
-        Assertions.assertThat(optimalFs).isEqualTo(Arrays.asList(new Decimal("0.05"), new Decimal("0.21")));
+        Assertions.assertThat(optimalFs).isEqualTo(Arrays.asList(new Decimal("0.052"), new Decimal("0.213")));
     }
 
 }

@@ -1,5 +1,6 @@
 package de.invesdwin.context.r.optimalf;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.concurrent.NotThreadSafe;
@@ -63,7 +64,17 @@ public class OptimalfScriptTask extends AScriptTaskR<List<Double>> {
 
     @Override
     public List<Double> extractResults(final IScriptTaskResults results) {
-        return results.getDoubleVectorAsList("optimalf");
+        final boolean loss = results.getBoolean("loss");
+        if (loss) {
+            //disable trading if resulting profit is negative
+            final List<Double> optimalFs = new ArrayList<Double>(tradesPerStrategy.size());
+            for (int i = 0; i < tradesPerStrategy.size(); i++) {
+                optimalFs.add(0D);
+            }
+            return optimalFs;
+        } else {
+            return results.getDoubleVectorAsList("optimalf");
+        }
     }
 
 }

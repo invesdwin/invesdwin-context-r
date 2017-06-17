@@ -15,4 +15,5 @@ DEctrl <- list(NP=30,itermax=200)
 result <- optimalf(portfolio, snow=clust, control=DEctrl)
 #result <- optimalf(lspobj, probDrawdown, 0.1, DD=0.2, horizon=4, snow=clust, control=DEctrl)
 #result <- optimalf(lspobj, probRuin, 0.1, DD=0.2, horizon=4, snow=clust, control=DEctrl)
+loss <- result$G-1 <= 0
 optimalf <- result$f

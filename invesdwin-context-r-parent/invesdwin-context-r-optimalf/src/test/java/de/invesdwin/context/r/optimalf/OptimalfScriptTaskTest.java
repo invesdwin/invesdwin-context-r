@@ -1,0 +1,114 @@
+package de.invesdwin.context.r.optimalf;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import javax.annotation.concurrent.NotThreadSafe;
+import javax.inject.Inject;
+
+import org.junit.Ignore;
+import org.junit.Test;
+
+import de.invesdwin.context.r.runtime.contract.IScriptTaskRunnerR;
+import de.invesdwin.context.r.runtime.jri.JriScriptTaskRunnerR;
+import de.invesdwin.context.r.runtime.rcaller.RCallerScriptTaskRunnerR;
+import de.invesdwin.context.r.runtime.renjin.RenjinScriptTaskRunnerR;
+import de.invesdwin.context.r.runtime.rserve.RserveScriptTaskRunnerR;
+import de.invesdwin.context.test.ATest;
+import de.invesdwin.util.assertions.Assertions;
+import de.invesdwin.util.math.decimal.Decimal;
+
+@NotThreadSafe
+public class OptimalfScriptTaskTest extends ATest {
+
+    private static final int ITERATIONS = 10;
+    @Inject
+    private RCallerScriptTaskRunnerR rcallerScriptTaskRunner;
+    @Inject
+    private RserveScriptTaskRunnerR rserveScriptTaskRunner;
+    @Inject
+    private JriScriptTaskRunnerR jriScriptTaskRunner;
+    @Inject
+    private RenjinScriptTaskRunnerR renjinScriptTaskRunner;
+
+    @Test
+    public void testRCaller() {
+        for (int i = 0; i < ITERATIONS; i++) {
+            run(rcallerScriptTaskRunner);
+            log.info("------------------------");
+        }
+    }
+
+    private void run(final IScriptTaskRunnerR runner) {
+        final List<List<Double>> tradesPerStrategy = new ArrayList<>();
+        //        0.5,-0.3,0.4,-0.2
+        tradesPerStrategy.add(Arrays.asList(0.5, -0.3, 0.4, -0.2));
+        //        0.1,-0.15,0.4,-0.1
+        tradesPerStrategy.add(Arrays.asList(0.1, -0.15, 0.4, -0.1));
+        final List<Double> optimalFsRaw = new OptimalfScriptTask(tradesPerStrategy).run(runner);
+        final List<Decimal> optimalFs = new ArrayList<Decimal>();
+        for (final Double optimalFStr : optimalFsRaw) {
+            optimalFs.add(new Decimal(optimalFStr).round(3));
+        }
+        Assertions.assertThat(optimalFs).isEqualTo(Arrays.asList(new Decimal("0.052"), new Decimal("0.213")));
+    }
+
+    @Test
+    public void testRserve() {
+        for (int i = 0; i < ITERATIONS; i++) {
+            run(rserveScriptTaskRunner);
+            log.info("------------------------");
+        }
+    }
+
+    @Test
+    public void testJri() {
+        for (int i = 0; i < ITERATIONS; i++) {
+            run(jriScriptTaskRunner);
+            log.info("------------------------");
+        }
+    }
+
+    @Ignore("org.renjin.eval.EvalException: objective function result has different length than parameter matrix")
+    @Test
+    public void testRenjin() {
+        for (int i = 0; i < ITERATIONS; i++) {
+            run(renjinScriptTaskRunner);
+            log.info("------------------------");
+        }
+    }
+
+    @Test
+    public void testNegative() {
+        final List<List<Double>> tradesPerStrategy = new ArrayList<>();
+        //        0.5,-0.3,0.4,-0.2
+        tradesPerStrategy.add(Arrays.asList(-0.5, -0.3, -0.4, -0.2));
+        //        0.1,-0.15,0.4,-0.1
+        tradesPerStrategy.add(Arrays.asList(-0.1, -0.15, -0.4, -0.1));
+        final List<Double> optimalFsRaw = new OptimalfScriptTask(tradesPerStrategy).run(rcallerScriptTaskRunner);
+        final List<Decimal> optimalFs = new ArrayList<Decimal>();
+        for (final Double optimalFStr : optimalFsRaw) {
+            optimalFs.add(new Decimal(optimalFStr).round(3));
+        }
+        Assertions.assertThat(optimalFs).isEqualTo(Arrays.asList(Decimal.ZERO, Decimal.ZERO));
+    }
+
+    @Ignore()
+    @Test
+    public void testPositive() {
+        System.out.println("TODO: maybe define this as 0 result or 0.999?");
+        final List<List<Double>> tradesPerStrategy = new ArrayList<>();
+        //        0.5,-0.3,0.4,-0.2
+        tradesPerStrategy.add(Arrays.asList(0.5, 0.3, 0.4, 0.2));
+        //        0.1,-0.15,0.4,-0.1
+        tradesPerStrategy.add(Arrays.asList(0.1, 0.15, 0.4, 0.1));
+        final List<Double> optimalFsRaw = new OptimalfScriptTask(tradesPerStrategy).run(rcallerScriptTaskRunner);
+        final List<Decimal> optimalFs = new ArrayList<Decimal>();
+        for (final Double optimalFStr : optimalFsRaw) {
+            optimalFs.add(new Decimal(optimalFStr).round(3));
+        }
+        Assertions.assertThat(optimalFs).isEqualTo(Arrays.asList(Decimal.ZERO, Decimal.ZERO));
+    }
+
+}

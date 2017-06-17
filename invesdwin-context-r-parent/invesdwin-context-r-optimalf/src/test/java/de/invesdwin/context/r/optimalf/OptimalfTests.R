@@ -15,8 +15,10 @@ DEctrl <- list(NP=30,itermax=200)
 #result <- optimalf(lspobj, snow=clust, control=DEctrl)
 #result <- optimalf(lspobj, probDrawdown, 0.1, DD=0.2, horizon=4, snow=clust, control=DEctrl)
 result <- optimalf(lspobj, probRuin, 0.1, DD=0.2, horizon=4, snow=clust, control=DEctrl)
+profit <- result$G-1
 optimalf <- result$f
 
 colProds(trades)
-result
+profit
+optimalf
 format(round(optimalf, 6), nsmall = 6)
