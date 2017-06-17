@@ -101,12 +101,12 @@ public class OptimalfScriptTaskTest extends ATest {
         tradesPerStrategy.add(Arrays.asList(0.5, 0.3, 0.4, 0.2));
         //        0.1,-0.15,0.4,-0.1
         tradesPerStrategy.add(Arrays.asList(0.1, 0.15, 0.4, 0.1));
-        final List<Double> optimalFsRaw = new OptimalfScriptTask(tradesPerStrategy).run(rcallerScriptTaskRunner);
-        final List<Decimal> optimalFs = new ArrayList<Decimal>();
-        for (final Double optimalFStr : optimalFsRaw) {
-            optimalFs.add(new Decimal(optimalFStr).round(3));
+        try {
+            new OptimalfScriptTask(tradesPerStrategy).run(rcallerScriptTaskRunner);
+        } catch (final Throwable t) {
+            Assertions.assertThat(t.getMessage())
+                    .contains("all 'events' columns must have at least one negative trade");
         }
-        Assertions.assertThat(optimalFs).isEqualTo(Arrays.asList(new Decimal("0.999"), new Decimal("0.999")));
     }
 
 }
