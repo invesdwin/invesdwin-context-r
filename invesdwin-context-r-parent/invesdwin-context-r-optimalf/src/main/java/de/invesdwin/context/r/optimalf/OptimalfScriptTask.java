@@ -42,7 +42,8 @@ public class OptimalfScriptTask extends AScriptTaskR<List<Double>> {
                 ghpr.process(tradeDecimal);
                 ahpr.process(tradeDecimal);
             }
-            if (!negativeTradeFound || ghpr.getGeomAvg().isNegativeOrZero() || ahpr.getAvg().isNegativeOrZero()) {
+            if (!negativeTradeFound || (tradesPerStrategy.size() > 1
+                    && (ghpr.getGeomAvg().isNegativeOrZero() || ahpr.getAvg().isNegativeOrZero()))) {
                 includeStrategy.add(false);
                 if (negativeTradeFound) {
                     //remove unprofitable strategies
