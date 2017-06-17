@@ -3,7 +3,7 @@ library(DEoptim)
 #library(snow)
 
 #clust <- makeSOCKcluster(2)
-#clust <- NULL
+clust <- NULL
 
 #trades <- cbind(c(.5, -.3, .4, -.2),c(0.1, -.15, .4, -.1))
 #trades <- c(2, -3, 10, -5)
@@ -13,7 +13,13 @@ portfolio <- lsp(trades,probabilities)
 
 DEctrl <- list(NP=30,itermax=200)
 result <- optimalf(portfolio, snow=clust, control=DEctrl)
-#result <- optimalf(lspobj, probDrawdown, 0.1, DD=0.2, horizon=4, snow=clust, control=DEctrl)
-#result <- optimalf(lspobj, probRuin, 0.1, DD=0.2, horizon=4, snow=clust, control=DEctrl)
-loss <- result$G-1 <= 0
+#result <- optimalf(portfolio, probDrawdown, 0.1, DD=0.2, horizon=4, snow=clust, control=DEctrl)
+#result <- optimalf(portfolio, probRuin, 0.1, DD=0.2, horizon=4, snow=clust, control=DEctrl)
+profit <- result$G-1
+if(profit == -Inf){
+	profit <- -999
+}else if(profit == Inf){
+	profit <- 999
+}
+	
 optimalf <- result$f

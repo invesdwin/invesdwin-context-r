@@ -94,10 +94,8 @@ public class OptimalfScriptTaskTest extends ATest {
         Assertions.assertThat(optimalFs).isEqualTo(Arrays.asList(Decimal.ZERO, Decimal.ZERO));
     }
 
-    @Ignore()
     @Test
     public void testPositive() {
-        System.out.println("TODO: maybe define this as 0 result or 0.999?");
         final List<List<Double>> tradesPerStrategy = new ArrayList<>();
         //        0.5,-0.3,0.4,-0.2
         tradesPerStrategy.add(Arrays.asList(0.5, 0.3, 0.4, 0.2));
@@ -108,7 +106,7 @@ public class OptimalfScriptTaskTest extends ATest {
         for (final Double optimalFStr : optimalFsRaw) {
             optimalFs.add(new Decimal(optimalFStr).round(3));
         }
-        Assertions.assertThat(optimalFs).isEqualTo(Arrays.asList(Decimal.ZERO, Decimal.ZERO));
+        Assertions.assertThat(optimalFs).isEqualTo(Arrays.asList(new Decimal("0.999"), new Decimal("0.999")));
     }
 
 }
