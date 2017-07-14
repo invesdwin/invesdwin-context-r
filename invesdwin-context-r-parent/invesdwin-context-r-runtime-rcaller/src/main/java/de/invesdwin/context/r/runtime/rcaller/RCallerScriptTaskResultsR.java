@@ -24,7 +24,7 @@ public class RCallerScriptTaskResultsR implements IScriptTaskResultsR {
     }
 
     private String requestVariable(final String variable) {
-        if (Strings.containsAny(variable, '[', '.', '(')) {
+        if (Strings.containsAny(variable, '[', '.', '(', '{')) {
             //we have to support expressions here
             engine.unwrap().getRCode().addRCode(INTERNAL_RESULT_VARIABLE_EXPRESSION + " <- " + variable);
             engine.unwrap().runAndReturnResultOnline(INTERNAL_RESULT_VARIABLE_EXPRESSION);
