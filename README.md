@@ -73,6 +73,16 @@ For more elaborate examples of the R script integration, have a look at the `inv
 
 For working with R we recommend using [StatET](http://www.walware.de/goto/statet) if you are mainly using Eclipse. The included editor suffices if you only run the scripts using `invesdwin-context-r`. So no complicated R setup with eclipse is needed, just install the plugin from the marketplace and run your scripts with `invesdwin-context-r-runtime-rcaller` (add this module as a `test` scope dependency) during development to get R console output as you are used to from an interactive R shell (you also need to add a dependecy to the type `test-jar` for the log level to get activated, or alternatively change the log level of `de.invesdwin.context.r.runtime.contract.IScriptTaskRunnerR` to `DEBUG` on your own). The actual deployment distribution can choose a different runtime then as a hard dependency (again see the `invesdwin-context-r-optimalf` module as an example for this). For experimenting with R it might be interesting to use [RStudio](https://www.rstudio.com/) as a standalone development environment. It supports a nice variable viewer and has a nice integration of the R documentation, which helps a lot during R learning and development. It also comes with a comfortable debugger for R scripts.
 
+## More Programming Languages
+
+Similar integration modules like this one also exist for the following other programming languages: 
+
+- **Python Modules**: Scripting with Python
+	- https://github.com/subes/invesdwin-context-python
+- **Matlab/Octave Modules**: Scripting with Matlab and Octave
+	- https://github.com/subes/invesdwin-context-matlab
+
+
 ## Support
 
 If you need further assistance or have some ideas for improvements and don't want to create an issue here on github, feel free to start a discussion in our [invesdwin-platform](https://groups.google.com/forum/#!forum/invesdwin-platform) mailing list.
