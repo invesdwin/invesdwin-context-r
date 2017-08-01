@@ -79,7 +79,7 @@ Similar integration modules like this one also exist for the following other pro
 
 - **Python Modules**: Scripting with Python
 	- https://github.com/subes/invesdwin-context-python
-- **Matlab/Octave Modules**: Scripting with Matlab and Octave
+- **Matlab/Octave/Scilab Modules**: Scripting with Matlab, Octave and Scilab
 	- https://github.com/subes/invesdwin-context-matlab
 
 
