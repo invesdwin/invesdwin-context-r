@@ -26,7 +26,7 @@ public final class ProvidedScriptTaskRunnerR implements IScriptTaskRunnerR, Fact
 
     public static final ProvidedScriptTaskRunnerR INSTANCE = new ProvidedScriptTaskRunnerR();
 
-    @GuardedBy("this.class")
+    @GuardedBy("ProvidedScriptTaskRunnerR.class")
     private static IScriptTaskRunnerR providedInstance;
 
     private ProvidedScriptTaskRunnerR() {}
