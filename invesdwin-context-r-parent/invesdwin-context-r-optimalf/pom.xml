@@ -47,21 +47,6 @@
 			<artifactId>invesdwin-context-r-runtime-rserve</artifactId>
 			<scope>test</scope>
 		</dependency>
-		<dependency>
-			<groupId>de.invesdwin</groupId>
-			<artifactId>invesdwin-context-r-runtime-renjin</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>de.invesdwin.context.r.runtime.renjin.packages</groupId>
-			<artifactId>LSPM</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.renjin.cran</groupId>
-			<artifactId>DEoptim</artifactId>
-			<scope>test</scope>
-		</dependency>
 
 	</dependencies>
 
