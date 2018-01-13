@@ -29,7 +29,6 @@
 	</modules>
 
 	<properties>
-		<version.invesdwin-context-integration>${version.invesdwin-context}</version.invesdwin-context-integration>
 		<version.invesdwin-context-r>${version.invesdwin-context}</version.invesdwin-context-r>
 
 		<version.renjin>0.8.2357</version.renjin>
@@ -43,14 +42,6 @@
 
 	<dependencyManagement>
 		<dependencies>
-			<dependency>
-				<groupId>de.invesdwin</groupId>
-				<artifactId>invesdwin-context-integration-parent</artifactId>
-				<version>${version.invesdwin-context-integration}</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-
 			<dependency>
 				<groupId>de.invesdwin</groupId>
 				<artifactId>invesdwin-context-r-runtime-contract</artifactId>
