@@ -13,6 +13,7 @@ import de.invesdwin.context.r.runtime.contract.AScriptTaskR;
 import de.invesdwin.context.r.runtime.contract.IScriptTaskRunnerR;
 import de.invesdwin.context.r.runtime.jri.internal.LoggingRMainLoopCallbacks;
 import de.invesdwin.instrument.DynamicInstrumentationReflections;
+import de.invesdwin.util.concurrent.Threads;
 import de.invesdwin.util.error.Throwables;
 
 @Immutable
@@ -36,7 +37,8 @@ public final class JriScriptTaskRunnerR implements IScriptTaskRunnerR, FactoryBe
             throw new IllegalStateException("Cannot load R");
         }
         RENGINE.addMainLoopCallbacks(LoggingRMainLoopCallbacks.INSTANCE);
-        RENGINE_LOCK = new ReentrantLock();
+        RENGINE_LOCK = Threads.getCycleDetectingLockFactory()
+                .newReentrantLock(JriScriptTaskRunnerR.class.getSimpleName() + "_RENGINE_LOCK");
     }
 
     /**
