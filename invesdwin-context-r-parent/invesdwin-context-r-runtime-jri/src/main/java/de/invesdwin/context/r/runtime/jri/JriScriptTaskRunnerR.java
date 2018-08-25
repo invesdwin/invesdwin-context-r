@@ -1,7 +1,5 @@
 package de.invesdwin.context.r.runtime.jri;
 
-import java.util.concurrent.locks.ReentrantLock;
-
 import javax.annotation.concurrent.GuardedBy;
 import javax.annotation.concurrent.Immutable;
 import javax.inject.Named;
@@ -13,7 +11,8 @@ import de.invesdwin.context.r.runtime.contract.AScriptTaskR;
 import de.invesdwin.context.r.runtime.contract.IScriptTaskRunnerR;
 import de.invesdwin.context.r.runtime.jri.internal.LoggingRMainLoopCallbacks;
 import de.invesdwin.instrument.DynamicInstrumentationReflections;
-import de.invesdwin.util.concurrent.Locks;
+import de.invesdwin.util.concurrent.lock.IReentrantLock;
+import de.invesdwin.util.concurrent.lock.Locks;
 import de.invesdwin.util.error.Throwables;
 
 @Immutable
@@ -24,7 +23,7 @@ public final class JriScriptTaskRunnerR implements IScriptTaskRunnerR, FactoryBe
 
     @GuardedBy("RENGINE_LOCK")
     private static final Rengine RENGINE;
-    private static final ReentrantLock RENGINE_LOCK;
+    private static final IReentrantLock RENGINE_LOCK;
 
     static {
         DynamicInstrumentationReflections.addPathToJavaLibraryPath(JriProperties.JRI_LIBRARY_PATH);
