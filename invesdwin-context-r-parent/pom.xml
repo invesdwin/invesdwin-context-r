@@ -32,12 +32,12 @@
 	<properties>
 		<version.invesdwin-context-r>${version.invesdwin-context}</version.invesdwin-context-r>
 
-		<version.renjin>0.8.2357</version.renjin>
+		<version.renjin>0.9.2716</version.renjin>
 		<version.renjin-r-executor>1.2</version.renjin-r-executor>
 		<version.deoptimr>1.0-8-b4</version.deoptimr>
 		<version.deoptim>2.2-4-b5</version.deoptim>
 		<version.jri>0.9-9</version.jri>
-		<version.rsession>1.8.3</version.rsession>
+		<version.rsession>2.0.4</version.rsession>
 		<version.rcaller>3.0</version.rcaller>
 	</properties>
 
