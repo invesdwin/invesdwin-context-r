@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
                              http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
@@ -11,7 +12,7 @@
 	<packaging>jar</packaging>
 
 	<!-- sudo apt-get install r-cran-rserve -->
-	
+
 	<build>
 		<plugins>
 			<plugin>
@@ -19,7 +20,8 @@
 				<artifactId>maven-surefire-plugin</artifactId>
 				<configuration>
 					<excludes>
-						<!-- disabled for now until rserve is updated to 1.8.6 to fix the long vector problem with R3.5: https://github.com/s-u/Rserve/blob/master/NEWS -->
+						<!-- disabled for now until rserve is updated to 1.8.6 to fix the long 
+							vector problem with R3.5: https://github.com/yannrichet/rsession/issues/20 -->
 						<exclude>**/*</exclude>
 					</excludes>
 				</configuration>
