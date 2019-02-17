@@ -3,6 +3,7 @@ package de.invesdwin.context.r.runtime.rserve.pool.internal;
 import javax.annotation.concurrent.ThreadSafe;
 import javax.inject.Named;
 
+import org.math.R.RserveSession;
 import org.math.R.Rsession;
 import org.springframework.beans.factory.FactoryBean;
 
@@ -26,11 +27,11 @@ public final class RsessionPoolableObjectFactory
     public Rsession makeObject() {
         switch (RserveProperties.RSERVER_CONF_MODE) {
         case LOCAL_SPAWN:
-            return Rsession.newInstanceTry(new RsessionLogger(), RserveProperties.RSERVER_CONF);
+            return RserveSession.newInstanceTry(new RsessionLogger(), RserveProperties.RSERVER_CONF);
         case LOCAL:
             //fallthrough
         case REMOTE:
-            return Rsession.newRemoteInstance(new RsessionLogger(), RserveProperties.RSERVER_CONF);
+            return RserveSession.newRemoteInstance(new RsessionLogger(), RserveProperties.RSERVER_CONF);
         default:
             throw UnknownArgumentException.newInstance(RserverConfMode.class, RserveProperties.RSERVER_CONF_MODE);
         }
