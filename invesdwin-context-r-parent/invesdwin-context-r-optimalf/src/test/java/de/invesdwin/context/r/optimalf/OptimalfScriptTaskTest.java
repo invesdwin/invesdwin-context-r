@@ -70,14 +70,14 @@ public class OptimalfScriptTaskTest extends ATest {
             log.info("------------------------");
         }
     }
-    
-    @Test
-    public void testRenjin() {
-        for (int i = 0; i < ITERATIONS; i++) {
-            run(renjinScriptTaskRunner);
-            log.info("------------------------");
-        }
-    }
+
+    //    @Test
+    //    public void testRenjin() {
+    //        for (int i = 0; i < ITERATIONS; i++) {
+    //            run(renjinScriptTaskRunner);
+    //            log.info("------------------------");
+    //        }
+    //    }
 
     @Test
     public void testNegative() {

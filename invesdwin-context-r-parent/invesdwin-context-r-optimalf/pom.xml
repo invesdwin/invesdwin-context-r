@@ -65,9 +65,11 @@
 			<artifactId>invesdwin-context-r-runtime-renjin</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<!-- renjin-maven-plugin does not work properly: https://github.com/bedatadriven/renjin/issues/452 -->
 		<!-- <dependency>
 			<groupId>de.invesdwin.context.r.runtime.renjin.packages</groupId>
 			<artifactId>LSPM</artifactId>
+			<scope>test</scope>
 		</dependency>-->
 
 	</dependencies>
