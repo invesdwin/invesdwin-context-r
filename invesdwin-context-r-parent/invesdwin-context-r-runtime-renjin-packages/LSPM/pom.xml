@@ -47,11 +47,23 @@
 				<artifactId>renjin-maven-plugin</artifactId>
 				<executions>
 					<execution>
-						<id>build</id>
+						<id>compile</id>
+						<phase>compile</phase>
 						<goals>
 							<goal>gnur-compile</goal>
 						</goals>
-						<phase>compile</phase>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.renjin</groupId>
+				<artifactId>gcc-bridge-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>soot</goal>
+						</goals>
+						<phase>process-classes</phase>
 					</execution>
 				</executions>
 			</plugin>
