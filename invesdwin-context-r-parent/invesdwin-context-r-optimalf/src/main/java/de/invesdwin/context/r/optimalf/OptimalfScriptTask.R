@@ -1,5 +1,9 @@
-#sudo apt-get -y build-dep libcurl4-gnutls-dev
-#sudo apt-get -y install libcurl4-gnutls-dev
+#sudo apt-get -y build-dep libcurl4-gnutls-dev libgit2-dev
+#sudo apt-get -y install libcurl4-gnutls-dev libgit2-dev
+local({r <- getOption("repos")
+       r["CRAN"] <- "http://cran.r-project.org" 
+       options(repos=r)
+})
 if (!require("LSPM")) {
   if (!require("devtools")) {
     install.packages("devtools")
