@@ -20,3 +20,6 @@
 /*.iml
 /.sessions
 /**/.~lock.*
+/.pydevproject
+/Report_*.java
+/octave-workspace

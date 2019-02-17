@@ -13,6 +13,7 @@ import org.junit.Test;
 import de.invesdwin.context.r.runtime.contract.IScriptTaskRunnerR;
 import de.invesdwin.context.r.runtime.jri.JriScriptTaskRunnerR;
 import de.invesdwin.context.r.runtime.rcaller.RCallerScriptTaskRunnerR;
+import de.invesdwin.context.r.runtime.renjin.RenjinScriptTaskRunnerR;
 import de.invesdwin.context.r.runtime.rserve.RserveScriptTaskRunnerR;
 import de.invesdwin.context.test.ATest;
 import de.invesdwin.util.assertions.Assertions;
@@ -28,6 +29,8 @@ public class OptimalfScriptTaskTest extends ATest {
     private RserveScriptTaskRunnerR rserveScriptTaskRunner;
     @Inject
     private JriScriptTaskRunnerR jriScriptTaskRunner;
+    @Inject
+    private RenjinScriptTaskRunnerR renjinScriptTaskRunner;
 
     @Test
     public void testRCaller() {
@@ -64,6 +67,14 @@ public class OptimalfScriptTaskTest extends ATest {
     public void testJri() {
         for (int i = 0; i < ITERATIONS; i++) {
             run(jriScriptTaskRunner);
+            log.info("------------------------");
+        }
+    }
+    
+    @Test
+    public void testRenjin() {
+        for (int i = 0; i < ITERATIONS; i++) {
+            run(renjinScriptTaskRunner);
             log.info("------------------------");
         }
     }
