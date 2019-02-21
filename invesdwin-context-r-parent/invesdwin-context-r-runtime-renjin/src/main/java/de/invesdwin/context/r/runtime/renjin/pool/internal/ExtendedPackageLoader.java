@@ -1,12 +1,13 @@
 package de.invesdwin.context.r.runtime.renjin.pool.internal;
 
+import java.util.Optional;
+
 import javax.annotation.concurrent.ThreadSafe;
 
 import org.renjin.primitives.packaging.ClasspathPackageLoader;
 import org.renjin.primitives.packaging.FqPackageName;
 import org.renjin.primitives.packaging.Package;
 import org.renjin.primitives.packaging.PackageLoader;
-import org.renjin.repackaged.guava.base.Optional;
 
 import de.invesdwin.context.r.runtime.renjin.RenjinProperties;
 import de.invesdwin.util.collections.loadingcache.ALoadingCache;
