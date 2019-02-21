@@ -12,6 +12,7 @@ public final class RserveProperties {
 
     public static final RserverConf RSERVER_CONF;
     public static final RserverConfMode RSERVER_CONF_MODE;
+    public static final String RSERVER_REPOSITORY;
 
     static {
         final SystemProperties systemProperties = new SystemProperties(RserveProperties.class);
@@ -42,6 +43,7 @@ public final class RserveProperties {
             systemProperties.maybeLogSecurityWarning("RSERVER_CONF (username)", RSERVER_CONF.login, "invesdwin");
             systemProperties.maybeLogSecurityWarning("RSERVER_CONF (password)", RSERVER_CONF.password, "invesdwin");
         }
+        RSERVER_REPOSITORY = systemProperties.getString("RSERVER_REPOSITORY");
     }
 
     private RserveProperties() {}

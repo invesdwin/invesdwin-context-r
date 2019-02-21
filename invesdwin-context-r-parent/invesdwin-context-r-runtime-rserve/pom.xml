@@ -11,23 +11,8 @@
 	<artifactId>invesdwin-context-r-runtime-rserve</artifactId>
 	<packaging>jar</packaging>
 
-	<!-- sudo apt-get install r-cran-rserve -->
-
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-surefire-plugin</artifactId>
-				<configuration>
-					<excludes>
-						<!-- disabled for now until rserve is updated to 1.8.6 to fix the long 
-							vector problem with R3.5: https://github.com/yannrichet/rsession/issues/20 -->
-						<exclude>**/*</exclude>
-					</excludes>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
+	<!-- Via R: install.packages('Rserve',repos='http://rforge.net') -->
+	<!-- sudo apt-get install r-cran-rserve (1.7-3 does not work on newer R versions) -->
 
 	<dependencies>
 		<dependency>
