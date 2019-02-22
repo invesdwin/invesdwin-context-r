@@ -3,7 +3,6 @@ package de.invesdwin.context.r.runtime.rserve;
 import javax.annotation.concurrent.NotThreadSafe;
 
 import org.math.R.Rsession;
-import org.math.R.Rsession.RException;
 import org.rosuda.REngine.REXP;
 
 import de.invesdwin.context.integration.script.IScriptTaskEngine;
@@ -23,15 +22,11 @@ public class RserveScriptTaskEngineR implements IScriptTaskEngine {
 
     @Override
     public void eval(final String expression) {
-        try {
-            final REXP eval = (REXP) rsession.eval(expression);
-            if (eval == null) {
-                throw new IllegalStateException(
-                        String.valueOf(de.invesdwin.context.r.runtime.rserve.pool.internal.RsessionLogger.get(rsession)
-                                .getErrorMessage()));
-            }
-        } catch (final RException e) {
-            throw new RuntimeException(e);
+        final REXP eval = rsession.eval(expression);
+        if (eval == null) {
+            throw new IllegalStateException(
+                    String.valueOf(de.invesdwin.context.r.runtime.rserve.pool.internal.RsessionLogger.get(rsession)
+                            .getErrorMessage()));
         }
     }
 

@@ -5,8 +5,7 @@ import java.io.File;
 import javax.annotation.concurrent.ThreadSafe;
 import javax.inject.Named;
 
-import org.math.R.RserveDaemon;
-import org.math.R.RserveSession;
+import org.math.R.Rdaemon;
 import org.math.R.RserverConf;
 import org.math.R.Rsession;
 import org.math.R.StartRserve;
@@ -36,11 +35,11 @@ public final class RsessionPoolableObjectFactory
         maybeInitialize();
         switch (RserveProperties.RSERVER_CONF_MODE) {
         case LOCAL_SPAWN:
-            return RserveSession.newInstanceTry(new RsessionLogger(), RserveProperties.RSERVER_CONF);
+            return Rsession.newInstanceTry(new RsessionLogger(), RserveProperties.RSERVER_CONF);
         case LOCAL:
             //fallthrough
         case REMOTE:
-            return RserveSession.newRemoteInstance(new RsessionLogger(), RserveProperties.RSERVER_CONF);
+            return Rsession.newRemoteInstance(new RsessionLogger(), RserveProperties.RSERVER_CONF);
         default:
             throw UnknownArgumentException.newInstance(RserverConfMode.class, RserveProperties.RSERVER_CONF_MODE);
         }
@@ -61,13 +60,13 @@ public final class RsessionPoolableObjectFactory
             http_proxy = rServeConf.properties.getProperty("http_proxy");
         }
 
-        RserveDaemon.findR_HOME(RserveDaemon.R_HOME);
+        Rdaemon.findR_HOME(Rdaemon.R_HOME);
         final String exeSuffix = OperatingSystem.isWindows() ? ".exe" : "";
         boolean rserveInstalled = StartRserve
-                .isRserveInstalled(RserveDaemon.R_HOME + File.separator + "bin" + File.separator + "R" + exeSuffix);
+                .isRserveInstalled(Rdaemon.R_HOME + File.separator + "bin" + File.separator + "R" + exeSuffix);
         if (!rserveInstalled) {
             rserveInstalled = StartRserve.installRserve(
-                    RserveDaemon.R_HOME + File.separator + "bin" + File.separator + "R" + exeSuffix, http_proxy,
+                    Rdaemon.R_HOME + File.separator + "bin" + File.separator + "R" + exeSuffix, http_proxy,
                     RserveProperties.RSERVER_REPOSITORY);
             if (!rserveInstalled) {
                 final String notice = "Please install Rserve manually in your R environment using \"install.packages('Rserve',,'"
