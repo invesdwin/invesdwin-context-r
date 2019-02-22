@@ -40,6 +40,7 @@
 		<!-- rsession 1.8.3 is actually better than 2.0.4 -->
 		<!-- Fehler in close(.f) : Objekt '.f' nicht gefunden -->
 		<!-- Fehler in close(.fm) : Objekt '.fm' nicht gefunden -->
+		<!-- https://github.com/yannrichet/rsession/issues/21 -->
 		<version.rsession>1.8.3</version.rsession>
 		<version.rcaller>3.0</version.rcaller>
 	</properties>
