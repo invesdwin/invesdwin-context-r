@@ -2,6 +2,7 @@ package de.invesdwin.context.r.runtime.rserve.pool.internal;
 
 import java.io.File;
 
+import javax.annotation.concurrent.GuardedBy;
 import javax.annotation.concurrent.ThreadSafe;
 import javax.inject.Named;
 
@@ -18,6 +19,9 @@ import de.invesdwin.context.r.runtime.rserve.RserveScriptTaskEngineR;
 import de.invesdwin.context.r.runtime.rserve.RserverConfMode;
 import de.invesdwin.context.system.OperatingSystem;
 import de.invesdwin.util.error.UnknownArgumentException;
+import de.invesdwin.util.lang.Reflections;
+import de.invesdwin.util.time.fdate.FDate;
+import de.invesdwin.util.time.fdate.FTimeUnit;
 
 @ThreadSafe
 @Named
@@ -26,13 +30,40 @@ public final class RsessionPoolableObjectFactory
 
     public static final RsessionPoolableObjectFactory INSTANCE = new RsessionPoolableObjectFactory();
 
-    private boolean initialized = false;
+    @GuardedBy("this.class")
+    private static FDate lastTimestamp = FDate.MIN_DATE;
+    @GuardedBy("this.class")
+    private static boolean initialized = false;
 
     private RsessionPoolableObjectFactory() {}
 
     @Override
     public Rsession makeObject() {
         maybeInitialize();
+        final Rsession session = createSession();
+        final FDate timestamp = newTimestamp();
+        Reflections.field("SINK_FILE")
+                .ofType(String.class)
+                .in(session)
+                .set(".Rout-" + timestamp.toString(FDate.FORMAT_TIMESTAMP_UNDERSCORE));
+        return session;
+    }
+
+    private static synchronized FDate newTimestamp() {
+        FDate timestamp = new FDate();
+        while (timestamp.equals(lastTimestamp)) {
+            try {
+                FTimeUnit.MILLISECONDS.sleep(1);
+            } catch (final InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            timestamp = new FDate();
+        }
+        lastTimestamp = timestamp;
+        return timestamp;
+    }
+
+    private Rsession createSession() {
         switch (RserveProperties.RSERVER_CONF_MODE) {
         case LOCAL_SPAWN:
             return Rsession.newInstanceTry(new RsessionLogger(), RserveProperties.RSERVER_CONF);
@@ -49,7 +80,7 @@ public final class RsessionPoolableObjectFactory
      * Need to install rserve ourselves so that we can use the updated repo. Rsession sadly does not allow to modify the
      * url in a different way.
      */
-    private void maybeInitialize() {
+    private static synchronized void maybeInitialize() {
         if (initialized) {
             return;
         }
