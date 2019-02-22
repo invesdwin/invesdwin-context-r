@@ -2,19 +2,20 @@ package de.invesdwin.context.r.runtime.rserve;
 
 import javax.annotation.concurrent.NotThreadSafe;
 
+import org.math.R.Rsession;
+import org.math.R.Rsession.RException;
 import org.rosuda.REngine.REXP;
 
 import de.invesdwin.context.integration.script.IScriptTaskEngine;
-import de.invesdwin.context.r.runtime.rserve.pool.ExtendedRserveSession;
 
 @NotThreadSafe
 public class RserveScriptTaskEngineR implements IScriptTaskEngine {
 
-    private ExtendedRserveSession rsession;
+    private Rsession rsession;
     private final RserveScriptTaskInputsR inputs;
     private final RserveScriptTaskResultsR results;
 
-    public RserveScriptTaskEngineR(final ExtendedRserveSession rsession) {
+    public RserveScriptTaskEngineR(final Rsession rsession) {
         this.rsession = rsession;
         this.inputs = new RserveScriptTaskInputsR(this);
         this.results = new RserveScriptTaskResultsR(this);
@@ -22,11 +23,15 @@ public class RserveScriptTaskEngineR implements IScriptTaskEngine {
 
     @Override
     public void eval(final String expression) {
-        final REXP eval = rsession.rawEval(expression);
-        if (eval == null) {
-            throw new IllegalStateException(
-                    String.valueOf(de.invesdwin.context.r.runtime.rserve.pool.internal.RsessionLogger.get(rsession)
-                            .getErrorMessage()));
+        try {
+            final REXP eval = (REXP) rsession.eval(expression);
+            if (eval == null) {
+                throw new IllegalStateException(
+                        String.valueOf(de.invesdwin.context.r.runtime.rserve.pool.internal.RsessionLogger.get(rsession)
+                                .getErrorMessage()));
+            }
+        } catch (final RException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -46,7 +51,7 @@ public class RserveScriptTaskEngineR implements IScriptTaskEngine {
     }
 
     @Override
-    public ExtendedRserveSession unwrap() {
+    public Rsession unwrap() {
         return rsession;
     }
 

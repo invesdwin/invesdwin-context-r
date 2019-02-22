@@ -6,7 +6,9 @@ import javax.annotation.concurrent.ThreadSafe;
 import javax.inject.Named;
 
 import org.math.R.RserveDaemon;
+import org.math.R.RserveSession;
 import org.math.R.RserverConf;
+import org.math.R.Rsession;
 import org.math.R.StartRserve;
 import org.springframework.beans.factory.FactoryBean;
 
@@ -15,14 +17,13 @@ import de.invesdwin.context.r.runtime.contract.IScriptTaskRunnerR;
 import de.invesdwin.context.r.runtime.rserve.RserveProperties;
 import de.invesdwin.context.r.runtime.rserve.RserveScriptTaskEngineR;
 import de.invesdwin.context.r.runtime.rserve.RserverConfMode;
-import de.invesdwin.context.r.runtime.rserve.pool.ExtendedRserveSession;
 import de.invesdwin.context.system.OperatingSystem;
 import de.invesdwin.util.error.UnknownArgumentException;
 
 @ThreadSafe
 @Named
 public final class RsessionPoolableObjectFactory
-        implements IPoolableObjectFactory<ExtendedRserveSession>, FactoryBean<RsessionPoolableObjectFactory> {
+        implements IPoolableObjectFactory<Rsession>, FactoryBean<RsessionPoolableObjectFactory> {
 
     public static final RsessionPoolableObjectFactory INSTANCE = new RsessionPoolableObjectFactory();
 
@@ -31,15 +32,15 @@ public final class RsessionPoolableObjectFactory
     private RsessionPoolableObjectFactory() {}
 
     @Override
-    public ExtendedRserveSession makeObject() {
+    public Rsession makeObject() {
         maybeInitialize();
         switch (RserveProperties.RSERVER_CONF_MODE) {
         case LOCAL_SPAWN:
-            return new ExtendedRserveSession(new RsessionLogger(), RserveProperties.RSERVER_CONF, true);
+            return RserveSession.newInstanceTry(new RsessionLogger(), RserveProperties.RSERVER_CONF);
         case LOCAL:
             //fallthrough
         case REMOTE:
-            return new ExtendedRserveSession(new RsessionLogger(), RserveProperties.RSERVER_CONF, false);
+            return RserveSession.newRemoteInstance(new RsessionLogger(), RserveProperties.RSERVER_CONF);
         default:
             throw UnknownArgumentException.newInstance(RserverConfMode.class, RserveProperties.RSERVER_CONF_MODE);
         }
@@ -60,7 +61,6 @@ public final class RsessionPoolableObjectFactory
             http_proxy = rServeConf.properties.getProperty("http_proxy");
         }
 
-        RserveDaemon.USE_RSERVE_FROM_CRAN = true;
         RserveDaemon.findR_HOME(RserveDaemon.R_HOME);
         final String exeSuffix = OperatingSystem.isWindows() ? ".exe" : "";
         boolean rserveInstalled = StartRserve
@@ -79,20 +79,20 @@ public final class RsessionPoolableObjectFactory
     }
 
     @Override
-    public void destroyObject(final ExtendedRserveSession obj) throws Exception {
+    public void destroyObject(final Rsession obj) throws Exception {
         obj.end();
     }
 
     @Override
-    public boolean validateObject(final ExtendedRserveSession obj) {
+    public boolean validateObject(final Rsession obj) {
         return true;
     }
 
     @Override
-    public void activateObject(final ExtendedRserveSession obj) throws Exception {}
+    public void activateObject(final Rsession obj) throws Exception {}
 
     @Override
-    public void passivateObject(final ExtendedRserveSession obj) throws Exception {
+    public void passivateObject(final Rsession obj) throws Exception {
         final RserveScriptTaskEngineR engine = new RserveScriptTaskEngineR(obj);
         engine.eval(IScriptTaskRunnerR.CLEANUP_SCRIPT);
         engine.close();
