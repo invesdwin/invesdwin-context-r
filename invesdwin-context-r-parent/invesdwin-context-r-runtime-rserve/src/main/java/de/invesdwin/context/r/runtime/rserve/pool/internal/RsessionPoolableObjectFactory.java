@@ -43,7 +43,10 @@ public final class RsessionPoolableObjectFactory
     public Rsession makeObject() {
         maybeInitialize();
         final Rsession session = createSession();
-        //use absolute path or else connection might not work properly
+        /*
+         * use absolute path or else connection might not work properly, also use unique name to prevent multiple
+         * instances from sharing the same file
+         */
         final String sinkFile = new File(ContextProperties.TEMP_DIRECTORY, UNIQUE_NAME_GENERATOR.get(".Rout"))
                 .getAbsolutePath();
         Reflections.field("SINK_FILE").ofType(String.class).in(session).set(sinkFile);
