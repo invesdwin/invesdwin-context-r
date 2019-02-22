@@ -1,11 +1,8 @@
 package de.invesdwin.context.r.runtime.rserve.pool.internal;
 
-import java.util.List;
-
 import javax.annotation.concurrent.GuardedBy;
 import javax.annotation.concurrent.ThreadSafe;
 
-import org.math.R.RLog;
 import org.math.R.Rsession;
 
 import de.invesdwin.context.r.runtime.contract.IScriptTaskRunnerR;
@@ -13,7 +10,7 @@ import de.invesdwin.util.lang.Reflections;
 import de.invesdwin.util.lang.Strings;
 
 @ThreadSafe
-public final class RsessionLogger implements RLog {
+public final class RsessionLogger implements org.math.R.Logger {
 
     @GuardedBy("this")
     private final StringBuilder errorMessage = new StringBuilder();
@@ -21,7 +18,7 @@ public final class RsessionLogger implements RLog {
     public RsessionLogger() {}
 
     @Override
-    public synchronized void log(final String text, final Level level) {
+    public synchronized void println(final String text, final Level level) {
         if (Strings.isNotBlank(text)) {
             switch (level) {
             case OUTPUT:
@@ -59,7 +56,7 @@ public final class RsessionLogger implements RLog {
     }
 
     public static RsessionLogger get(final Rsession rsession) {
-        return (RsessionLogger) Reflections.field("loggers").ofType(List.class).in(rsession).get().get(0);
+        return (RsessionLogger) Reflections.field("console").ofType(org.math.R.Logger.class).in(rsession).get();
     }
 
 }

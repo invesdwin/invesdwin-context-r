@@ -25,7 +25,7 @@ public class RserveScriptTaskResultsR implements IScriptTaskResultsR {
     @Override
     public String getString(final String variable) {
         try {
-            final REXP rexp = engine.unwrap().rawEval(variable);
+            final REXP rexp = engine.unwrap().eval(variable);
             final boolean[] na = rexp.isNA();
             Assertions.checkEquals(na.length, 1);
             if (na[0]) {
@@ -41,7 +41,7 @@ public class RserveScriptTaskResultsR implements IScriptTaskResultsR {
     @Override
     public String[] getStringVector(final String variable) {
         try {
-            final REXP rexp = engine.unwrap().rawEval(variable);
+            final REXP rexp = engine.unwrap().eval(variable);
             if (allIsNa(rexp)) {
                 return null;
             } else {
@@ -71,7 +71,7 @@ public class RserveScriptTaskResultsR implements IScriptTaskResultsR {
     @Override
     public String[][] getStringMatrix(final String variable) {
         try {
-            final REXP rexp = engine.unwrap().rawEval(variable);
+            final REXP rexp = engine.unwrap().eval(variable);
             if (allIsNa(rexp)) {
                 return null;
             } else {
@@ -109,7 +109,7 @@ public class RserveScriptTaskResultsR implements IScriptTaskResultsR {
     @Override
     public double getDouble(final String variable) {
         try {
-            return engine.unwrap().rawEval(variable).asDouble();
+            return engine.unwrap().eval(variable).asDouble();
         } catch (final REXPMismatchException e) {
             throw new RuntimeException(e);
         }
@@ -118,7 +118,7 @@ public class RserveScriptTaskResultsR implements IScriptTaskResultsR {
     @Override
     public double[] getDoubleVector(final String variable) {
         try {
-            final REXP rexp = engine.unwrap().rawEval(variable);
+            final REXP rexp = engine.unwrap().eval(variable);
             if (allIsNa(rexp)) {
                 return null;
             } else {
@@ -132,7 +132,7 @@ public class RserveScriptTaskResultsR implements IScriptTaskResultsR {
     @Override
     public double[][] getDoubleMatrix(final String variable) {
         try {
-            final REXP rexp = engine.unwrap().rawEval(variable);
+            final REXP rexp = engine.unwrap().eval(variable);
             if (allIsNa(rexp)) {
                 return null;
             } else {
@@ -146,7 +146,7 @@ public class RserveScriptTaskResultsR implements IScriptTaskResultsR {
     @Override
     public int getInteger(final String variable) {
         try {
-            return engine.unwrap().rawEval(variable).asInteger();
+            return engine.unwrap().eval(variable).asInteger();
         } catch (final REXPMismatchException e) {
             throw new RuntimeException(e);
         }
@@ -155,7 +155,7 @@ public class RserveScriptTaskResultsR implements IScriptTaskResultsR {
     @Override
     public int[] getIntegerVector(final String variable) {
         try {
-            final REXP rexp = engine.unwrap().rawEval(variable);
+            final REXP rexp = engine.unwrap().eval(variable);
             if (allIsNa(rexp)) {
                 return null;
             } else {
@@ -169,7 +169,7 @@ public class RserveScriptTaskResultsR implements IScriptTaskResultsR {
     @Override
     public int[][] getIntegerMatrix(final String variable) {
         try {
-            final REXP rexp = engine.unwrap().rawEval(variable);
+            final REXP rexp = engine.unwrap().eval(variable);
             if (allIsNa(rexp)) {
                 return null;
             } else {
@@ -207,7 +207,7 @@ public class RserveScriptTaskResultsR implements IScriptTaskResultsR {
     @Override
     public boolean getBoolean(final String variable) {
         try {
-            final REXP rexp = engine.unwrap().rawEval(variable);
+            final REXP rexp = engine.unwrap().eval(variable);
             return rexp.asInteger() > 0;
         } catch (final REXPMismatchException e) {
             throw new RuntimeException(e);
@@ -217,7 +217,7 @@ public class RserveScriptTaskResultsR implements IScriptTaskResultsR {
     @Override
     public boolean[] getBooleanVector(final String variable) {
         try {
-            final REXP rexp = engine.unwrap().rawEval(variable);
+            final REXP rexp = engine.unwrap().eval(variable);
             if (allIsNa(rexp)) {
                 return null;
             } else {
@@ -236,7 +236,7 @@ public class RserveScriptTaskResultsR implements IScriptTaskResultsR {
     @Override
     public boolean[][] getBooleanMatrix(final String variable) {
         try {
-            final REXP rexp = engine.unwrap().rawEval(variable);
+            final REXP rexp = engine.unwrap().eval(variable);
             if (allIsNa(rexp)) {
                 return null;
             } else {

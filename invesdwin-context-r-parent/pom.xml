@@ -37,7 +37,7 @@
 		<version.deoptim>2.2-4-b23</version.deoptim>
 		<version.jri>0.9-9</version.jri>
 		<!-- rsession 1.8.3 is actually better than 2.0.4 -->
-		<version.rsession>2.0.4</version.rsession>
+		<version.rsession>1.8.3</version.rsession>
 		<version.rcaller>3.0</version.rcaller>
 	</properties>
 

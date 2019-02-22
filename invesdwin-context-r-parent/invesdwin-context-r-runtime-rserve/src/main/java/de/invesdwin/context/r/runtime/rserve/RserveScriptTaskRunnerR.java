@@ -3,11 +3,11 @@ package de.invesdwin.context.r.runtime.rserve;
 import javax.annotation.concurrent.Immutable;
 import javax.inject.Named;
 
+import org.math.R.Rsession;
 import org.springframework.beans.factory.FactoryBean;
 
 import de.invesdwin.context.r.runtime.contract.AScriptTaskR;
 import de.invesdwin.context.r.runtime.contract.IScriptTaskRunnerR;
-import de.invesdwin.context.r.runtime.rserve.pool.ExtendedRserveSession;
 import de.invesdwin.context.r.runtime.rserve.pool.RsessionObjectPool;
 import de.invesdwin.util.error.Throwables;
 
@@ -25,7 +25,7 @@ public final class RserveScriptTaskRunnerR implements IScriptTaskRunnerR, Factor
     @Override
     public <T> T run(final AScriptTaskR<T> scriptTask) {
         //get session
-        final ExtendedRserveSession rsession;
+        final Rsession rsession;
         try {
             rsession = RsessionObjectPool.INSTANCE.borrowObject();
         } catch (final Exception e) {
