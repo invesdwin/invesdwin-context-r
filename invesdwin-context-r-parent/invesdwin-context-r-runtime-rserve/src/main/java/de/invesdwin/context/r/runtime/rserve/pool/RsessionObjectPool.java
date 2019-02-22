@@ -23,7 +23,8 @@ import de.invesdwin.util.time.fdate.FDate;
 
 @ThreadSafe
 @Named
-public final class RsessionObjectPool extends AObjectPool<Rsession> implements FactoryBean<RsessionObjectPool> {
+public final class RsessionObjectPool extends AObjectPool<ExtendedRserveSession>
+        implements FactoryBean<RsessionObjectPool> {
 
     public static final RsessionObjectPool INSTANCE = new RsessionObjectPool();
 
@@ -38,7 +39,7 @@ public final class RsessionObjectPool extends AObjectPool<Rsession> implements F
     }
 
     @Override
-    protected synchronized Rsession internalBorrowObject() throws Exception {
+    protected synchronized ExtendedRserveSession internalBorrowObject() throws Exception {
         if (rsessionRotation.isEmpty()) {
             return factory.makeObject();
         }
@@ -56,8 +57,8 @@ public final class RsessionObjectPool extends AObjectPool<Rsession> implements F
     }
 
     @Override
-    public synchronized Collection<Rsession> internalClear() throws Exception {
-        final Collection<Rsession> removed = new ArrayList<Rsession>();
+    public synchronized Collection<ExtendedRserveSession> internalClear() throws Exception {
+        final Collection<ExtendedRserveSession> removed = new ArrayList<ExtendedRserveSession>();
         while (!rsessionRotation.isEmpty()) {
             removed.add(rsessionRotation.remove(0).getRsession());
         }
@@ -65,24 +66,24 @@ public final class RsessionObjectPool extends AObjectPool<Rsession> implements F
     }
 
     @Override
-    protected synchronized Rsession internalAddObject() throws Exception {
-        final Rsession pooled = factory.makeObject();
+    protected synchronized ExtendedRserveSession internalAddObject() throws Exception {
+        final ExtendedRserveSession pooled = factory.makeObject();
         rsessionRotation.add(new RsessionWrapper(factory.makeObject()));
         return pooled;
     }
 
     @Override
-    protected synchronized void internalReturnObject(final Rsession obj) throws Exception {
+    protected synchronized void internalReturnObject(final ExtendedRserveSession obj) throws Exception {
         rsessionRotation.add(new RsessionWrapper(obj));
     }
 
     @Override
-    protected void internalInvalidateObject(final Rsession obj) throws Exception {
+    protected void internalInvalidateObject(final ExtendedRserveSession obj) throws Exception {
         //Nothing happens
     }
 
     @Override
-    protected synchronized void internalRemoveObject(final Rsession obj) throws Exception {
+    protected synchronized void internalRemoveObject(final ExtendedRserveSession obj) throws Exception {
         rsessionRotation.remove(new RsessionWrapper(obj));
     }
 
@@ -112,15 +113,15 @@ public final class RsessionObjectPool extends AObjectPool<Rsession> implements F
 
     private final class RsessionWrapper {
 
-        private final Rsession rsession;
+        private final ExtendedRserveSession rsession;
         private final FDate timeoutStart;
 
-        RsessionWrapper(final Rsession rsession) {
+        RsessionWrapper(final ExtendedRserveSession rsession) {
             this.rsession = rsession;
             this.timeoutStart = new FDate();
         }
 
-        public Rsession getRsession() {
+        public ExtendedRserveSession getRsession() {
             return rsession;
         }
 
