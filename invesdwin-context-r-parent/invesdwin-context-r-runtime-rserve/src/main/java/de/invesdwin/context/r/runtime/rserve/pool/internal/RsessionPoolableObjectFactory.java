@@ -6,9 +6,8 @@ import javax.annotation.concurrent.GuardedBy;
 import javax.annotation.concurrent.ThreadSafe;
 import javax.inject.Named;
 
-import org.math.R.Rdaemon;
+import org.math.R.RserveDaemon;
 import org.math.R.RserverConf;
-import org.math.R.Rsession;
 import org.math.R.StartRserve;
 import org.springframework.beans.factory.FactoryBean;
 
@@ -18,6 +17,7 @@ import de.invesdwin.context.r.runtime.contract.IScriptTaskRunnerR;
 import de.invesdwin.context.r.runtime.rserve.RserveProperties;
 import de.invesdwin.context.r.runtime.rserve.RserveScriptTaskEngineR;
 import de.invesdwin.context.r.runtime.rserve.RserverConfMode;
+import de.invesdwin.context.r.runtime.rserve.pool.ExtendedRserveSession;
 import de.invesdwin.context.system.OperatingSystem;
 import de.invesdwin.util.error.UnknownArgumentException;
 import de.invesdwin.util.lang.Reflections;
@@ -27,7 +27,7 @@ import de.invesdwin.util.time.fdate.FDate;
 @ThreadSafe
 @Named
 public final class RsessionPoolableObjectFactory
-        implements IPoolableObjectFactory<Rsession>, FactoryBean<RsessionPoolableObjectFactory> {
+        implements IPoolableObjectFactory<ExtendedRserveSession>, FactoryBean<RsessionPoolableObjectFactory> {
 
     public static final RsessionPoolableObjectFactory INSTANCE = new RsessionPoolableObjectFactory();
     private static final UniqueNameGenerator UNIQUE_NAME_GENERATOR = new UniqueNameGenerator();
@@ -40,9 +40,9 @@ public final class RsessionPoolableObjectFactory
     private RsessionPoolableObjectFactory() {}
 
     @Override
-    public Rsession makeObject() {
+    public ExtendedRserveSession makeObject() {
         maybeInitialize();
-        final Rsession session = createSession();
+        final ExtendedRserveSession session = createSession();
         /*
          * use absolute path or else connection might not work properly, also use unique name to prevent multiple
          * instances from sharing the same file
@@ -50,17 +50,19 @@ public final class RsessionPoolableObjectFactory
         final String sinkFile = new File(ContextProperties.TEMP_DIRECTORY, UNIQUE_NAME_GENERATOR.get(".Rout"))
                 .getAbsolutePath();
         Reflections.field("SINK_FILE").ofType(String.class).in(session).set(sinkFile);
+        session.sinkOutput(false);
+        session.sinkMessage(true);
         return session;
     }
 
-    private Rsession createSession() {
+    private ExtendedRserveSession createSession() {
         switch (RserveProperties.RSERVER_CONF_MODE) {
         case LOCAL_SPAWN:
-            return Rsession.newInstanceTry(new RsessionLogger(), RserveProperties.RSERVER_CONF);
+            return new ExtendedRserveSession(new RsessionLogger(), RserveProperties.RSERVER_CONF, true);
         case LOCAL:
             //fallthrough
         case REMOTE:
-            return Rsession.newRemoteInstance(new RsessionLogger(), RserveProperties.RSERVER_CONF);
+            return new ExtendedRserveSession(new RsessionLogger(), RserveProperties.RSERVER_CONF, false);
         default:
             throw UnknownArgumentException.newInstance(RserverConfMode.class, RserveProperties.RSERVER_CONF_MODE);
         }
@@ -81,13 +83,13 @@ public final class RsessionPoolableObjectFactory
             http_proxy = rServeConf.properties.getProperty("http_proxy");
         }
 
-        Rdaemon.findR_HOME(Rdaemon.R_HOME);
+        RserveDaemon.findR_HOME(RserveDaemon.R_HOME);
         final String exeSuffix = OperatingSystem.isWindows() ? ".exe" : "";
         boolean rserveInstalled = StartRserve
-                .isRserveInstalled(Rdaemon.R_HOME + File.separator + "bin" + File.separator + "R" + exeSuffix);
+                .isRserveInstalled(RserveDaemon.R_HOME + File.separator + "bin" + File.separator + "R" + exeSuffix);
         if (!rserveInstalled) {
             rserveInstalled = StartRserve.installRserve(
-                    Rdaemon.R_HOME + File.separator + "bin" + File.separator + "R" + exeSuffix, http_proxy,
+                    RserveDaemon.R_HOME + File.separator + "bin" + File.separator + "R" + exeSuffix, http_proxy,
                     RserveProperties.RSERVER_REPOSITORY);
             if (!rserveInstalled) {
                 final String notice = "Please install Rserve manually in your R environment using \"install.packages('Rserve',,'"
@@ -99,20 +101,20 @@ public final class RsessionPoolableObjectFactory
     }
 
     @Override
-    public void destroyObject(final Rsession obj) throws Exception {
+    public void destroyObject(final ExtendedRserveSession obj) throws Exception {
         obj.end();
     }
 
     @Override
-    public boolean validateObject(final Rsession obj) {
+    public boolean validateObject(final ExtendedRserveSession obj) {
         return true;
     }
 
     @Override
-    public void activateObject(final Rsession obj) throws Exception {}
+    public void activateObject(final ExtendedRserveSession obj) throws Exception {}
 
     @Override
-    public void passivateObject(final Rsession obj) throws Exception {
+    public void passivateObject(final ExtendedRserveSession obj) throws Exception {
         final RserveScriptTaskEngineR engine = new RserveScriptTaskEngineR(obj);
         engine.eval(IScriptTaskRunnerR.CLEANUP_SCRIPT);
         engine.close();

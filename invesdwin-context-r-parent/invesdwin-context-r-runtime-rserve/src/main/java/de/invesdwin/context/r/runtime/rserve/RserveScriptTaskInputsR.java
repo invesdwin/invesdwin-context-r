@@ -2,6 +2,8 @@ package de.invesdwin.context.r.runtime.rserve;
 
 import javax.annotation.concurrent.NotThreadSafe;
 
+import org.math.R.Rsession.RException;
+
 import de.invesdwin.context.r.runtime.contract.IScriptTaskInputsR;
 import de.invesdwin.util.assertions.Assertions;
 
@@ -24,7 +26,11 @@ public class RserveScriptTaskInputsR implements IScriptTaskInputsR {
         if (value == null) {
             putExpression(variable, "NA_character_");
         } else {
-            engine.unwrap().set(variable, value);
+            try {
+                engine.unwrap().set(variable, value);
+            } catch (final RException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
@@ -33,7 +39,11 @@ public class RserveScriptTaskInputsR implements IScriptTaskInputsR {
         if (value == null) {
             putNull(variable);
         } else {
-            engine.unwrap().set(variable, value);
+            try {
+                engine.unwrap().set(variable, value);
+            } catch (final RException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
@@ -62,7 +72,11 @@ public class RserveScriptTaskInputsR implements IScriptTaskInputsR {
 
     @Override
     public void putDouble(final String variable, final double value) {
-        engine.unwrap().set(variable, value);
+        try {
+            engine.unwrap().set(variable, value);
+        } catch (final RException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
@@ -70,7 +84,11 @@ public class RserveScriptTaskInputsR implements IScriptTaskInputsR {
         if (value == null) {
             putNull(variable);
         } else {
-            engine.unwrap().set(variable, value);
+            try {
+                engine.unwrap().set(variable, value);
+            } catch (final RException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
@@ -81,13 +99,21 @@ public class RserveScriptTaskInputsR implements IScriptTaskInputsR {
         } else if (value.length == 0 || value[0].length == 0) {
             putExpression(variable, "matrix(double(), " + value.length + ", 0, TRUE)");
         } else {
-            engine.unwrap().set(variable, value);
+            try {
+                engine.unwrap().set(variable, value);
+            } catch (final RException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
     @Override
     public void putInteger(final String variable, final int value) {
-        engine.unwrap().set(variable, value);
+        try {
+            engine.unwrap().set(variable, value);
+        } catch (final RException e) {
+            throw new RuntimeException(e);
+        }
         putExpression(variable, "as.integer(" + variable + ")");
     }
 
@@ -100,7 +126,11 @@ public class RserveScriptTaskInputsR implements IScriptTaskInputsR {
             for (int i = 0; i < doubleValue.length; i++) {
                 doubleValue[i] = value[i];
             }
-            engine.unwrap().set(variable, doubleValue);
+            try {
+                engine.unwrap().set(variable, doubleValue);
+            } catch (final RException e) {
+                throw new RuntimeException(e);
+            }
             putExpression(variable, "as.integer(" + variable + ")");
         }
     }
@@ -121,7 +151,11 @@ public class RserveScriptTaskInputsR implements IScriptTaskInputsR {
                 }
                 doubleValue[i] = doubleVector;
             }
-            engine.unwrap().set(variable, doubleValue);
+            try {
+                engine.unwrap().set(variable, doubleValue);
+            } catch (final RException e) {
+                throw new RuntimeException(e);
+            }
             putExpression(variable, "array(as.integer(" + variable + "), dim(" + variable + "))");
         }
     }
@@ -134,7 +168,11 @@ public class RserveScriptTaskInputsR implements IScriptTaskInputsR {
         } else {
             doubleValue = 0D;
         }
-        engine.unwrap().set(variable, doubleValue);
+        try {
+            engine.unwrap().set(variable, doubleValue);
+        } catch (final RException e) {
+            throw new RuntimeException(e);
+        }
         putExpression(variable, "as.logical(" + variable + ")");
     }
 
@@ -151,7 +189,11 @@ public class RserveScriptTaskInputsR implements IScriptTaskInputsR {
                     doubleValue[i] = 0D;
                 }
             }
-            engine.unwrap().set(variable, doubleValue);
+            try {
+                engine.unwrap().set(variable, doubleValue);
+            } catch (final RException e) {
+                throw new RuntimeException(e);
+            }
             putExpression(variable, "as.logical(" + variable + ")");
         }
     }
@@ -176,7 +218,11 @@ public class RserveScriptTaskInputsR implements IScriptTaskInputsR {
                 }
                 doubleValue[i] = doubleVector;
             }
-            engine.unwrap().set(variable, doubleValue);
+            try {
+                engine.unwrap().set(variable, doubleValue);
+            } catch (final RException e) {
+                throw new RuntimeException(e);
+            }
             putExpression(variable, "array(as.logical(" + variable + "), dim(" + variable + "))");
         }
     }
