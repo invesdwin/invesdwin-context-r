@@ -13,6 +13,7 @@ import com.github.rcaller.TempFileService;
 
 import de.invesdwin.context.ContextProperties;
 import de.invesdwin.util.lang.UniqueNameGenerator;
+import de.invesdwin.util.lang.finalizer.AFinalizer;
 
 /**
  * Fixes memory leak with temp files and redirects to invesdwin process temp dir
@@ -39,6 +40,7 @@ public class ModifiedTempFileService extends TempFileService {
     private final List<File> tempFiles = new ArrayList<File>();
     private final File folder = new File(ContextProperties.TEMP_DIRECTORY,
             FOLDER_UNIQUE_NAME_GENERATOR.get(ModifiedTempFileService.class.getSimpleName()));
+    private final ModifiedTempFileServiceFinalizer finalizer;
 
     public ModifiedTempFileService() {
         try {
@@ -46,6 +48,8 @@ public class ModifiedTempFileService extends TempFileService {
         } catch (final IOException e) {
             throw new RuntimeException(e);
         }
+        finalizer = new ModifiedTempFileServiceFinalizer(folder);
+        finalizer.register(this);
     }
 
     @Override
@@ -57,12 +61,6 @@ public class ModifiedTempFileService extends TempFileService {
     }
 
     @Override
-    protected void finalize() throws Throwable {
-        super.finalize();
-        FileUtils.deleteQuietly(folder);
-    }
-
-    @Override
     public void deleteRCallerTempFiles() {
         super.deleteRCallerTempFiles();
         for (final File tempFile : tempFiles) {
@@ -70,6 +68,26 @@ public class ModifiedTempFileService extends TempFileService {
         }
         //prevent memory leak
         tempFiles.clear();
+    }
+
+    private static final class ModifiedTempFileServiceFinalizer extends AFinalizer {
+
+        private final File folder;
+
+        private ModifiedTempFileServiceFinalizer(final File folder) {
+            this.folder = folder;
+        }
+
+        @Override
+        protected void clean() {
+            FileUtils.deleteQuietly(folder);
+        }
+
+        @Override
+        public boolean isClosed() {
+            return false;
+        }
+
     }
 
 }
