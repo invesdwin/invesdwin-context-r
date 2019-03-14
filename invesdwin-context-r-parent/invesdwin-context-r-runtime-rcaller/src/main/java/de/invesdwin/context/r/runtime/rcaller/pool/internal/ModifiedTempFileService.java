@@ -72,7 +72,7 @@ public class ModifiedTempFileService extends TempFileService {
 
     private static final class ModifiedTempFileServiceFinalizer extends AFinalizer {
 
-        private final File folder;
+        private File folder;
 
         private ModifiedTempFileServiceFinalizer(final File folder) {
             this.folder = folder;
@@ -81,11 +81,12 @@ public class ModifiedTempFileService extends TempFileService {
         @Override
         protected void clean() {
             FileUtils.deleteQuietly(folder);
+            folder = null;
         }
 
         @Override
         public boolean isClosed() {
-            return false;
+            return folder == null;
         }
 
     }
