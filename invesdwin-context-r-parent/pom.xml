@@ -189,6 +189,30 @@
 				<groupId>com.github.yannrichet</groupId>
 				<artifactId>Rsession</artifactId>
 				<version>${version.rsession}</version>
+				<exclusions>
+					<exclusion>
+						<groupId>org.renjin</groupId>
+						<artifactId>
+						renjin-aether-package-loader
+					</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>org.eclipse.aether</groupId>
+						<artifactId>aether-api</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>org.renjin</groupId>
+						<artifactId>renjin-script-engine</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>org.renjin</groupId>
+						<artifactId>grDevices</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>com.coveo</groupId>
+						<artifactId>nashorn-commonjs-modules</artifactId>
+					</exclusion>
+				</exclusions>
 			</dependency>
 			<dependency>
 				<groupId>com.github.jbytecode</groupId>
