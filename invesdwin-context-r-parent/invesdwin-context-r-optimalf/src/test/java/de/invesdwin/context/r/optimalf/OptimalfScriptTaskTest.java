@@ -63,13 +63,13 @@ public class OptimalfScriptTaskTest extends ATest {
         }
     }
 
-    @Test
-    public void testJri() {
-        for (int i = 0; i < ITERATIONS; i++) {
-            run(jriScriptTaskRunner);
-            log.info("------------------------");
-        }
-    }
+    //    @Test
+    //    public void testJri() {
+    //        for (int i = 0; i < ITERATIONS; i++) {
+    //            run(jriScriptTaskRunner);
+    //            log.info("------------------------");
+    //        }
+    //    }
 
     //    @Test
     //    public void testRenjin() {
