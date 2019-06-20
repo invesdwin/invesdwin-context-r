@@ -85,7 +85,7 @@ public class ModifiedTempFileService extends TempFileService {
         }
 
         @Override
-        public boolean isClosed() {
+        protected boolean isCleaned() {
             return folder == null;
         }
 
