@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
                              http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
@@ -16,16 +17,19 @@
 			<url>http://www.gnu.org/licenses/gpl-3.0.html</url>
 		</license>
 	</licenses>
-	
+
 	<build>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
 				<configuration>
-					<includes>
-						<include>de/invesdwin/context/r/optimalf/OptimalfTestSuite.java</include>
-					</includes>
+					<excludes>
+						<!-- disabled, no automated testing atm -->
+						<exclude>**/*</exclude>
+					</excludes>
+					<!-- <includes> <include>de/invesdwin/context/r/optimalf/OptimalfTestSuite.java</include> 
+						</includes> -->
 				</configuration>
 			</plugin>
 		</plugins>
@@ -52,15 +56,22 @@
 		</dependency>
 		<dependency>
 			<groupId>de.invesdwin</groupId>
+			<artifactId>invesdwin-context-r-runtime-jri</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>de.invesdwin</groupId>
 			<artifactId>invesdwin-context-r-runtime-rserve</artifactId>
 			<scope>test</scope>
 		</dependency>
-		<!-- renjin-maven-plugin does not work properly: https://github.com/bedatadriven/renjin/issues/452 -->
-		<!-- <dependency>
-			<groupId>de.invesdwin.context.r.runtime.renjin.packages</groupId>
-			<artifactId>LSPM</artifactId>
+		<dependency>
+			<groupId>de.invesdwin</groupId>
+			<artifactId>invesdwin-context-r-runtime-renjin</artifactId>
 			<scope>test</scope>
-		</dependency>-->
+		</dependency>
+		<!-- renjin-maven-plugin does not work properly: https://github.com/bedatadriven/renjin/issues/452 -->
+		<!-- <dependency> <groupId>de.invesdwin.context.r.runtime.renjin.packages</groupId> 
+			<artifactId>LSPM</artifactId> <scope>test</scope> </dependency> -->
 
 	</dependencies>
 
