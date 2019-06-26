@@ -69,6 +69,16 @@ Assertions.assertThat(result).isEqualTo("Hello World!");
 
 For more elaborate examples of the R script integration, have a look at the `invesdwin-context-r-optimalf` module or the test cases in `invesdwin-context-r-runtime-contract` which are executed in each individual runtime module test suite.
 
+## Avoiding Bootstrap
+
+If you want to use this project without the overhead of having to initialize a [invesdwin-context](https://github.com/subes/invesdwin-context) bootstrap with its spring-context and module configuration, you can disable the bootstrap with the following code before using any scripts:
+
+```java
+de.invesdwin.context.PlatformInitializerProperties.setAllowed(false);
+```
+
+The above configuration options for the invidiual runtimes can still be provided by setting system properties before calling any script. An example for all of this can be found at: [ScriptingWithoutBootstrapMain.java](https://github.com/subes/invesdwin-context/blob/master/tests/otherproject-noparent-bom-test/src/main/java/com/otherproject/scripting/ScriptingWithoutBootstrapMain.java)
+
 ## Recommended Editors
 
 For working with R we recommend using [StatET](http://www.walware.de/goto/statet) if you are mainly using Eclipse. The included editor suffices if you only run the scripts using `invesdwin-context-r`. So no complicated R setup with eclipse is needed, just install the plugin from the marketplace and run your scripts with `invesdwin-context-r-runtime-rcaller` (add this module as a `test` scope dependency) during development to get R console output as you are used to from an interactive R shell (you also need to add a dependecy to the type `test-jar` for the log level to get activated, or alternatively change the log level of `de.invesdwin.context.r.runtime.contract.IScriptTaskRunnerR` to `DEBUG` on your own). The actual deployment distribution can choose a different runtime then as a hard dependency (again see the `invesdwin-context-r-optimalf` module as an example for this). For experimenting with R it might be interesting to use [RStudio](https://www.rstudio.com/) as a standalone development environment. It supports a nice variable viewer and has a nice integration of the R documentation, which helps a lot during R learning and development. It also comes with a comfortable debugger for R scripts.
