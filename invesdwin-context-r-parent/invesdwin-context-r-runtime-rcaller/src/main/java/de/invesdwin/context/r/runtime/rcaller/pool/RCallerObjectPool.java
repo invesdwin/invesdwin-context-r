@@ -39,7 +39,7 @@ public final class RCallerObjectPool extends AObjectPool<RCaller> implements Fac
     }
 
     @Override
-    protected synchronized RCaller internalBorrowObject() throws Exception {
+    protected synchronized RCaller internalBorrowObject() {
         if (rCallerRotation.isEmpty()) {
             return factory.makeObject();
         }
@@ -57,7 +57,7 @@ public final class RCallerObjectPool extends AObjectPool<RCaller> implements Fac
     }
 
     @Override
-    public synchronized Collection<RCaller> internalClear() throws Exception {
+    public synchronized Collection<RCaller> internalClear() {
         final Collection<RCaller> removed = new ArrayList<RCaller>();
         while (!rCallerRotation.isEmpty()) {
             removed.add(rCallerRotation.remove(0).getRCaller());
@@ -66,24 +66,24 @@ public final class RCallerObjectPool extends AObjectPool<RCaller> implements Fac
     }
 
     @Override
-    protected synchronized RCaller internalAddObject() throws Exception {
+    protected synchronized RCaller internalAddObject() {
         final RCaller pooled = factory.makeObject();
         rCallerRotation.add(new RCallerWrapper(factory.makeObject()));
         return pooled;
     }
 
     @Override
-    protected synchronized void internalReturnObject(final RCaller obj) throws Exception {
+    protected synchronized void internalReturnObject(final RCaller obj) {
         rCallerRotation.add(new RCallerWrapper(obj));
     }
 
     @Override
-    protected void internalInvalidateObject(final RCaller obj) throws Exception {
+    protected void internalInvalidateObject(final RCaller obj) {
         //Nothing happens
     }
 
     @Override
-    protected synchronized void internalRemoveObject(final RCaller obj) throws Exception {
+    protected synchronized void internalRemoveObject(final RCaller obj) {
         rCallerRotation.remove(new RCallerWrapper(obj));
     }
 
@@ -149,7 +149,7 @@ public final class RCallerObjectPool extends AObjectPool<RCaller> implements Fac
     }
 
     @Override
-    public RCallerObjectPool getObject() throws Exception {
+    public RCallerObjectPool getObject() {
         return INSTANCE;
     }
 

@@ -28,12 +28,7 @@ public final class RCallerScriptTaskRunnerR implements IScriptTaskRunnerR, Facto
     @Override
     public <T> T run(final AScriptTaskR<T> scriptTask) {
         //get session
-        final RCaller rcaller;
-        try {
-            rcaller = RCallerObjectPool.INSTANCE.borrowObject();
-        } catch (final Exception e) {
-            throw new RuntimeException(e);
-        }
+        final RCaller rcaller = RCallerObjectPool.INSTANCE.borrowObject();
         try {
             //inputs
             rcaller.getRCode().clearOnline();
@@ -51,11 +46,7 @@ public final class RCallerScriptTaskRunnerR implements IScriptTaskRunnerR, Facto
             RCallerObjectPool.INSTANCE.returnObject(rcaller);
             return result;
         } catch (final Throwable t) {
-            try {
-                RCallerObjectPool.INSTANCE.invalidateObject(rcaller);
-            } catch (final Exception e) {
-                throw new RuntimeException(e);
-            }
+            RCallerObjectPool.INSTANCE.invalidateObject(rcaller);
             throw Throwables.propagate(t);
         }
     }

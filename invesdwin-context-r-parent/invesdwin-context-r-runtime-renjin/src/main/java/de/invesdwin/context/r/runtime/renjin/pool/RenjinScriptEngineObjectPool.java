@@ -39,7 +39,7 @@ public final class RenjinScriptEngineObjectPool extends AObjectPool<RenjinScript
     }
 
     @Override
-    protected synchronized RenjinScriptEngine internalBorrowObject() throws Exception {
+    protected synchronized RenjinScriptEngine internalBorrowObject() {
         if (renjinScriptEngineRotation.isEmpty()) {
             return factory.makeObject();
         }
@@ -57,7 +57,7 @@ public final class RenjinScriptEngineObjectPool extends AObjectPool<RenjinScript
     }
 
     @Override
-    public synchronized Collection<RenjinScriptEngine> internalClear() throws Exception {
+    public synchronized Collection<RenjinScriptEngine> internalClear() {
         final Collection<RenjinScriptEngine> removed = new ArrayList<RenjinScriptEngine>();
         while (!renjinScriptEngineRotation.isEmpty()) {
             removed.add(renjinScriptEngineRotation.remove(0).getRenjinScriptEngine());
@@ -66,24 +66,24 @@ public final class RenjinScriptEngineObjectPool extends AObjectPool<RenjinScript
     }
 
     @Override
-    protected synchronized RenjinScriptEngine internalAddObject() throws Exception {
+    protected synchronized RenjinScriptEngine internalAddObject() {
         final RenjinScriptEngine pooled = factory.makeObject();
         renjinScriptEngineRotation.add(new RenjinScriptEngineWrapper(factory.makeObject()));
         return pooled;
     }
 
     @Override
-    protected synchronized void internalReturnObject(final RenjinScriptEngine obj) throws Exception {
+    protected synchronized void internalReturnObject(final RenjinScriptEngine obj) {
         renjinScriptEngineRotation.add(new RenjinScriptEngineWrapper(obj));
     }
 
     @Override
-    protected void internalInvalidateObject(final RenjinScriptEngine obj) throws Exception {
+    protected void internalInvalidateObject(final RenjinScriptEngine obj) {
         //Nothing happens
     }
 
     @Override
-    protected synchronized void internalRemoveObject(final RenjinScriptEngine obj) throws Exception {
+    protected synchronized void internalRemoveObject(final RenjinScriptEngine obj) {
         renjinScriptEngineRotation.remove(new RenjinScriptEngineWrapper(obj));
     }
 
@@ -151,7 +151,7 @@ public final class RenjinScriptEngineObjectPool extends AObjectPool<RenjinScript
     }
 
     @Override
-    public RenjinScriptEngineObjectPool getObject() throws Exception {
+    public RenjinScriptEngineObjectPool getObject() {
         return INSTANCE;
     }
 

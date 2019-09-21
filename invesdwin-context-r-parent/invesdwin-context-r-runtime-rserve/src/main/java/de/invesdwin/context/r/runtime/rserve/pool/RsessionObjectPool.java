@@ -39,7 +39,7 @@ public final class RsessionObjectPool extends AObjectPool<ExtendedRserveSession>
     }
 
     @Override
-    protected synchronized ExtendedRserveSession internalBorrowObject() throws Exception {
+    protected synchronized ExtendedRserveSession internalBorrowObject() {
         if (rsessionRotation.isEmpty()) {
             return factory.makeObject();
         }
@@ -57,7 +57,7 @@ public final class RsessionObjectPool extends AObjectPool<ExtendedRserveSession>
     }
 
     @Override
-    public synchronized Collection<ExtendedRserveSession> internalClear() throws Exception {
+    public synchronized Collection<ExtendedRserveSession> internalClear() {
         final Collection<ExtendedRserveSession> removed = new ArrayList<ExtendedRserveSession>();
         while (!rsessionRotation.isEmpty()) {
             removed.add(rsessionRotation.remove(0).getRsession());
@@ -66,24 +66,24 @@ public final class RsessionObjectPool extends AObjectPool<ExtendedRserveSession>
     }
 
     @Override
-    protected synchronized ExtendedRserveSession internalAddObject() throws Exception {
+    protected synchronized ExtendedRserveSession internalAddObject() {
         final ExtendedRserveSession pooled = factory.makeObject();
         rsessionRotation.add(new RsessionWrapper(factory.makeObject()));
         return pooled;
     }
 
     @Override
-    protected synchronized void internalReturnObject(final ExtendedRserveSession obj) throws Exception {
+    protected synchronized void internalReturnObject(final ExtendedRserveSession obj) {
         rsessionRotation.add(new RsessionWrapper(obj));
     }
 
     @Override
-    protected void internalInvalidateObject(final ExtendedRserveSession obj) throws Exception {
+    protected void internalInvalidateObject(final ExtendedRserveSession obj) {
         //Nothing happens
     }
 
     @Override
-    protected synchronized void internalRemoveObject(final ExtendedRserveSession obj) throws Exception {
+    protected synchronized void internalRemoveObject(final ExtendedRserveSession obj) {
         rsessionRotation.remove(new RsessionWrapper(obj));
     }
 

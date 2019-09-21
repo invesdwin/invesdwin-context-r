@@ -63,7 +63,7 @@ public final class RsessionPoolableObjectFactory
     }
 
     @Override
-    public void destroyObject(final ExtendedRserveSession obj) throws Exception {
+    public void destroyObject(final ExtendedRserveSession obj) {
         obj.end();
     }
 
@@ -73,10 +73,10 @@ public final class RsessionPoolableObjectFactory
     }
 
     @Override
-    public void activateObject(final ExtendedRserveSession obj) throws Exception {}
+    public void activateObject(final ExtendedRserveSession obj) {}
 
     @Override
-    public void passivateObject(final ExtendedRserveSession obj) throws Exception {
+    public void passivateObject(final ExtendedRserveSession obj) {
         final RserveScriptTaskEngineR engine = new RserveScriptTaskEngineR(obj);
         engine.eval(IScriptTaskRunnerR.CLEANUP_SCRIPT);
         engine.close();
@@ -84,7 +84,7 @@ public final class RsessionPoolableObjectFactory
     }
 
     @Override
-    public RsessionPoolableObjectFactory getObject() throws Exception {
+    public RsessionPoolableObjectFactory getObject() {
         return INSTANCE;
     }
 

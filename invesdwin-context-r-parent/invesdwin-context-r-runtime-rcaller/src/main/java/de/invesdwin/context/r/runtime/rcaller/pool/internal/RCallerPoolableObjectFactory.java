@@ -26,7 +26,7 @@ public final class RCallerPoolableObjectFactory
     }
 
     @Override
-    public void destroyObject(final RCaller obj) throws Exception {
+    public void destroyObject(final RCaller obj) {
         obj.StopRCallerOnline();
     }
 
@@ -36,10 +36,10 @@ public final class RCallerPoolableObjectFactory
     }
 
     @Override
-    public void activateObject(final RCaller obj) throws Exception {}
+    public void activateObject(final RCaller obj) {}
 
     @Override
-    public void passivateObject(final RCaller obj) throws Exception {
+    public void passivateObject(final RCaller obj) {
         obj.getRCode().clear();
         obj.getRCode().getCode().insert(0, IScriptTaskRunnerR.CLEANUP_SCRIPT + "\n");
         obj.getRCode().addRCode(RCallerScriptTaskRunnerR.INTERNAL_RESULT_VARIABLE + " <- c()");
@@ -48,7 +48,7 @@ public final class RCallerPoolableObjectFactory
     }
 
     @Override
-    public RCallerPoolableObjectFactory getObject() throws Exception {
+    public RCallerPoolableObjectFactory getObject() {
         return INSTANCE;
     }
 

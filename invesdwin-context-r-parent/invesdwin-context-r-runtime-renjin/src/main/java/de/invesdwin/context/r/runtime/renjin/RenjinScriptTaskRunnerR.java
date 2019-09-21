@@ -25,12 +25,7 @@ public final class RenjinScriptTaskRunnerR implements IScriptTaskRunnerR, Factor
     @Override
     public <T> T run(final AScriptTaskR<T> scriptTask) {
         //get session
-        final RenjinScriptEngine renjinScriptEngine;
-        try {
-            renjinScriptEngine = RenjinScriptEngineObjectPool.INSTANCE.borrowObject();
-        } catch (final Exception e) {
-            throw new RuntimeException(e);
-        }
+        final RenjinScriptEngine renjinScriptEngine = RenjinScriptEngineObjectPool.INSTANCE.borrowObject();
         try {
             //inputs
             final RenjinScriptTaskEngineR engine = new RenjinScriptTaskEngineR(renjinScriptEngine);
@@ -47,11 +42,7 @@ public final class RenjinScriptTaskRunnerR implements IScriptTaskRunnerR, Factor
             RenjinScriptEngineObjectPool.INSTANCE.returnObject(renjinScriptEngine);
             return result;
         } catch (final Throwable t) {
-            try {
-                RenjinScriptEngineObjectPool.INSTANCE.invalidateObject(renjinScriptEngine);
-            } catch (final Exception e) {
-                throw new RuntimeException(e);
-            }
+            RenjinScriptEngineObjectPool.INSTANCE.invalidateObject(renjinScriptEngine);
             throw Throwables.propagate(t);
         }
     }

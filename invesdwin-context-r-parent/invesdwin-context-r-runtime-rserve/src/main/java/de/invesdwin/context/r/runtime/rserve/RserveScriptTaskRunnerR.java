@@ -25,12 +25,7 @@ public final class RserveScriptTaskRunnerR implements IScriptTaskRunnerR, Factor
     @Override
     public <T> T run(final AScriptTaskR<T> scriptTask) {
         //get session
-        final ExtendedRserveSession rsession;
-        try {
-            rsession = RsessionObjectPool.INSTANCE.borrowObject();
-        } catch (final Exception e) {
-            throw new RuntimeException(e);
-        }
+        final ExtendedRserveSession rsession = RsessionObjectPool.INSTANCE.borrowObject();
         try {
             //inputs
             final RserveScriptTaskEngineR engine = new RserveScriptTaskEngineR(rsession);
@@ -47,11 +42,7 @@ public final class RserveScriptTaskRunnerR implements IScriptTaskRunnerR, Factor
             RsessionObjectPool.INSTANCE.returnObject(rsession);
             return result;
         } catch (final Throwable t) {
-            try {
-                RsessionObjectPool.INSTANCE.invalidateObject(rsession);
-            } catch (final Exception e) {
-                throw new RuntimeException(e);
-            }
+            RsessionObjectPool.INSTANCE.invalidateObject(rsession);
             throw Throwables.propagate(t);
         }
     }

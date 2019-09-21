@@ -4,6 +4,7 @@ import java.io.PrintWriter;
 
 import javax.annotation.concurrent.ThreadSafe;
 import javax.inject.Named;
+import javax.script.ScriptException;
 
 import org.renjin.eval.SessionBuilder;
 import org.renjin.script.RenjinScriptEngine;
@@ -35,7 +36,7 @@ public final class RenjinScriptEnginePoolableObjectFactory
     }
 
     @Override
-    public void destroyObject(final RenjinScriptEngine obj) throws Exception {
+    public void destroyObject(final RenjinScriptEngine obj) {
         obj.getSession().close();
     }
 
@@ -45,15 +46,19 @@ public final class RenjinScriptEnginePoolableObjectFactory
     }
 
     @Override
-    public void activateObject(final RenjinScriptEngine obj) throws Exception {}
+    public void activateObject(final RenjinScriptEngine obj) {}
 
     @Override
-    public void passivateObject(final RenjinScriptEngine obj) throws Exception {
-        obj.eval(IScriptTaskRunnerR.CLEANUP_SCRIPT);
+    public void passivateObject(final RenjinScriptEngine obj) {
+        try {
+            obj.eval(IScriptTaskRunnerR.CLEANUP_SCRIPT);
+        } catch (final ScriptException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
-    public RenjinScriptEnginePoolableObjectFactory getObject() throws Exception {
+    public RenjinScriptEnginePoolableObjectFactory getObject() {
         return INSTANCE;
     }
 
