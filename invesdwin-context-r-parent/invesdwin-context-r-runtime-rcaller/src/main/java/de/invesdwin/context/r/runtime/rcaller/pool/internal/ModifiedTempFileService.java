@@ -89,6 +89,11 @@ public class ModifiedTempFileService extends TempFileService {
             return folder == null;
         }
 
+        @Override
+        public boolean isThreadLocal() {
+            return false;
+        }
+
     }
 
 }
