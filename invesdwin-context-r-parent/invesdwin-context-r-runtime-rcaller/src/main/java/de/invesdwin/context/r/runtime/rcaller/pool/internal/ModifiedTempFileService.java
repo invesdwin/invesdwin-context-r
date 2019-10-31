@@ -7,11 +7,10 @@ import java.util.List;
 
 import javax.annotation.concurrent.NotThreadSafe;
 
-import org.apache.commons.io.FileUtils;
-
 import com.github.rcaller.TempFileService;
 
 import de.invesdwin.context.ContextProperties;
+import de.invesdwin.util.lang.Files;
 import de.invesdwin.util.lang.UniqueNameGenerator;
 import de.invesdwin.util.lang.finalizer.AFinalizer;
 
@@ -44,7 +43,7 @@ public class ModifiedTempFileService extends TempFileService {
 
     public ModifiedTempFileService() {
         try {
-            FileUtils.forceMkdir(folder);
+            Files.forceMkdir(folder);
         } catch (final IOException e) {
             throw new RuntimeException(e);
         }
@@ -55,7 +54,7 @@ public class ModifiedTempFileService extends TempFileService {
     @Override
     public File createTempFile(final String prefix, final String suffix) throws IOException {
         final File file = new File(folder, fileUniqueNameGenerator.get(prefix) + suffix);
-        FileUtils.touch(file);
+        Files.touch(file);
         tempFiles.add(file);
         return file;
     }
@@ -64,7 +63,7 @@ public class ModifiedTempFileService extends TempFileService {
     public void deleteRCallerTempFiles() {
         super.deleteRCallerTempFiles();
         for (final File tempFile : tempFiles) {
-            FileUtils.deleteQuietly(tempFile);
+            Files.deleteQuietly(tempFile);
         }
         //prevent memory leak
         tempFiles.clear();
@@ -80,7 +79,7 @@ public class ModifiedTempFileService extends TempFileService {
 
         @Override
         protected void clean() {
-            FileUtils.deleteQuietly(folder);
+            Files.deleteQuietly(folder);
             folder = null;
         }
 
