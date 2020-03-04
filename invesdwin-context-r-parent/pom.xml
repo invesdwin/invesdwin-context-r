@@ -8,7 +8,7 @@
 		<relativePath />
 	</parent>
 	<artifactId>invesdwin-context-r-parent</artifactId>
-	<version>1.0.1-SNAPSHOT</version>
+	<version>1.0.1</version>
 	<packaging>pom</packaging>
 
 	<licenses>
@@ -275,7 +275,7 @@
 	<scm>
 		<url>https://github.com/subes/invesdwin-context-r</url>
 		<connection>scm:git:https://github.com/subes/invesdwin-context-r.git</connection>
-		<tag>HEAD</tag>
+		<tag>invesdwin-context-r-parent-1.0.1</tag>
 	</scm>
 
 	<ciManagement>
