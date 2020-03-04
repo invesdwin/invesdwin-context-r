@@ -3,7 +3,7 @@
 	<parent>
 		<groupId>de.invesdwin</groupId>
 		<artifactId>invesdwin-context-r-parent</artifactId>
-		<version>1.0.1</version>
+		<version>1.0.2-SNAPSHOT</version>
 	</parent>
 	<artifactId>invesdwin-context-r-runtime-rcaller</artifactId>
 	<packaging>jar</packaging>
