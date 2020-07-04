@@ -9,8 +9,8 @@ import org.math.R.RLog;
 import org.math.R.Rsession;
 
 import de.invesdwin.context.r.runtime.contract.IScriptTaskRunnerR;
-import de.invesdwin.util.lang.Reflections;
 import de.invesdwin.util.lang.Strings;
+import de.invesdwin.util.lang.reflection.Reflections;
 
 @ThreadSafe
 public final class RsessionLogger implements RLog {
