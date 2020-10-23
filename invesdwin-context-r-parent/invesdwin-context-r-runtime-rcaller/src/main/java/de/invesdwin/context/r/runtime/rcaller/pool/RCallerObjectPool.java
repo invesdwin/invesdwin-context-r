@@ -111,7 +111,7 @@ public final class RCallerObjectPool extends AObjectPool<RCaller> implements Fac
         }
     }
 
-    private final class RCallerWrapper {
+    private static final class RCallerWrapper {
 
         private final RCaller rCaller;
         private final FDate timeoutStart;

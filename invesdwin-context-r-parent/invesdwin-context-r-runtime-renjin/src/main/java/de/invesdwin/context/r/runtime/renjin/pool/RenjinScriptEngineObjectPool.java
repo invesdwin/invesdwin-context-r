@@ -113,7 +113,7 @@ public final class RenjinScriptEngineObjectPool extends AObjectPool<RenjinScript
         }
     }
 
-    private final class RenjinScriptEngineWrapper {
+    private static final class RenjinScriptEngineWrapper {
 
         private final RenjinScriptEngine renjinScriptEngine;
         private final FDate timeoutStart;

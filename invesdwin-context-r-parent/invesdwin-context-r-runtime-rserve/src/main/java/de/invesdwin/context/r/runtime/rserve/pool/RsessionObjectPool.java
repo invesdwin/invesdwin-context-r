@@ -111,7 +111,7 @@ public final class RsessionObjectPool extends AObjectPool<ExtendedRserveSession>
         }
     }
 
-    private final class RsessionWrapper {
+    private static final class RsessionWrapper {
 
         private final ExtendedRserveSession rsession;
         private final FDate timeoutStart;
