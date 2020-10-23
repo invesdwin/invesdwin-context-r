@@ -27,6 +27,7 @@ public final class RsessionLogger implements RLog {
             case OUTPUT:
                 IScriptTaskRunnerR.LOG.debug(text);
                 errorMessage.setLength(0);
+                break;
             case INFO:
                 IScriptTaskRunnerR.LOG.trace(text);
                 errorMessage.setLength(0);
