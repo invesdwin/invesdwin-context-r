@@ -79,7 +79,7 @@ public class ModifiedTempFileService extends TempFileService {
 
         @Override
         protected void clean() {
-            Files.deleteQuietly(folder);
+            Files.deleteNative(folder);
             folder = null;
         }
 
