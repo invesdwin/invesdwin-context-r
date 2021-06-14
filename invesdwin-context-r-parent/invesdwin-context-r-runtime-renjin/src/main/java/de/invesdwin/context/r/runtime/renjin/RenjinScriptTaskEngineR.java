@@ -6,6 +6,9 @@ import javax.script.ScriptException;
 import org.renjin.script.RenjinScriptEngine;
 
 import de.invesdwin.context.integration.script.IScriptTaskEngine;
+import de.invesdwin.context.r.runtime.renjin.pool.RenjinScriptEngineObjectPool;
+import de.invesdwin.util.concurrent.lock.ILock;
+import de.invesdwin.util.concurrent.lock.disabled.DisabledLock;
 
 @NotThreadSafe
 public class RenjinScriptTaskEngineR implements IScriptTaskEngine {
@@ -47,6 +50,27 @@ public class RenjinScriptTaskEngineR implements IScriptTaskEngine {
     @Override
     public RenjinScriptEngine unwrap() {
         return renjinScriptEngine;
+    }
+
+    /**
+     * Each instance has its own engine, so no shared locking required.
+     */
+    @Override
+    public ILock getSharedLock() {
+        return DisabledLock.INSTANCE;
+    }
+
+    public static RenjinScriptTaskEngineR newInstance() {
+        return new RenjinScriptTaskEngineR(RenjinScriptEngineObjectPool.INSTANCE.borrowObject()) {
+            @Override
+            public void close() {
+                final RenjinScriptEngine unwrap = unwrap();
+                if (unwrap != null) {
+                    RenjinScriptEngineObjectPool.INSTANCE.returnObject(unwrap);
+                }
+                super.close();
+            }
+        };
     }
 
 }

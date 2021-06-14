@@ -21,7 +21,7 @@ public class JriScriptTaskInputsR implements IScriptTaskInputsR {
 
     @Override
     public void putString(final String variable, final String value) {
-        Assertions.checkTrue(engine.unwrap().assign(variable, value));
+        Assertions.checkTrue(engine.unwrap().getRengine().assign(variable, value));
     }
 
     @Override
@@ -29,7 +29,7 @@ public class JriScriptTaskInputsR implements IScriptTaskInputsR {
         if (value == null) {
             putNull(variable);
         } else {
-            Assertions.checkTrue(engine.unwrap().assign(variable, value));
+            Assertions.checkTrue(engine.unwrap().getRengine().assign(variable, value));
         }
     }
 
@@ -58,7 +58,7 @@ public class JriScriptTaskInputsR implements IScriptTaskInputsR {
 
     @Override
     public void putDouble(final String variable, final double value) {
-        Assertions.checkTrue(engine.unwrap().assign(variable, new double[] { value }));
+        Assertions.checkTrue(engine.unwrap().getRengine().assign(variable, new double[] { value }));
     }
 
     @Override
@@ -66,7 +66,7 @@ public class JriScriptTaskInputsR implements IScriptTaskInputsR {
         if (value == null) {
             putNull(variable);
         } else {
-            Assertions.checkTrue(engine.unwrap().assign(variable, value));
+            Assertions.checkTrue(engine.unwrap().getRengine().assign(variable, value));
         }
     }
 
@@ -91,14 +91,14 @@ public class JriScriptTaskInputsR implements IScriptTaskInputsR {
                     i++;
                 }
             }
-            engine.unwrap().assign(variable, flatMatrix);
+            engine.unwrap().getRengine().assign(variable, flatMatrix);
             putExpression(variable, "matrix(" + variable + ", " + rows + ", " + cols + ", TRUE)");
         }
     }
 
     @Override
     public void putInteger(final String variable, final int value) {
-        Assertions.checkTrue(engine.unwrap().assign(variable, new int[] { value }));
+        Assertions.checkTrue(engine.unwrap().getRengine().assign(variable, new int[] { value }));
     }
 
     @Override
@@ -106,7 +106,7 @@ public class JriScriptTaskInputsR implements IScriptTaskInputsR {
         if (value == null) {
             putNull(variable);
         } else {
-            Assertions.checkTrue(engine.unwrap().assign(variable, value));
+            Assertions.checkTrue(engine.unwrap().getRengine().assign(variable, value));
         }
     }
 
@@ -131,14 +131,14 @@ public class JriScriptTaskInputsR implements IScriptTaskInputsR {
                     i++;
                 }
             }
-            engine.unwrap().assign(variable, flatMatrix);
+            engine.unwrap().getRengine().assign(variable, flatMatrix);
             putExpression(variable, "matrix(" + variable + ", " + rows + ", " + cols + ", TRUE)");
         }
     }
 
     @Override
     public void putBoolean(final String variable, final boolean value) {
-        Assertions.checkTrue(engine.unwrap().assign(variable, new boolean[] { value }));
+        Assertions.checkTrue(engine.unwrap().getRengine().assign(variable, new boolean[] { value }));
     }
 
     @Override
@@ -146,7 +146,7 @@ public class JriScriptTaskInputsR implements IScriptTaskInputsR {
         if (value == null) {
             putNull(variable);
         } else {
-            Assertions.checkTrue(engine.unwrap().assign(variable, value));
+            Assertions.checkTrue(engine.unwrap().getRengine().assign(variable, value));
         }
     }
 
@@ -172,7 +172,7 @@ public class JriScriptTaskInputsR implements IScriptTaskInputsR {
                     i++;
                 }
             }
-            engine.unwrap().assign(variable, flatMatrix);
+            engine.unwrap().getRengine().assign(variable, flatMatrix);
             putExpression(variable, "matrix(" + variable + ", " + rows + ", " + cols + ", TRUE)");
             putExpression(variable, "array(as.logical(" + variable + "), dim(" + variable + "))");
         }

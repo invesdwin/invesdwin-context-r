@@ -5,6 +5,9 @@ import javax.annotation.concurrent.NotThreadSafe;
 import com.github.rcaller.rstuff.RCaller;
 
 import de.invesdwin.context.integration.script.IScriptTaskEngine;
+import de.invesdwin.context.r.runtime.rcaller.pool.RCallerObjectPool;
+import de.invesdwin.util.concurrent.lock.ILock;
+import de.invesdwin.util.concurrent.lock.disabled.DisabledLock;
 
 @NotThreadSafe
 public class RCallerScriptTaskEngineR implements IScriptTaskEngine {
@@ -44,6 +47,27 @@ public class RCallerScriptTaskEngineR implements IScriptTaskEngine {
     @Override
     public RCaller unwrap() {
         return rcaller;
+    }
+
+    /**
+     * Each instance has its own engine, so no shared locking required.
+     */
+    @Override
+    public ILock getSharedLock() {
+        return DisabledLock.INSTANCE;
+    }
+
+    public static RCallerScriptTaskEngineR newInstance() {
+        return new RCallerScriptTaskEngineR(RCallerObjectPool.INSTANCE.borrowObject()) {
+            @Override
+            public void close() {
+                final RCaller unwrap = unwrap();
+                if (unwrap != null) {
+                    RCallerObjectPool.INSTANCE.returnObject(unwrap);
+                }
+                super.close();
+            }
+        };
     }
 
 }

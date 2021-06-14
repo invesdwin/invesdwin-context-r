@@ -6,6 +6,9 @@ import org.rosuda.REngine.REXP;
 
 import de.invesdwin.context.integration.script.IScriptTaskEngine;
 import de.invesdwin.context.r.runtime.rserve.pool.ExtendedRserveSession;
+import de.invesdwin.context.r.runtime.rserve.pool.RsessionObjectPool;
+import de.invesdwin.util.concurrent.lock.ILock;
+import de.invesdwin.util.concurrent.lock.disabled.DisabledLock;
 
 @NotThreadSafe
 public class RserveScriptTaskEngineR implements IScriptTaskEngine {
@@ -48,6 +51,27 @@ public class RserveScriptTaskEngineR implements IScriptTaskEngine {
     @Override
     public ExtendedRserveSession unwrap() {
         return rsession;
+    }
+
+    /**
+     * Each instance has its own engine, so no shared locking required.
+     */
+    @Override
+    public ILock getSharedLock() {
+        return DisabledLock.INSTANCE;
+    }
+
+    public static RserveScriptTaskEngineR newInstance() {
+        return new RserveScriptTaskEngineR(RsessionObjectPool.INSTANCE.borrowObject()) {
+            @Override
+            public void close() {
+                final ExtendedRserveSession unwrap = unwrap();
+                if (unwrap != null) {
+                    RsessionObjectPool.INSTANCE.returnObject(unwrap);
+                }
+                super.close();
+            }
+        };
     }
 
 }

@@ -24,7 +24,7 @@ public class JriScriptTaskResultsR implements IScriptTaskResultsR {
 
     @Override
     public String getString(final String variable) {
-        final REXP rexp = engine.unwrap().eval(variable);
+        final REXP rexp = engine.unwrap().getRengine().eval(variable);
         return rexp.asString();
     }
 
@@ -35,7 +35,7 @@ public class JriScriptTaskResultsR implements IScriptTaskResultsR {
         } else if (isEmpty(variable)) {
             return new String[0];
         } else {
-            final REXP rexp = engine.unwrap().eval(variable);
+            final REXP rexp = engine.unwrap().getRengine().eval(variable);
             return rexp.asStringArray();
         }
     }
@@ -45,7 +45,7 @@ public class JriScriptTaskResultsR implements IScriptTaskResultsR {
         if (isNull(variable)) {
             return null;
         } else {
-            final REXP rexp = engine.unwrap().eval(variable);
+            final REXP rexp = engine.unwrap().getRengine().eval(variable);
             return asStringMatrix(rexp);
         }
     }
@@ -81,7 +81,7 @@ public class JriScriptTaskResultsR implements IScriptTaskResultsR {
 
     @Override
     public double getDouble(final String variable) {
-        final REXP rexp = engine.unwrap().eval(variable);
+        final REXP rexp = engine.unwrap().getRengine().eval(variable);
         return rexp.asDouble();
     }
 
@@ -92,7 +92,7 @@ public class JriScriptTaskResultsR implements IScriptTaskResultsR {
         } else if (isEmpty(variable)) {
             return new double[0];
         } else {
-            final REXP rexp = engine.unwrap().eval(variable);
+            final REXP rexp = engine.unwrap().getRengine().eval(variable);
             return rexp.asDoubleArray();
         }
     }
@@ -102,14 +102,14 @@ public class JriScriptTaskResultsR implements IScriptTaskResultsR {
         if (isNull(variable)) {
             return null;
         } else {
-            final REXP rexp = engine.unwrap().eval(variable);
+            final REXP rexp = engine.unwrap().getRengine().eval(variable);
             return rexp.asDoubleMatrix();
         }
     }
 
     @Override
     public int getInteger(final String variable) {
-        final REXP rexp = engine.unwrap().eval(variable);
+        final REXP rexp = engine.unwrap().getRengine().eval(variable);
         final int[] array = rexp.asIntArray();
         Assertions.checkEquals(array.length, 1);
         return array[0];
@@ -122,7 +122,7 @@ public class JriScriptTaskResultsR implements IScriptTaskResultsR {
         } else if (isEmpty(variable)) {
             return new int[0];
         } else {
-            final REXP rexp = engine.unwrap().eval(variable);
+            final REXP rexp = engine.unwrap().getRengine().eval(variable);
             return rexp.asIntArray();
         }
     }
@@ -132,7 +132,7 @@ public class JriScriptTaskResultsR implements IScriptTaskResultsR {
         if (isNull(variable)) {
             return null;
         } else {
-            final REXP rexp = engine.unwrap().eval(variable);
+            final REXP rexp = engine.unwrap().getRengine().eval(variable);
             return asIntMatrix(rexp);
         }
     }
@@ -168,7 +168,7 @@ public class JriScriptTaskResultsR implements IScriptTaskResultsR {
 
     @Override
     public boolean getBoolean(final String variable) {
-        final REXP rexp = engine.unwrap().eval(variable);
+        final REXP rexp = engine.unwrap().getRengine().eval(variable);
         final RBool bool = rexp.asBool();
         return bool.isTRUE();
     }
@@ -180,7 +180,7 @@ public class JriScriptTaskResultsR implements IScriptTaskResultsR {
         } else if (isEmpty(variable)) {
             return new boolean[0];
         } else {
-            final REXP rexp = engine.unwrap().eval(variable);
+            final REXP rexp = engine.unwrap().getRengine().eval(variable);
             final int[] boolArray = rexp.asIntArray();
             final boolean[] booleanVector = new boolean[boolArray.length];
             for (int i = 0; i < boolArray.length; i++) {
@@ -195,7 +195,7 @@ public class JriScriptTaskResultsR implements IScriptTaskResultsR {
         if (isNull(variable)) {
             return null;
         } else {
-            final REXP rexp = engine.unwrap().eval(variable);
+            final REXP rexp = engine.unwrap().getRengine().eval(variable);
             final int[][] matrix = asIntMatrix(rexp);
             final boolean[][] booleanMatrix = new boolean[matrix.length][];
             for (int i = 0; i < matrix.length; i++) {
