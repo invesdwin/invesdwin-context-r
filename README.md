@@ -13,7 +13,7 @@ Dependency declaration:
 <dependency>
 	<groupId>de.invesdwin</groupId>
 	<artifactId>invesdwin-context-r-runtime-rcaller</artifactId>
-	<version>1.0.2</version><!---project.version.invesdwin-context-r-parent-->
+	<version>1.0.3</version><!---project.version.invesdwin-context-r-parent-->
 </dependency>
 ```
 
