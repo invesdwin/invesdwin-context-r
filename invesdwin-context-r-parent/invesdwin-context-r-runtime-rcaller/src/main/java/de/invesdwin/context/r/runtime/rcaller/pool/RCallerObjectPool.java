@@ -13,12 +13,12 @@ import org.springframework.beans.factory.FactoryBean;
 
 import com.github.rcaller.rstuff.RCaller;
 
-import de.invesdwin.context.pool.AObjectPool;
 import de.invesdwin.context.r.runtime.rcaller.pool.internal.RCallerPoolableObjectFactory;
 import de.invesdwin.util.assertions.Assertions;
 import de.invesdwin.util.concurrent.Executors;
 import de.invesdwin.util.concurrent.Threads;
 import de.invesdwin.util.concurrent.WrappedExecutorService;
+import de.invesdwin.util.concurrent.pool.AObjectPool;
 import de.invesdwin.util.time.date.FDate;
 import de.invesdwin.util.time.duration.Duration;
 

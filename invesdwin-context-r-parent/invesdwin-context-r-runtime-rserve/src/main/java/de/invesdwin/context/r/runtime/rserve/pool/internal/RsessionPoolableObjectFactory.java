@@ -9,12 +9,12 @@ import javax.inject.Named;
 import org.springframework.beans.factory.FactoryBean;
 
 import de.invesdwin.context.ContextProperties;
-import de.invesdwin.context.pool.IPoolableObjectFactory;
 import de.invesdwin.context.r.runtime.contract.IScriptTaskRunnerR;
 import de.invesdwin.context.r.runtime.rserve.RserveProperties;
 import de.invesdwin.context.r.runtime.rserve.RserveScriptTaskEngineR;
 import de.invesdwin.context.r.runtime.rserve.RserverConfMode;
 import de.invesdwin.context.r.runtime.rserve.pool.ExtendedRserveSession;
+import de.invesdwin.util.concurrent.pool.IPoolableObjectFactory;
 import de.invesdwin.util.error.UnknownArgumentException;
 import de.invesdwin.util.lang.UniqueNameGenerator;
 import de.invesdwin.util.lang.reflection.Reflections;

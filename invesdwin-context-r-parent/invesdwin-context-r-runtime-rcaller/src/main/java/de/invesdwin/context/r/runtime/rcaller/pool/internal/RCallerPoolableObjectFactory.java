@@ -7,9 +7,9 @@ import org.springframework.beans.factory.FactoryBean;
 
 import com.github.rcaller.rstuff.RCaller;
 
-import de.invesdwin.context.pool.IPoolableObjectFactory;
 import de.invesdwin.context.r.runtime.contract.IScriptTaskRunnerR;
 import de.invesdwin.context.r.runtime.rcaller.RCallerScriptTaskRunnerR;
+import de.invesdwin.util.concurrent.pool.IPoolableObjectFactory;
 
 @ThreadSafe
 @Named
