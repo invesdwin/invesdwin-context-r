@@ -1,170 +1,57 @@
 package de.invesdwin.context.r.runtime.renjin.pool;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.NoSuchElementException;
-import java.util.concurrent.TimeUnit;
+import java.io.PrintWriter;
 
-import javax.annotation.concurrent.GuardedBy;
 import javax.annotation.concurrent.ThreadSafe;
 import javax.inject.Named;
+import javax.script.ScriptException;
 
+import org.renjin.eval.SessionBuilder;
 import org.renjin.script.RenjinScriptEngine;
+import org.renjin.script.RenjinScriptEngineFactory;
 import org.springframework.beans.factory.FactoryBean;
+import org.zeroturnaround.exec.stream.slf4j.Slf4jDebugOutputStream;
+import org.zeroturnaround.exec.stream.slf4j.Slf4jWarnOutputStream;
 
-import de.invesdwin.context.r.runtime.renjin.pool.internal.RenjinScriptEnginePoolableObjectFactory;
-import de.invesdwin.util.collections.iterable.ICloseableIterator;
-import de.invesdwin.util.collections.iterable.buffer.NodeBufferingIterator;
-import de.invesdwin.util.collections.iterable.buffer.NodeBufferingIterator.INode;
-import de.invesdwin.util.concurrent.Executors;
-import de.invesdwin.util.concurrent.Threads;
-import de.invesdwin.util.concurrent.WrappedExecutorService;
-import de.invesdwin.util.concurrent.pool.commons.ACommonsObjectPool;
-import de.invesdwin.util.time.date.FDate;
+import de.invesdwin.context.r.runtime.contract.IScriptTaskRunnerR;
+import de.invesdwin.context.r.runtime.renjin.pool.internal.ExtendedPackageLoader;
+import de.invesdwin.util.concurrent.pool.timeout.ATimeoutObjectPool;
+import de.invesdwin.util.time.date.FTimeUnit;
 import de.invesdwin.util.time.duration.Duration;
 
 @ThreadSafe
 @Named
-public final class RenjinScriptEngineObjectPool extends ACommonsObjectPool<RenjinScriptEngine>
+public final class RenjinScriptEngineObjectPool extends ATimeoutObjectPool<RenjinScriptEngine>
         implements FactoryBean<RenjinScriptEngineObjectPool> {
 
     public static final RenjinScriptEngineObjectPool INSTANCE = new RenjinScriptEngineObjectPool();
-
-    private final WrappedExecutorService proxyCooldownMonitorExecutor = Executors
-            .newFixedCallerRunsThreadPool(getClass().getSimpleName() + "_timeout", 1);
-    @GuardedBy("this")
-    private final NodeBufferingIterator<RenjinScriptEngineWrapper> renjinScriptEngineRotation = new NodeBufferingIterator<RenjinScriptEngineWrapper>();
+    private static final RenjinScriptEngineFactory FACTORY = new RenjinScriptEngineFactory();
 
     private RenjinScriptEngineObjectPool() {
-        super(RenjinScriptEnginePoolableObjectFactory.INSTANCE);
-        proxyCooldownMonitorExecutor.execute(new RenjinScriptEngineTimoutMonitor());
+        super(Duration.ONE_MINUTE, new Duration(10, FTimeUnit.SECONDS));
     }
 
     @Override
-    protected synchronized RenjinScriptEngine internalBorrowObject() {
-        if (renjinScriptEngineRotation.isEmpty()) {
-            return factory.makeObject();
-        }
-        final RenjinScriptEngineWrapper renjinScriptEngine = renjinScriptEngineRotation.next();
-        if (renjinScriptEngine != null) {
-            return renjinScriptEngine.getRenjinScriptEngine();
-        } else {
-            return factory.makeObject();
-        }
+    public void destroyObject(final RenjinScriptEngine obj) {
+        obj.getSession().close();
     }
 
     @Override
-    public synchronized int getNumIdle() {
-        return renjinScriptEngineRotation.size();
+    protected RenjinScriptEngine newObject() {
+        final RenjinScriptEngine engine = FACTORY.getScriptEngine(
+                new SessionBuilder().withDefaultPackages().setPackageLoader(ExtendedPackageLoader.INSTANCE).build());
+        engine.getContext().setWriter(new PrintWriter(new Slf4jDebugOutputStream(IScriptTaskRunnerR.LOG)));
+        engine.getContext().setErrorWriter(new PrintWriter(new Slf4jWarnOutputStream(IScriptTaskRunnerR.LOG)));
+        return engine;
     }
 
     @Override
-    public synchronized Collection<RenjinScriptEngine> internalClear() {
-        final Collection<RenjinScriptEngine> removed = new ArrayList<RenjinScriptEngine>();
-        while (!renjinScriptEngineRotation.isEmpty()) {
-            removed.add(renjinScriptEngineRotation.next().getRenjinScriptEngine());
+    protected void passivateObject(final RenjinScriptEngine obj) {
+        try {
+            obj.eval(IScriptTaskRunnerR.CLEANUP_SCRIPT);
+        } catch (final ScriptException e) {
+            throw new RuntimeException(e);
         }
-        return removed;
-    }
-
-    @Override
-    protected synchronized RenjinScriptEngine internalAddObject() {
-        final RenjinScriptEngine pooled = factory.makeObject();
-        renjinScriptEngineRotation.add(new RenjinScriptEngineWrapper(factory.makeObject()));
-        return pooled;
-    }
-
-    @Override
-    protected synchronized void internalReturnObject(final RenjinScriptEngine obj) {
-        renjinScriptEngineRotation.add(new RenjinScriptEngineWrapper(obj));
-    }
-
-    @Override
-    protected void internalInvalidateObject(final RenjinScriptEngine obj) {
-        //Nothing happens
-    }
-
-    @Override
-    protected synchronized void internalRemoveObject(final RenjinScriptEngine obj) {
-        renjinScriptEngineRotation.remove(new RenjinScriptEngineWrapper(obj));
-    }
-
-    private class RenjinScriptEngineTimoutMonitor implements Runnable {
-        @Override
-        public void run() {
-            try {
-                while (true) {
-                    Threads.throwIfInterrupted();
-                    TimeUnit.MILLISECONDS.sleep(100);
-                    synchronized (RenjinScriptEngineObjectPool.this) {
-                        if (!renjinScriptEngineRotation.isEmpty()) {
-                            final ICloseableIterator<RenjinScriptEngineWrapper> iterator = renjinScriptEngineRotation
-                                    .iterator();
-                            try {
-                                while (true) {
-                                    final RenjinScriptEngineWrapper renjinScriptEngine = iterator.next();
-                                    if (renjinScriptEngine.isTimeoutExceeded()) {
-                                        iterator.remove();
-                                    }
-                                }
-                            } catch (final NoSuchElementException e) {
-                                //end reached
-                            }
-                        }
-                    }
-                }
-            } catch (final InterruptedException e) {
-                Thread.currentThread().interrupt();
-            }
-        }
-    }
-
-    private static final class RenjinScriptEngineWrapper implements INode<RenjinScriptEngineWrapper> {
-
-        private final RenjinScriptEngine renjinScriptEngine;
-        private final FDate timeoutStart;
-        private RenjinScriptEngineWrapper next;
-
-        RenjinScriptEngineWrapper(final RenjinScriptEngine rCaller) {
-            this.renjinScriptEngine = rCaller;
-            this.timeoutStart = new FDate();
-        }
-
-        public RenjinScriptEngine getRenjinScriptEngine() {
-            return renjinScriptEngine;
-        }
-
-        public boolean isTimeoutExceeded() {
-            return new Duration(timeoutStart, new FDate()).isGreaterThan(Duration.ONE_MINUTE);
-        }
-
-        @Override
-        public int hashCode() {
-            return renjinScriptEngine.hashCode();
-        }
-
-        @Override
-        public boolean equals(final Object obj) {
-            if (obj instanceof RenjinScriptEngineWrapper) {
-                final RenjinScriptEngineWrapper cObj = (RenjinScriptEngineWrapper) obj;
-                return renjinScriptEngine.equals(cObj.getRenjinScriptEngine());
-            } else if (obj instanceof RenjinScriptEngine) {
-                return renjinScriptEngine.equals(obj);
-            } else {
-                return false;
-            }
-        }
-
-        @Override
-        public RenjinScriptEngineWrapper getNext() {
-            return next;
-        }
-
-        @Override
-        public void setNext(final RenjinScriptEngineWrapper next) {
-            this.next = next;
-        }
-
     }
 
     @Override

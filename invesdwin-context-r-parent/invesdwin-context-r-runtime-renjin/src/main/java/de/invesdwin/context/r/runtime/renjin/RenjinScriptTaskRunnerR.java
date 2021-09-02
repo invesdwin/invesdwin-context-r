@@ -20,7 +20,8 @@ public final class RenjinScriptTaskRunnerR implements IScriptTaskRunnerR, Factor
     /**
      * public for ServiceLoader support
      */
-    public RenjinScriptTaskRunnerR() {}
+    public RenjinScriptTaskRunnerR() {
+    }
 
     @Override
     public <T> T run(final AScriptTaskR<T> scriptTask) {
@@ -42,7 +43,7 @@ public final class RenjinScriptTaskRunnerR implements IScriptTaskRunnerR, Factor
             RenjinScriptEngineObjectPool.INSTANCE.returnObject(renjinScriptEngine);
             return result;
         } catch (final Throwable t) {
-            RenjinScriptEngineObjectPool.INSTANCE.invalidateObject(renjinScriptEngine);
+            RenjinScriptEngineObjectPool.INSTANCE.destroyObject(renjinScriptEngine);
             throw Throwables.propagate(t);
         }
     }

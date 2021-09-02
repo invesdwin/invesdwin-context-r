@@ -20,7 +20,8 @@ public final class RserveScriptTaskRunnerR implements IScriptTaskRunnerR, Factor
     /**
      * public for ServiceLoader support
      */
-    public RserveScriptTaskRunnerR() {}
+    public RserveScriptTaskRunnerR() {
+    }
 
     @Override
     public <T> T run(final AScriptTaskR<T> scriptTask) {
@@ -42,7 +43,7 @@ public final class RserveScriptTaskRunnerR implements IScriptTaskRunnerR, Factor
             RsessionObjectPool.INSTANCE.returnObject(rsession);
             return result;
         } catch (final Throwable t) {
-            RsessionObjectPool.INSTANCE.invalidateObject(rsession);
+            RsessionObjectPool.INSTANCE.destroyObject(rsession);
             throw Throwables.propagate(t);
         }
     }

@@ -23,7 +23,8 @@ public final class RCallerScriptTaskRunnerR implements IScriptTaskRunnerR, Facto
     /**
      * public for ServiceLoader support
      */
-    public RCallerScriptTaskRunnerR() {}
+    public RCallerScriptTaskRunnerR() {
+    }
 
     @Override
     public <T> T run(final AScriptTaskR<T> scriptTask) {
@@ -46,7 +47,7 @@ public final class RCallerScriptTaskRunnerR implements IScriptTaskRunnerR, Facto
             RCallerObjectPool.INSTANCE.returnObject(rcaller);
             return result;
         } catch (final Throwable t) {
-            RCallerObjectPool.INSTANCE.invalidateObject(rcaller);
+            RCallerObjectPool.INSTANCE.destroyObject(rcaller);
             throw Throwables.propagate(t);
         }
     }
