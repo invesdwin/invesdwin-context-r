@@ -2,7 +2,7 @@ package de.invesdwin.context.r.runtime.rcaller.pool;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.concurrent.TimeUnit;
 
 import javax.annotation.concurrent.GuardedBy;
@@ -14,7 +14,9 @@ import org.springframework.beans.factory.FactoryBean;
 import com.github.rcaller.rstuff.RCaller;
 
 import de.invesdwin.context.r.runtime.rcaller.pool.internal.RCallerPoolableObjectFactory;
-import de.invesdwin.util.assertions.Assertions;
+import de.invesdwin.util.collections.iterable.ICloseableIterator;
+import de.invesdwin.util.collections.iterable.buffer.NodeBufferingIterator;
+import de.invesdwin.util.collections.iterable.buffer.NodeBufferingIterator.INode;
 import de.invesdwin.util.concurrent.Executors;
 import de.invesdwin.util.concurrent.Threads;
 import de.invesdwin.util.concurrent.WrappedExecutorService;
@@ -31,7 +33,7 @@ public final class RCallerObjectPool extends AObjectPool<RCaller> implements Fac
     private final WrappedExecutorService timeoutMonitorExecutor = Executors
             .newFixedCallerRunsThreadPool(getClass().getSimpleName() + "_timeout", 1);
     @GuardedBy("this")
-    private final List<RCallerWrapper> rCallerRotation = new ArrayList<RCallerWrapper>();
+    private final NodeBufferingIterator<RCallerWrapper> rCallerRotation = new NodeBufferingIterator<RCallerWrapper>();
 
     private RCallerObjectPool() {
         super(RCallerPoolableObjectFactory.INSTANCE);
@@ -43,7 +45,7 @@ public final class RCallerObjectPool extends AObjectPool<RCaller> implements Fac
         if (rCallerRotation.isEmpty()) {
             return factory.makeObject();
         }
-        final RCallerWrapper rCaller = rCallerRotation.remove(0);
+        final RCallerWrapper rCaller = rCallerRotation.next();
         if (rCaller != null) {
             return rCaller.getRCaller();
         } else {
@@ -60,7 +62,7 @@ public final class RCallerObjectPool extends AObjectPool<RCaller> implements Fac
     public synchronized Collection<RCaller> internalClear() {
         final Collection<RCaller> removed = new ArrayList<RCaller>();
         while (!rCallerRotation.isEmpty()) {
-            removed.add(rCallerRotation.remove(0).getRCaller());
+            removed.add(rCallerRotation.next().getRCaller());
         }
         return removed;
     }
@@ -96,11 +98,16 @@ public final class RCallerObjectPool extends AObjectPool<RCaller> implements Fac
                     TimeUnit.MILLISECONDS.sleep(100);
                     synchronized (RCallerObjectPool.this) {
                         if (!rCallerRotation.isEmpty()) {
-                            final List<RCallerWrapper> copy = new ArrayList<RCallerWrapper>(rCallerRotation);
-                            for (final RCallerWrapper rCaller : copy) {
-                                if (rCaller.isTimeoutExceeded()) {
-                                    Assertions.assertThat(rCallerRotation.remove(rCaller)).isTrue();
+                            final ICloseableIterator<RCallerWrapper> iterator = rCallerRotation.iterator();
+                            try {
+                                while (true) {
+                                    final RCallerWrapper rCaller = iterator.next();
+                                    if (rCaller.isTimeoutExceeded()) {
+                                        iterator.remove();
+                                    }
                                 }
+                            } catch (final NoSuchElementException e) {
+                                //end reached
                             }
                         }
                     }
@@ -111,10 +118,11 @@ public final class RCallerObjectPool extends AObjectPool<RCaller> implements Fac
         }
     }
 
-    private static final class RCallerWrapper {
+    private static final class RCallerWrapper implements INode<RCallerWrapper> {
 
         private final RCaller rCaller;
         private final FDate timeoutStart;
+        private RCallerWrapper next;
 
         RCallerWrapper(final RCaller rCaller) {
             this.rCaller = rCaller;
@@ -144,6 +152,16 @@ public final class RCallerObjectPool extends AObjectPool<RCaller> implements Fac
             } else {
                 return false;
             }
+        }
+
+        @Override
+        public RCallerWrapper getNext() {
+            return next;
+        }
+
+        @Override
+        public void setNext(final RCallerWrapper next) {
+            this.next = next;
         }
 
     }

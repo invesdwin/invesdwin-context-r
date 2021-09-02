@@ -2,7 +2,7 @@ package de.invesdwin.context.r.runtime.rserve.pool;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.concurrent.TimeUnit;
 
 import javax.annotation.concurrent.GuardedBy;
@@ -13,7 +13,9 @@ import org.math.R.Rsession;
 import org.springframework.beans.factory.FactoryBean;
 
 import de.invesdwin.context.r.runtime.rserve.pool.internal.RsessionPoolableObjectFactory;
-import de.invesdwin.util.assertions.Assertions;
+import de.invesdwin.util.collections.iterable.ICloseableIterator;
+import de.invesdwin.util.collections.iterable.buffer.NodeBufferingIterator;
+import de.invesdwin.util.collections.iterable.buffer.NodeBufferingIterator.INode;
 import de.invesdwin.util.concurrent.Executors;
 import de.invesdwin.util.concurrent.Threads;
 import de.invesdwin.util.concurrent.WrappedExecutorService;
@@ -31,7 +33,7 @@ public final class RsessionObjectPool extends AObjectPool<ExtendedRserveSession>
     private final WrappedExecutorService timeoutMonitorExecutor = Executors
             .newFixedCallerRunsThreadPool(getClass().getSimpleName() + "_timeout", 1);
     @GuardedBy("this")
-    private final List<RsessionWrapper> rsessionRotation = new ArrayList<RsessionWrapper>();
+    private final NodeBufferingIterator<RsessionWrapper> rsessionRotation = new NodeBufferingIterator<RsessionWrapper>();
 
     private RsessionObjectPool() {
         super(RsessionPoolableObjectFactory.INSTANCE);
@@ -43,7 +45,7 @@ public final class RsessionObjectPool extends AObjectPool<ExtendedRserveSession>
         if (rsessionRotation.isEmpty()) {
             return factory.makeObject();
         }
-        final RsessionWrapper rsession = rsessionRotation.remove(0);
+        final RsessionWrapper rsession = rsessionRotation.next();
         if (rsession != null) {
             return rsession.getRsession();
         } else {
@@ -60,7 +62,7 @@ public final class RsessionObjectPool extends AObjectPool<ExtendedRserveSession>
     public synchronized Collection<ExtendedRserveSession> internalClear() {
         final Collection<ExtendedRserveSession> removed = new ArrayList<ExtendedRserveSession>();
         while (!rsessionRotation.isEmpty()) {
-            removed.add(rsessionRotation.remove(0).getRsession());
+            removed.add(rsessionRotation.next().getRsession());
         }
         return removed;
     }
@@ -95,13 +97,16 @@ public final class RsessionObjectPool extends AObjectPool<ExtendedRserveSession>
                     Threads.throwIfInterrupted();
                     TimeUnit.MILLISECONDS.sleep(100);
                     synchronized (RsessionObjectPool.this) {
-                        if (!rsessionRotation.isEmpty()) {
-                            final List<RsessionWrapper> copy = new ArrayList<RsessionWrapper>(rsessionRotation);
-                            for (final RsessionWrapper rsession : copy) {
+                        final ICloseableIterator<RsessionWrapper> iterator = rsessionRotation.iterator();
+                        try {
+                            while (true) {
+                                final RsessionWrapper rsession = iterator.next();
                                 if (rsession.isTimeoutExceeded()) {
-                                    Assertions.assertThat(rsessionRotation.remove(rsession)).isTrue();
+                                    iterator.remove();
                                 }
                             }
+                        } catch (final NoSuchElementException e) {
+                            //end reached
                         }
                     }
                 }
@@ -111,10 +116,11 @@ public final class RsessionObjectPool extends AObjectPool<ExtendedRserveSession>
         }
     }
 
-    private static final class RsessionWrapper {
+    private static final class RsessionWrapper implements INode<RsessionWrapper> {
 
         private final ExtendedRserveSession rsession;
         private final FDate timeoutStart;
+        private RsessionWrapper next;
 
         RsessionWrapper(final ExtendedRserveSession rsession) {
             this.rsession = rsession;
@@ -144,6 +150,16 @@ public final class RsessionObjectPool extends AObjectPool<ExtendedRserveSession>
             } else {
                 return false;
             }
+        }
+
+        @Override
+        public RsessionWrapper getNext() {
+            return next;
+        }
+
+        @Override
+        public void setNext(final RsessionWrapper next) {
+            this.next = next;
         }
 
     }

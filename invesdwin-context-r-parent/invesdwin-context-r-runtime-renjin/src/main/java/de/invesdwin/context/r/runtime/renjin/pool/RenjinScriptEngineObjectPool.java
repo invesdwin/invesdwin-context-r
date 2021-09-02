@@ -2,7 +2,7 @@ package de.invesdwin.context.r.runtime.renjin.pool;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.concurrent.TimeUnit;
 
 import javax.annotation.concurrent.GuardedBy;
@@ -13,7 +13,9 @@ import org.renjin.script.RenjinScriptEngine;
 import org.springframework.beans.factory.FactoryBean;
 
 import de.invesdwin.context.r.runtime.renjin.pool.internal.RenjinScriptEnginePoolableObjectFactory;
-import de.invesdwin.util.assertions.Assertions;
+import de.invesdwin.util.collections.iterable.ICloseableIterator;
+import de.invesdwin.util.collections.iterable.buffer.NodeBufferingIterator;
+import de.invesdwin.util.collections.iterable.buffer.NodeBufferingIterator.INode;
 import de.invesdwin.util.concurrent.Executors;
 import de.invesdwin.util.concurrent.Threads;
 import de.invesdwin.util.concurrent.WrappedExecutorService;
@@ -31,7 +33,7 @@ public final class RenjinScriptEngineObjectPool extends AObjectPool<RenjinScript
     private final WrappedExecutorService proxyCooldownMonitorExecutor = Executors
             .newFixedCallerRunsThreadPool(getClass().getSimpleName() + "_timeout", 1);
     @GuardedBy("this")
-    private final List<RenjinScriptEngineWrapper> renjinScriptEngineRotation = new ArrayList<RenjinScriptEngineWrapper>();
+    private final NodeBufferingIterator<RenjinScriptEngineWrapper> renjinScriptEngineRotation = new NodeBufferingIterator<RenjinScriptEngineWrapper>();
 
     private RenjinScriptEngineObjectPool() {
         super(RenjinScriptEnginePoolableObjectFactory.INSTANCE);
@@ -43,7 +45,7 @@ public final class RenjinScriptEngineObjectPool extends AObjectPool<RenjinScript
         if (renjinScriptEngineRotation.isEmpty()) {
             return factory.makeObject();
         }
-        final RenjinScriptEngineWrapper renjinScriptEngine = renjinScriptEngineRotation.remove(0);
+        final RenjinScriptEngineWrapper renjinScriptEngine = renjinScriptEngineRotation.next();
         if (renjinScriptEngine != null) {
             return renjinScriptEngine.getRenjinScriptEngine();
         } else {
@@ -60,7 +62,7 @@ public final class RenjinScriptEngineObjectPool extends AObjectPool<RenjinScript
     public synchronized Collection<RenjinScriptEngine> internalClear() {
         final Collection<RenjinScriptEngine> removed = new ArrayList<RenjinScriptEngine>();
         while (!renjinScriptEngineRotation.isEmpty()) {
-            removed.add(renjinScriptEngineRotation.remove(0).getRenjinScriptEngine());
+            removed.add(renjinScriptEngineRotation.next().getRenjinScriptEngine());
         }
         return removed;
     }
@@ -96,13 +98,17 @@ public final class RenjinScriptEngineObjectPool extends AObjectPool<RenjinScript
                     TimeUnit.MILLISECONDS.sleep(100);
                     synchronized (RenjinScriptEngineObjectPool.this) {
                         if (!renjinScriptEngineRotation.isEmpty()) {
-                            final List<RenjinScriptEngineWrapper> copy = new ArrayList<RenjinScriptEngineWrapper>(
-                                    renjinScriptEngineRotation);
-                            for (final RenjinScriptEngineWrapper renjinScriptEngine : copy) {
-                                if (renjinScriptEngine.isTimeoutExceeded()) {
-                                    Assertions.assertThat(renjinScriptEngineRotation.remove(renjinScriptEngine))
-                                            .isTrue();
+                            final ICloseableIterator<RenjinScriptEngineWrapper> iterator = renjinScriptEngineRotation
+                                    .iterator();
+                            try {
+                                while (true) {
+                                    final RenjinScriptEngineWrapper renjinScriptEngine = iterator.next();
+                                    if (renjinScriptEngine.isTimeoutExceeded()) {
+                                        iterator.remove();
+                                    }
                                 }
+                            } catch (final NoSuchElementException e) {
+                                //end reached
                             }
                         }
                     }
@@ -113,10 +119,11 @@ public final class RenjinScriptEngineObjectPool extends AObjectPool<RenjinScript
         }
     }
 
-    private static final class RenjinScriptEngineWrapper {
+    private static final class RenjinScriptEngineWrapper implements INode<RenjinScriptEngineWrapper> {
 
         private final RenjinScriptEngine renjinScriptEngine;
         private final FDate timeoutStart;
+        private RenjinScriptEngineWrapper next;
 
         RenjinScriptEngineWrapper(final RenjinScriptEngine rCaller) {
             this.renjinScriptEngine = rCaller;
@@ -146,6 +153,16 @@ public final class RenjinScriptEngineObjectPool extends AObjectPool<RenjinScript
             } else {
                 return false;
             }
+        }
+
+        @Override
+        public RenjinScriptEngineWrapper getNext() {
+            return next;
+        }
+
+        @Override
+        public void setNext(final RenjinScriptEngineWrapper next) {
+            this.next = next;
         }
 
     }
