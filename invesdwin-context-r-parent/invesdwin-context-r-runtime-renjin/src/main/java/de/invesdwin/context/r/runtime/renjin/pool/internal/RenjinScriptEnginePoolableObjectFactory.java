@@ -14,12 +14,12 @@ import org.zeroturnaround.exec.stream.slf4j.Slf4jDebugOutputStream;
 import org.zeroturnaround.exec.stream.slf4j.Slf4jWarnOutputStream;
 
 import de.invesdwin.context.r.runtime.contract.IScriptTaskRunnerR;
-import de.invesdwin.util.concurrent.pool.IPoolableObjectFactory;
+import de.invesdwin.util.concurrent.pool.commons.ICommonsPoolableObjectFactory;
 
 @ThreadSafe
 @Named
 public final class RenjinScriptEnginePoolableObjectFactory
-        implements IPoolableObjectFactory<RenjinScriptEngine>, FactoryBean<RenjinScriptEnginePoolableObjectFactory> {
+        implements ICommonsPoolableObjectFactory<RenjinScriptEngine>, FactoryBean<RenjinScriptEnginePoolableObjectFactory> {
 
     public static final RenjinScriptEnginePoolableObjectFactory INSTANCE = new RenjinScriptEnginePoolableObjectFactory();
     private static final RenjinScriptEngineFactory FACTORY = new RenjinScriptEngineFactory();

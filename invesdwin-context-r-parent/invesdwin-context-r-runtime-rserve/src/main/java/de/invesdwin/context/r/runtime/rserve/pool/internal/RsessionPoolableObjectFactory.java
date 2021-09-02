@@ -14,7 +14,7 @@ import de.invesdwin.context.r.runtime.rserve.RserveProperties;
 import de.invesdwin.context.r.runtime.rserve.RserveScriptTaskEngineR;
 import de.invesdwin.context.r.runtime.rserve.RserverConfMode;
 import de.invesdwin.context.r.runtime.rserve.pool.ExtendedRserveSession;
-import de.invesdwin.util.concurrent.pool.IPoolableObjectFactory;
+import de.invesdwin.util.concurrent.pool.commons.ICommonsPoolableObjectFactory;
 import de.invesdwin.util.error.UnknownArgumentException;
 import de.invesdwin.util.lang.UniqueNameGenerator;
 import de.invesdwin.util.lang.reflection.Reflections;
@@ -23,7 +23,7 @@ import de.invesdwin.util.time.date.FDate;
 @ThreadSafe
 @Named
 public final class RsessionPoolableObjectFactory
-        implements IPoolableObjectFactory<ExtendedRserveSession>, FactoryBean<RsessionPoolableObjectFactory> {
+        implements ICommonsPoolableObjectFactory<ExtendedRserveSession>, FactoryBean<RsessionPoolableObjectFactory> {
 
     public static final RsessionPoolableObjectFactory INSTANCE = new RsessionPoolableObjectFactory();
     private static final UniqueNameGenerator UNIQUE_NAME_GENERATOR = new UniqueNameGenerator();

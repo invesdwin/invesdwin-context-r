@@ -9,12 +9,12 @@ import com.github.rcaller.rstuff.RCaller;
 
 import de.invesdwin.context.r.runtime.contract.IScriptTaskRunnerR;
 import de.invesdwin.context.r.runtime.rcaller.RCallerScriptTaskRunnerR;
-import de.invesdwin.util.concurrent.pool.IPoolableObjectFactory;
+import de.invesdwin.util.concurrent.pool.commons.ICommonsPoolableObjectFactory;
 
 @ThreadSafe
 @Named
 public final class RCallerPoolableObjectFactory
-        implements IPoolableObjectFactory<RCaller>, FactoryBean<RCallerPoolableObjectFactory> {
+        implements ICommonsPoolableObjectFactory<RCaller>, FactoryBean<RCallerPoolableObjectFactory> {
 
     public static final RCallerPoolableObjectFactory INSTANCE = new RCallerPoolableObjectFactory();
 

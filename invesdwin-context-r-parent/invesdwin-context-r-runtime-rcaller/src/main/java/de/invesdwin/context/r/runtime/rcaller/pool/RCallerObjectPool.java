@@ -20,13 +20,13 @@ import de.invesdwin.util.collections.iterable.buffer.NodeBufferingIterator.INode
 import de.invesdwin.util.concurrent.Executors;
 import de.invesdwin.util.concurrent.Threads;
 import de.invesdwin.util.concurrent.WrappedExecutorService;
-import de.invesdwin.util.concurrent.pool.AObjectPool;
+import de.invesdwin.util.concurrent.pool.commons.ACommonsObjectPool;
 import de.invesdwin.util.time.date.FDate;
 import de.invesdwin.util.time.duration.Duration;
 
 @ThreadSafe
 @Named
-public final class RCallerObjectPool extends AObjectPool<RCaller> implements FactoryBean<RCallerObjectPool> {
+public final class RCallerObjectPool extends ACommonsObjectPool<RCaller> implements FactoryBean<RCallerObjectPool> {
 
     public static final RCallerObjectPool INSTANCE = new RCallerObjectPool();
 
