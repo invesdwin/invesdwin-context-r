@@ -24,10 +24,6 @@
 			<groupId>com.github.jbytecode</groupId>
 			<artifactId>RCaller</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>org.zeroturnaround</groupId>
-			<artifactId>zt-exec</artifactId>
-		</dependency>
 	</dependencies>
 
 </project>

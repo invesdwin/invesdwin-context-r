@@ -27,10 +27,6 @@
 			<groupId>com.github.yannrichet</groupId>
 			<artifactId>Rsession</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>org.zeroturnaround</groupId>
-			<artifactId>zt-exec</artifactId>
-		</dependency>
 	</dependencies>
 
 </project>
