@@ -2,12 +2,11 @@ package de.invesdwin.context.r.optimalf;
 
 import javax.annotation.concurrent.Immutable;
 
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
-import org.junit.runners.Suite.SuiteClasses;
+import org.junit.platform.suite.api.SelectClasses;
+import org.junit.platform.suite.api.Suite;
 
-@RunWith(Suite.class)
-@SuiteClasses({ OptimalfScriptTaskTest.class })
+@Suite
+@SelectClasses({ OptimalfScriptTaskTest.class })
 @Immutable
 public class OptimalfTestSuite {
 

@@ -7,8 +7,8 @@ import java.util.List;
 import javax.annotation.concurrent.NotThreadSafe;
 import javax.inject.Inject;
 
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 import de.invesdwin.context.r.runtime.contract.IScriptTaskRunnerR;
 import de.invesdwin.context.r.runtime.jri.JriScriptTaskRunnerR;
@@ -55,7 +55,7 @@ public class OptimalfScriptTaskTest extends ATest {
     }
 
     @Test
-    @Ignore("not working right now")
+    @Disabled("not working right now")
     public void testRserve() {
         for (int i = 0; i < ITERATIONS; i++) {
             run(rserveScriptTaskRunner);
