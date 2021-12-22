@@ -46,6 +46,7 @@ public final class RserveProperties {
         RSERVER_REPOSITORY = systemProperties.getString("RSERVER_REPOSITORY");
     }
 
-    private RserveProperties() {}
+    private RserveProperties() {
+    }
 
 }

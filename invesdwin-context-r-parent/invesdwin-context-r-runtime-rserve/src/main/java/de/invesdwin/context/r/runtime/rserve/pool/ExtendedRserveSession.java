@@ -7,11 +7,14 @@ import org.math.R.RserveSession;
 import org.math.R.RserverConf;
 import org.rosuda.REngine.REXP;
 
+import de.invesdwin.context.r.runtime.rserve.RserveProperties;
+
 @NotThreadSafe
 public class ExtendedRserveSession extends RserveSession {
 
     public ExtendedRserveSession(final RLog log, final RserverConf serverconf, final boolean tryLocalRServe) {
         super(log, serverconf, tryLocalRServe);
+        setCRANRepository(RserveProperties.RSERVER_REPOSITORY);
     }
 
     @Override
