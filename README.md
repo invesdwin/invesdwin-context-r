@@ -88,11 +88,11 @@ For working with R we recommend using [StatET](http://www.walware.de/goto/statet
 Similar integration modules like this one also exist for the following other programming languages: 
 
 - **Python Modules**: Scripting with Python
-	- https://github.com/subes/invesdwin-context-python
+	- https://github.com/invesdwin/invesdwin-context-python
 - **Matlab/Octave/Scilab Modules**: Scripting with Matlab, Octave and Scilab
-	- https://github.com/subes/invesdwin-context-matlab
+	- https://github.com/invesdwin/invesdwin-context-matlab
 - **Julia Modules**: Scripting with Julia
-	- https://github.com/subes/invesdwin-context-julia
+	- https://github.com/invesdwin/invesdwin-context-julia
 
 
 ## Support
