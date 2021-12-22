@@ -91,6 +91,8 @@ Similar integration modules like this one also exist for the following other pro
 	- https://github.com/subes/invesdwin-context-python
 - **Matlab/Octave/Scilab Modules**: Scripting with Matlab, Octave and Scilab
 	- https://github.com/subes/invesdwin-context-matlab
+- **Julia Modules**: Scripting with Julia
+	- https://github.com/subes/invesdwin-context-julia
 
 
 ## Support
