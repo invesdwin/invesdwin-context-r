@@ -18,7 +18,8 @@ public final class RsessionLogger implements RLog {
     @GuardedBy("this")
     private final StringBuilder errorMessage = new StringBuilder();
 
-    public RsessionLogger() {}
+    public RsessionLogger() {
+    }
 
     @Override
     public synchronized void log(final String text, final Level level) {
@@ -51,6 +52,9 @@ public final class RsessionLogger implements RLog {
     }
 
     public synchronized String getErrorMessage() {
+        if (errorMessage.length() == 0) {
+            return null;
+        }
         return String.valueOf(errorMessage).trim();
     }
 
