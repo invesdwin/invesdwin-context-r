@@ -43,8 +43,10 @@ public class JriScriptTaskEngineR implements IScriptTaskEngine {
 
     @Override
     public void close() {
-        eval(IScriptTaskRunnerR.CLEANUP_SCRIPT);
-        rengine = null;
+        if (rengine != null) {
+            eval(IScriptTaskRunnerR.CLEANUP_SCRIPT);
+            rengine = null;
+        }
     }
 
     @Override
