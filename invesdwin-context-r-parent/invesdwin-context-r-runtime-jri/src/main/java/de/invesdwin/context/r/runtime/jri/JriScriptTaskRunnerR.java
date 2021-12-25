@@ -9,6 +9,7 @@ import de.invesdwin.context.r.runtime.contract.AScriptTaskR;
 import de.invesdwin.context.r.runtime.contract.IScriptTaskRunnerR;
 import de.invesdwin.context.r.runtime.jri.internal.LoggingRMainLoopCallbacks;
 import de.invesdwin.context.r.runtime.jri.internal.RengineWrapper;
+import de.invesdwin.util.concurrent.lock.ILock;
 import de.invesdwin.util.error.Throwables;
 
 @Immutable
@@ -27,7 +28,8 @@ public final class JriScriptTaskRunnerR implements IScriptTaskRunnerR, FactoryBe
     public <T> T run(final AScriptTaskR<T> scriptTask) {
         //get session
         final JriScriptTaskEngineR engine = new JriScriptTaskEngineR(RengineWrapper.INSTANCE);
-        engine.getSharedLock().lock();
+        final ILock lock = engine.getSharedLock();
+        lock.lock();
         try {
             //inputs
             scriptTask.populateInputs(engine.getInputs());
@@ -40,10 +42,10 @@ public final class JriScriptTaskRunnerR implements IScriptTaskRunnerR, FactoryBe
             engine.close();
 
             //return
-            engine.getSharedLock().unlock();
+            lock.unlock();
             return result;
         } catch (final Throwable t) {
-            engine.getSharedLock().unlock();
+            lock.unlock();
             throw Throwables.propagate(t);
         } finally {
             LoggingRMainLoopCallbacks.INSTANCE.reset();
