@@ -7,6 +7,7 @@ import org.renjin.script.RenjinScriptEngine;
 
 import de.invesdwin.context.integration.script.IScriptTaskEngine;
 import de.invesdwin.context.r.runtime.renjin.pool.RenjinScriptEngineObjectPool;
+import de.invesdwin.util.concurrent.WrappedExecutorService;
 import de.invesdwin.util.concurrent.lock.ILock;
 import de.invesdwin.util.concurrent.lock.disabled.DisabledLock;
 
@@ -58,6 +59,11 @@ public class RenjinScriptTaskEngineR implements IScriptTaskEngine {
     @Override
     public ILock getSharedLock() {
         return DisabledLock.INSTANCE;
+    }
+
+    @Override
+    public WrappedExecutorService getSharedExecutor() {
+        return null;
     }
 
     public static RenjinScriptTaskEngineR newInstance() {

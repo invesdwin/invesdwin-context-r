@@ -42,13 +42,12 @@ public final class JriScriptTaskRunnerR implements IScriptTaskRunnerR, FactoryBe
             engine.close();
 
             //return
-            lock.unlock();
             return result;
         } catch (final Throwable t) {
-            lock.unlock();
             throw Throwables.propagate(t);
         } finally {
             LoggingRMainLoopCallbacks.INSTANCE.reset();
+            lock.unlock();
         }
     }
 

@@ -8,6 +8,7 @@ import de.invesdwin.context.integration.script.IScriptTaskEngine;
 import de.invesdwin.context.r.runtime.contract.IScriptTaskRunnerR;
 import de.invesdwin.context.r.runtime.jri.internal.LoggingRMainLoopCallbacks;
 import de.invesdwin.context.r.runtime.jri.internal.RengineWrapper;
+import de.invesdwin.util.concurrent.WrappedExecutorService;
 import de.invesdwin.util.concurrent.lock.ILock;
 
 @NotThreadSafe
@@ -57,6 +58,11 @@ public class JriScriptTaskEngineR implements IScriptTaskEngine {
     @Override
     public ILock getSharedLock() {
         return unwrap().getLock();
+    }
+
+    @Override
+    public WrappedExecutorService getSharedExecutor() {
+        return null;
     }
 
     public static JriScriptTaskEngineR newInstance() {
