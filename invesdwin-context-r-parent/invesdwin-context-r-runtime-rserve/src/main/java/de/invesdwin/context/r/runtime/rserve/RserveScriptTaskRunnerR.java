@@ -43,7 +43,7 @@ public final class RserveScriptTaskRunnerR implements IScriptTaskRunnerR, Factor
             RsessionObjectPool.INSTANCE.returnObject(rsession);
             return result;
         } catch (final Throwable t) {
-            RsessionObjectPool.INSTANCE.destroyObject(rsession);
+            RsessionObjectPool.INSTANCE.invalidateObject(rsession);
             throw Throwables.propagate(t);
         }
     }

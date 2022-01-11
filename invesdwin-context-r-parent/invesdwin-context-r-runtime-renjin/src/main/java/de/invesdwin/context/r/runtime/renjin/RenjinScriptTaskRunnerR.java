@@ -43,7 +43,7 @@ public final class RenjinScriptTaskRunnerR implements IScriptTaskRunnerR, Factor
             RenjinScriptEngineObjectPool.INSTANCE.returnObject(renjinScriptEngine);
             return result;
         } catch (final Throwable t) {
-            RenjinScriptEngineObjectPool.INSTANCE.destroyObject(renjinScriptEngine);
+            RenjinScriptEngineObjectPool.INSTANCE.invalidateObject(renjinScriptEngine);
             throw Throwables.propagate(t);
         }
     }

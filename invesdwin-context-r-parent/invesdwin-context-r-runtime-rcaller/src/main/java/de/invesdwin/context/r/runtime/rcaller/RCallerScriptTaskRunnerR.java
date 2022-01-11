@@ -47,7 +47,7 @@ public final class RCallerScriptTaskRunnerR implements IScriptTaskRunnerR, Facto
             RCallerObjectPool.INSTANCE.returnObject(rcaller);
             return result;
         } catch (final Throwable t) {
-            RCallerObjectPool.INSTANCE.destroyObject(rcaller);
+            RCallerObjectPool.INSTANCE.invalidateObject(rcaller);
             throw Throwables.propagate(t);
         }
     }

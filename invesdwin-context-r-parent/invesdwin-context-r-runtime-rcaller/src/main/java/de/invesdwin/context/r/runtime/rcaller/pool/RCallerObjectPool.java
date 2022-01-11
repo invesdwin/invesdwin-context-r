@@ -25,7 +25,7 @@ public final class RCallerObjectPool extends ATimeoutObjectPool<RCaller> impleme
     }
 
     @Override
-    public void destroyObject(final RCaller obj) {
+    public void invalidateObject(final RCaller obj) {
         obj.StopRCallerOnline();
     }
 

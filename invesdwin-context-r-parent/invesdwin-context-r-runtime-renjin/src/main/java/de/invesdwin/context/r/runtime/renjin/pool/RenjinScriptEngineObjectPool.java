@@ -32,7 +32,7 @@ public final class RenjinScriptEngineObjectPool extends ATimeoutObjectPool<Renji
     }
 
     @Override
-    public void destroyObject(final RenjinScriptEngine obj) {
+    public void invalidateObject(final RenjinScriptEngine obj) {
         obj.getSession().close();
     }
 

@@ -32,7 +32,7 @@ public final class RsessionObjectPool extends ATimeoutObjectPool<ExtendedRserveS
     }
 
     @Override
-    public void destroyObject(final ExtendedRserveSession obj) {
+    public void invalidateObject(final ExtendedRserveSession obj) {
         obj.end();
     }
 
