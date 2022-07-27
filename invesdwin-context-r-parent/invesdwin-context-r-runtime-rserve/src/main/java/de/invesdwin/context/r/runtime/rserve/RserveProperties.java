@@ -4,6 +4,7 @@ import javax.annotation.concurrent.Immutable;
 
 import org.math.R.RserverConf;
 
+import de.invesdwin.context.system.properties.IProperties;
 import de.invesdwin.context.system.properties.SystemProperties;
 import de.invesdwin.util.lang.Strings;
 
@@ -40,8 +41,10 @@ public final class RserveProperties {
             }
         }
         if (RSERVER_CONF != null) {
-            systemProperties.maybeLogSecurityWarning("RSERVER_CONF (username)", RSERVER_CONF.login, "invesdwin");
-            systemProperties.maybeLogSecurityWarning("RSERVER_CONF (password)", RSERVER_CONF.password, "invesdwin");
+            systemProperties.maybeLogSecurityWarning("RSERVER_CONF (username)", RSERVER_CONF.login,
+                    IProperties.INVESDWIN_DEFAULT_PASSWORD);
+            systemProperties.maybeLogSecurityWarning("RSERVER_CONF (password)", RSERVER_CONF.password,
+                    IProperties.INVESDWIN_DEFAULT_PASSWORD);
         }
         RSERVER_REPOSITORY = systemProperties.getString("RSERVER_REPOSITORY");
     }
