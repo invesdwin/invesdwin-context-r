@@ -25,8 +25,8 @@ public final class RCallerObjectPool extends ATimeoutObjectPool<RCaller> impleme
     }
 
     @Override
-    public void invalidateObject(final RCaller obj) {
-        obj.StopRCallerOnline();
+    public void invalidateObject(final RCaller element) {
+        element.StopRCallerOnline();
     }
 
     @Override
@@ -35,12 +35,12 @@ public final class RCallerObjectPool extends ATimeoutObjectPool<RCaller> impleme
     }
 
     @Override
-    protected void passivateObject(final RCaller obj) {
-        obj.getRCode().clear();
-        obj.getRCode().getCode().insert(0, IScriptTaskRunnerR.CLEANUP_SCRIPT + "\n");
-        obj.getRCode().addRCode(RCallerScriptTaskRunnerR.INTERNAL_RESULT_VARIABLE + " <- c()");
-        obj.runAndReturnResultOnline(RCallerScriptTaskRunnerR.INTERNAL_RESULT_VARIABLE);
-        obj.deleteTempFiles();
+    protected void passivateObject(final RCaller element) {
+        element.getRCode().clear();
+        element.getRCode().getCode().insert(0, IScriptTaskRunnerR.CLEANUP_SCRIPT + "\n");
+        element.getRCode().addRCode(RCallerScriptTaskRunnerR.INTERNAL_RESULT_VARIABLE + " <- c()");
+        element.runAndReturnResultOnline(RCallerScriptTaskRunnerR.INTERNAL_RESULT_VARIABLE);
+        element.deleteTempFiles();
     }
 
     @Override

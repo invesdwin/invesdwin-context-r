@@ -32,8 +32,8 @@ public final class RsessionObjectPool extends ATimeoutObjectPool<ExtendedRserveS
     }
 
     @Override
-    public void invalidateObject(final ExtendedRserveSession obj) {
-        obj.end();
+    public void invalidateObject(final ExtendedRserveSession element) {
+        element.end();
     }
 
     @Override
@@ -68,11 +68,11 @@ public final class RsessionObjectPool extends ATimeoutObjectPool<ExtendedRserveS
     }
 
     @Override
-    protected void passivateObject(final ExtendedRserveSession obj) {
-        final RserveScriptTaskEngineR engine = new RserveScriptTaskEngineR(obj);
+    protected void passivateObject(final ExtendedRserveSession element) {
+        final RserveScriptTaskEngineR engine = new RserveScriptTaskEngineR(element);
         engine.eval(IScriptTaskRunnerR.CLEANUP_SCRIPT);
         engine.close();
-        obj.closeLog(); //reset logger
+        element.closeLog(); //reset logger
     }
 
     @Override

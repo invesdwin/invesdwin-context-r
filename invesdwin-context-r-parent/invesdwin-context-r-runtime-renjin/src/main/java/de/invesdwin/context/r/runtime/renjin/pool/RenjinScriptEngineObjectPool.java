@@ -32,8 +32,8 @@ public final class RenjinScriptEngineObjectPool extends ATimeoutObjectPool<Renji
     }
 
     @Override
-    public void invalidateObject(final RenjinScriptEngine obj) {
-        obj.getSession().close();
+    public void invalidateObject(final RenjinScriptEngine element) {
+        element.getSession().close();
     }
 
     @Override
@@ -46,9 +46,9 @@ public final class RenjinScriptEngineObjectPool extends ATimeoutObjectPool<Renji
     }
 
     @Override
-    protected void passivateObject(final RenjinScriptEngine obj) {
+    protected void passivateObject(final RenjinScriptEngine element) {
         try {
-            obj.eval(IScriptTaskRunnerR.CLEANUP_SCRIPT);
+            element.eval(IScriptTaskRunnerR.CLEANUP_SCRIPT);
         } catch (final ScriptException e) {
             throw new RuntimeException(e);
         }
