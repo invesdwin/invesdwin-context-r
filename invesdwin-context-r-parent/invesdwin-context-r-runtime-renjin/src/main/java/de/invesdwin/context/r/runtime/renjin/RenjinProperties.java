@@ -1,10 +1,11 @@
 package de.invesdwin.context.r.runtime.renjin;
 
-import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
 import javax.annotation.concurrent.Immutable;
+
+import de.invesdwin.util.collections.Collections;
 
 @Immutable
 public final class RenjinProperties {
@@ -16,7 +17,8 @@ public final class RenjinProperties {
         EXTENDED_PACKAGE_SEARCH_GROUP_IDS.add("de.invesdwin.context.r.runtime.renjin.packages");
     }
 
-    private RenjinProperties() {}
+    private RenjinProperties() {
+    }
 
     public static Set<String> getExtendedPackageSearchGroupIds() {
         return Collections.unmodifiableSet(EXTENDED_PACKAGE_SEARCH_GROUP_IDS);

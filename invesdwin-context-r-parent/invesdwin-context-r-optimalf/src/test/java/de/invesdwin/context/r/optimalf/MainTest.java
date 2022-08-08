@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import javax.annotation.concurrent.NotThreadSafe;
@@ -17,6 +16,7 @@ import de.invesdwin.context.PlatformInitializerProperties;
 import de.invesdwin.context.r.runtime.contract.ProvidedScriptTaskRunnerR;
 import de.invesdwin.context.r.runtime.rcaller.RCallerScriptTaskRunnerR;
 import de.invesdwin.util.assertions.Assertions;
+import de.invesdwin.util.collections.Arrays;
 import de.invesdwin.util.lang.Files;
 import de.invesdwin.util.math.decimal.Decimal;
 

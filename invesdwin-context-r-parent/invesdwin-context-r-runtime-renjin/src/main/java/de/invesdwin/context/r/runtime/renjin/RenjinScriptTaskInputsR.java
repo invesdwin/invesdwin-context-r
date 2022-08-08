@@ -2,12 +2,12 @@ package de.invesdwin.context.r.runtime.renjin;
 
 import javax.annotation.concurrent.NotThreadSafe;
 
-import org.apache.commons.lang3.ArrayUtils;
 import org.renjin.primitives.matrix.DoubleMatrixBuilder;
 import org.renjin.primitives.matrix.IntMatrixBuilder;
 import org.renjin.primitives.matrix.StringMatrixBuilder;
 
 import de.invesdwin.context.r.runtime.contract.IScriptTaskInputsR;
+import de.invesdwin.util.collections.Arrays;
 
 @NotThreadSafe
 public class RenjinScriptTaskInputsR implements IScriptTaskInputsR {
@@ -136,7 +136,7 @@ public class RenjinScriptTaskInputsR implements IScriptTaskInputsR {
         if (value == null) {
             putNull(variable);
         } else {
-            engine.unwrap().put(variable, ArrayUtils.toObject(value));
+            engine.unwrap().put(variable, Arrays.toObject(value));
         }
     }
 

@@ -1,7 +1,6 @@
 package de.invesdwin.context.r.optimalf;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import javax.annotation.concurrent.NotThreadSafe;
@@ -17,6 +16,7 @@ import de.invesdwin.context.r.runtime.renjin.RenjinScriptTaskRunnerR;
 import de.invesdwin.context.r.runtime.rserve.RserveScriptTaskRunnerR;
 import de.invesdwin.context.test.ATest;
 import de.invesdwin.util.assertions.Assertions;
+import de.invesdwin.util.collections.Arrays;
 import de.invesdwin.util.math.decimal.Decimal;
 
 @NotThreadSafe
