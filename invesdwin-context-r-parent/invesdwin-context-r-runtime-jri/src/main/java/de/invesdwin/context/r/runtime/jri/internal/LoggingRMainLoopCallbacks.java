@@ -7,7 +7,7 @@ import org.rosuda.JRI.RMainLoopCallbacks;
 import org.rosuda.JRI.Rengine;
 
 import de.invesdwin.context.r.runtime.contract.IScriptTaskRunnerR;
-import de.invesdwin.util.lang.Strings;
+import de.invesdwin.util.lang.string.Strings;
 
 @ThreadSafe
 public final class LoggingRMainLoopCallbacks implements RMainLoopCallbacks {

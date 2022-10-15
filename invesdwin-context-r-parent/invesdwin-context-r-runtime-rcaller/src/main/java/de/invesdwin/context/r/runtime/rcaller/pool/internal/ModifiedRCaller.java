@@ -18,8 +18,8 @@ import com.github.rcaller.rstuff.RStreamHandler;
 
 import de.invesdwin.context.r.runtime.contract.IScriptTaskRunnerR;
 import de.invesdwin.context.r.runtime.rcaller.RCallerScriptTaskRunnerR;
-import de.invesdwin.util.lang.Strings;
 import de.invesdwin.util.lang.reflection.Reflections;
+import de.invesdwin.util.lang.string.Strings;
 
 @NotThreadSafe
 public class ModifiedRCaller extends RCaller {

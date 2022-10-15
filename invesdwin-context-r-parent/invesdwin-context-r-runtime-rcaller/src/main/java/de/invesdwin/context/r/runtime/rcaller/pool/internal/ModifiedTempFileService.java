@@ -11,8 +11,8 @@ import com.github.rcaller.TempFileService;
 
 import de.invesdwin.context.ContextProperties;
 import de.invesdwin.util.lang.Files;
-import de.invesdwin.util.lang.UniqueNameGenerator;
 import de.invesdwin.util.lang.finalizer.AFinalizer;
+import de.invesdwin.util.lang.string.UniqueNameGenerator;
 
 /**
  * Fixes memory leak with temp files and redirects to invesdwin process temp dir

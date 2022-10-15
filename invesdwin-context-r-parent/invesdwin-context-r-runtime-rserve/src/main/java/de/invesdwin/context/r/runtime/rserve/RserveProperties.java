@@ -6,7 +6,7 @@ import org.math.R.RserverConf;
 
 import de.invesdwin.context.system.properties.IProperties;
 import de.invesdwin.context.system.properties.SystemProperties;
-import de.invesdwin.util.lang.Strings;
+import de.invesdwin.util.lang.string.Strings;
 
 @Immutable
 public final class RserveProperties {

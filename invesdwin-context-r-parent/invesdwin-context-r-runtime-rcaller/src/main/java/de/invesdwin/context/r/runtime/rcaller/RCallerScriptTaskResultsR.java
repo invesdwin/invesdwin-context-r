@@ -4,7 +4,7 @@ import javax.annotation.concurrent.NotThreadSafe;
 
 import de.invesdwin.context.r.runtime.contract.IScriptTaskResultsR;
 import de.invesdwin.util.assertions.Assertions;
-import de.invesdwin.util.lang.Strings;
+import de.invesdwin.util.lang.string.Strings;
 
 @NotThreadSafe
 public class RCallerScriptTaskResultsR implements IScriptTaskResultsR {

@@ -1,7 +1,7 @@
 package de.invesdwin.context.r.runtime.contract;
 
 import de.invesdwin.context.integration.script.IScriptTaskInputs;
-import de.invesdwin.util.lang.Strings;
+import de.invesdwin.util.lang.string.Strings;
 import de.invesdwin.util.math.Doubles;
 import de.invesdwin.util.math.Integers;
 

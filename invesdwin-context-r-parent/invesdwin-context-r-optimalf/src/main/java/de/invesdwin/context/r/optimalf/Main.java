@@ -13,7 +13,7 @@ import org.kohsuke.args4j.Option;
 import de.invesdwin.context.PlatformInitializerProperties;
 import de.invesdwin.context.beans.init.AMain;
 import de.invesdwin.util.lang.Files;
-import de.invesdwin.util.lang.Strings;
+import de.invesdwin.util.lang.string.Strings;
 
 @Immutable
 public class Main extends AMain {
