@@ -1,7 +1,7 @@
 package de.invesdwin.context.r.runtime.rcaller.pool;
 
 import javax.annotation.concurrent.ThreadSafe;
-import javax.inject.Named;
+import jakarta.inject.Named;
 
 import org.springframework.beans.factory.FactoryBean;
 

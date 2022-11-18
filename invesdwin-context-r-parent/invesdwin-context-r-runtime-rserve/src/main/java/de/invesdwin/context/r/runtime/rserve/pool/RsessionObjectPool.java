@@ -3,7 +3,7 @@ package de.invesdwin.context.r.runtime.rserve.pool;
 import java.io.File;
 
 import javax.annotation.concurrent.ThreadSafe;
-import javax.inject.Named;
+import jakarta.inject.Named;
 
 import org.springframework.beans.factory.FactoryBean;
 

@@ -3,7 +3,7 @@ package de.invesdwin.context.r.runtime.renjin.pool;
 import java.io.PrintWriter;
 
 import javax.annotation.concurrent.ThreadSafe;
-import javax.inject.Named;
+import jakarta.inject.Named;
 import javax.script.ScriptException;
 
 import org.renjin.eval.SessionBuilder;

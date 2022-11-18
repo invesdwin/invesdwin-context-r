@@ -1,7 +1,7 @@
 package de.invesdwin.context.r.runtime.jri;
 
 import javax.annotation.concurrent.Immutable;
-import javax.inject.Named;
+import jakarta.inject.Named;
 
 import org.springframework.beans.factory.FactoryBean;
 

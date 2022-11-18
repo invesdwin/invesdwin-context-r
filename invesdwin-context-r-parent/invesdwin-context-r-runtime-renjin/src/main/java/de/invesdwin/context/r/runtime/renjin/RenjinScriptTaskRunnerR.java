@@ -1,7 +1,7 @@
 package de.invesdwin.context.r.runtime.renjin;
 
 import javax.annotation.concurrent.Immutable;
-import javax.inject.Named;
+import jakarta.inject.Named;
 
 import org.renjin.script.RenjinScriptEngine;
 import org.springframework.beans.factory.FactoryBean;
