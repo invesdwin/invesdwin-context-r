@@ -43,4 +43,9 @@ public final class ExtendedPackageLoader implements PackageLoader {
         return loader.get(packageName);
     }
 
+    @Override
+    public Optional<Package> load(final String packageName) {
+        return load(new FqPackageName(FqPackageName.BASE.getGroupId(), packageName));
+    }
+
 }
