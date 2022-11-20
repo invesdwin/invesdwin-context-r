@@ -27,15 +27,15 @@ public final class RserveProperties {
             RSERVER_CONF = RserverConf.parse(rserverConf);
             if (RSERVER_CONF_MODE == RserverConfMode.LOCAL) {
                 //override port for local instance
-                final RserverConf newLocalInstance = RserverConf.newLocalInstance(null);
                 if (RserveProperties.RSERVER_CONF != null) {
-                    RSERVER_CONF.port = newLocalInstance.port;
+                    RSERVER_CONF.port = RserverConf.DEFAULT_RSERVE_PORT;
                 }
                 systemProperties.setString("RSERVER_CONF", Strings.asString(RSERVER_CONF));
             }
         } else {
             if (RSERVER_CONF_MODE == RserverConfMode.LOCAL) {
-                RSERVER_CONF = RserverConf.newLocalInstance(null);
+                RSERVER_CONF = new RserverConf(RserverConf.DEFAULT_RSERVE_HOST, RserverConf.DEFAULT_RSERVE_PORT, null,
+                        null);
             } else {
                 RSERVER_CONF = null;
             }
@@ -49,7 +49,6 @@ public final class RserveProperties {
         RSERVER_REPOSITORY = systemProperties.getString("RSERVER_REPOSITORY");
     }
 
-    private RserveProperties() {
-    }
+    private RserveProperties() {}
 
 }

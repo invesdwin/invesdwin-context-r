@@ -9,11 +9,11 @@ import com.github.rcaller.EventHandler;
 import com.github.rcaller.MessageSaver;
 import com.github.rcaller.TempFileService;
 import com.github.rcaller.exception.ExecutionException;
+import com.github.rcaller.io.ROutputParserArrow;
 import com.github.rcaller.rstuff.FailurePolicy;
 import com.github.rcaller.rstuff.RCaller;
 import com.github.rcaller.rstuff.RCallerOptions;
 import com.github.rcaller.rstuff.RCode;
-import com.github.rcaller.rstuff.ROutputParser;
 import com.github.rcaller.rstuff.RStreamHandler;
 
 import de.invesdwin.context.r.runtime.contract.IScriptTaskRunnerR;
@@ -33,7 +33,7 @@ public class ModifiedRCaller extends RCaller {
     private final Object curThreadForInterruptLock = new Object();
 
     public ModifiedRCaller() {
-        super(null, new ROutputParser(), newOutputStreamHandler(), newErrorStreamHandler(), new MessageSaver(),
+        super(null, new ROutputParserArrow(), newOutputStreamHandler(), newErrorStreamHandler(), new MessageSaver(),
                 new ModifiedTempFileService(), RCallerOptions.create(FailurePolicy.CONTINUE, Long.MAX_VALUE));
         final Invoker<TempFileService> rcallerTempFileServiceField = Reflections.field("tempFileService")
                 .ofType(TempFileService.class)
