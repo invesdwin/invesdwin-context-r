@@ -33,7 +33,7 @@ public class Main extends AMain {
     }
 
     public static void main(final String[] args) {
-        new Main(args);
+        new Main(args).run();
     }
 
     @Override
