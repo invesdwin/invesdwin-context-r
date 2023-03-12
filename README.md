@@ -26,10 +26,10 @@ If you do not want to make your whole application available under the terms of t
 This at least will provide reusable (and hopefully high quality) command line applications for using R that the rest of the community can use and this will also allow you to leverage R functionality in a legally tolerated way (even though we are no lawyers and this is not any sort of legal advice, 
 it still seems to be [what the FSF came to terms with](https://www.gnu.org/licenses/gpl-faq.html#GPLPlugins)). 
 As long as there is no intimate relationship between the main application and the command line application this border case seems to be accepted. 
-Another angle is that the GPL is only concerned with redistribution of software. 
-So you could redistribute your software without GPL dependencies, but let clients/users/admins install GPL addons manually on their computers/servers. 
+Another angle is that the GPL is only concerned with redistribution of software binaries. 
+So you could redistribute your software as a binary without GPL dependencies, but let clients/users/admins install GPL addons manually on their computers/servers themselves. 
 That way the user made the decision to combine the software in that way and you don't have to put everything under the GPL because you did not redistribute the GPL code together with non-GPL code. 
-Though keep in mind that this is not allowed for the AGPL (Affero) which also makes you put everythig under the AGPL when combining software on a corporate Server that is not redistributed to customers.
+Though keep in mind that this is not allowed for the AGPL (Affero) which also makes you put everythig under the AGPL when combining software on a corporate server that offers an online service that is not distributed to customers as a binary.
 If you have any further advice on this topic, we would be glad to hear more about it. 
 
 ## Runtime Integration Modules
