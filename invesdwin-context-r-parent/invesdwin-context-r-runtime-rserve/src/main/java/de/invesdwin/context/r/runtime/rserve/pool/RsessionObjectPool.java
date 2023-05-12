@@ -123,11 +123,12 @@ public final class RsessionObjectPool extends ATimeoutObjectPool<ExtendedRserveS
     }
 
     @Override
-    protected void passivateObject(final ExtendedRserveSession element) {
+    protected boolean passivateObject(final ExtendedRserveSession element) {
         final RserveScriptTaskEngineR engine = new RserveScriptTaskEngineR(element);
         engine.eval(IScriptTaskRunnerR.CLEANUP_SCRIPT);
         engine.close();
         element.closeLog(); //reset logger
+        return true;
     }
 
     @Override

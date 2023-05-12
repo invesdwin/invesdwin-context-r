@@ -1,7 +1,6 @@
 package de.invesdwin.context.r.runtime.rcaller.pool;
 
 import javax.annotation.concurrent.ThreadSafe;
-import jakarta.inject.Named;
 
 import org.springframework.beans.factory.FactoryBean;
 
@@ -13,6 +12,7 @@ import de.invesdwin.context.r.runtime.rcaller.pool.internal.ModifiedRCaller;
 import de.invesdwin.util.concurrent.pool.timeout.ATimeoutObjectPool;
 import de.invesdwin.util.time.date.FTimeUnit;
 import de.invesdwin.util.time.duration.Duration;
+import jakarta.inject.Named;
 
 @ThreadSafe
 @Named
@@ -35,12 +35,13 @@ public final class RCallerObjectPool extends ATimeoutObjectPool<RCaller> impleme
     }
 
     @Override
-    protected void passivateObject(final RCaller element) {
+    protected boolean passivateObject(final RCaller element) {
         element.getRCode().clear();
         element.getRCode().getCode().insert(0, IScriptTaskRunnerR.CLEANUP_SCRIPT + "\n");
         element.getRCode().addRCode(RCallerScriptTaskRunnerR.INTERNAL_RESULT_VARIABLE + " <- c()");
         element.runAndReturnResultOnline(RCallerScriptTaskRunnerR.INTERNAL_RESULT_VARIABLE);
         element.deleteTempFiles();
+        return true;
     }
 
     @Override
