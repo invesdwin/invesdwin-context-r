@@ -54,7 +54,7 @@ public class ModifiedTempFileService extends TempFileService {
     @Override
     public File createTempFile(final String prefix, final String suffix) throws IOException {
         final File file = new File(folder, fileUniqueNameGenerator.get(prefix) + suffix);
-        Files.touch(file);
+        Files.touchQuietly(file);
         tempFiles.add(file);
         return file;
     }
