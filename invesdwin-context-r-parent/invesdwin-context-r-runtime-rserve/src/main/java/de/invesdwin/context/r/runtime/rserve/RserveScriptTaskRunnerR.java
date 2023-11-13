@@ -1,15 +1,17 @@
 package de.invesdwin.context.r.runtime.rserve;
 
 import javax.annotation.concurrent.Immutable;
-import jakarta.inject.Named;
 
 import org.springframework.beans.factory.FactoryBean;
 
+import de.invesdwin.context.integration.script.callback.IScriptTaskCallback;
 import de.invesdwin.context.r.runtime.contract.AScriptTaskR;
 import de.invesdwin.context.r.runtime.contract.IScriptTaskRunnerR;
+import de.invesdwin.context.r.runtime.contract.callback.socket.SocketScriptTaskCallbackContext;
 import de.invesdwin.context.r.runtime.rserve.pool.ExtendedRserveSession;
 import de.invesdwin.context.r.runtime.rserve.pool.RsessionObjectPool;
 import de.invesdwin.util.error.Throwables;
+import jakarta.inject.Named;
 
 @Immutable
 @Named
@@ -20,16 +22,25 @@ public final class RserveScriptTaskRunnerR implements IScriptTaskRunnerR, Factor
     /**
      * public for ServiceLoader support
      */
-    public RserveScriptTaskRunnerR() {
-    }
+    public RserveScriptTaskRunnerR() {}
 
     @Override
     public <T> T run(final AScriptTaskR<T> scriptTask) {
         //get session
         final ExtendedRserveSession rsession = RsessionObjectPool.INSTANCE.borrowObject();
+        final IScriptTaskCallback callback = scriptTask.getCallback();
+        final SocketScriptTaskCallbackContext context;
+        if (callback != null) {
+            context = new SocketScriptTaskCallbackContext(callback);
+        } else {
+            context = null;
+        }
         try {
             //inputs
             final RserveScriptTaskEngineR engine = new RserveScriptTaskEngineR(rsession);
+            if (context != null) {
+                context.init(engine);
+            }
             scriptTask.populateInputs(engine.getInputs());
 
             //execute
@@ -45,6 +56,10 @@ public final class RserveScriptTaskRunnerR implements IScriptTaskRunnerR, Factor
         } catch (final Throwable t) {
             RsessionObjectPool.INSTANCE.invalidateObject(rsession);
             throw Throwables.propagate(t);
+        } finally {
+            if (context != null) {
+                context.close();
+            }
         }
     }
 

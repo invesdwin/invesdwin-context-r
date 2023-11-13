@@ -1,16 +1,18 @@
 package de.invesdwin.context.r.runtime.jri;
 
 import javax.annotation.concurrent.Immutable;
-import jakarta.inject.Named;
 
 import org.springframework.beans.factory.FactoryBean;
 
+import de.invesdwin.context.integration.script.callback.IScriptTaskCallback;
 import de.invesdwin.context.r.runtime.contract.AScriptTaskR;
 import de.invesdwin.context.r.runtime.contract.IScriptTaskRunnerR;
+import de.invesdwin.context.r.runtime.contract.callback.socket.SocketScriptTaskCallbackContext;
 import de.invesdwin.context.r.runtime.jri.internal.LoggingRMainLoopCallbacks;
 import de.invesdwin.context.r.runtime.jri.internal.RengineWrapper;
 import de.invesdwin.util.concurrent.lock.ILock;
 import de.invesdwin.util.error.Throwables;
+import jakarta.inject.Named;
 
 @Immutable
 @Named
@@ -21,17 +23,26 @@ public final class JriScriptTaskRunnerR implements IScriptTaskRunnerR, FactoryBe
     /**
      * public for ServiceLoader support
      */
-    public JriScriptTaskRunnerR() {
-    }
+    public JriScriptTaskRunnerR() {}
 
     @Override
     public <T> T run(final AScriptTaskR<T> scriptTask) {
         //get session
         final JriScriptTaskEngineR engine = new JriScriptTaskEngineR(RengineWrapper.INSTANCE);
+        final IScriptTaskCallback callback = scriptTask.getCallback();
+        final SocketScriptTaskCallbackContext context;
+        if (callback != null) {
+            context = new SocketScriptTaskCallbackContext(callback);
+        } else {
+            context = null;
+        }
         final ILock lock = engine.getSharedLock();
         lock.lock();
         try {
             //inputs
+            if (context != null) {
+                context.init(engine);
+            }
             scriptTask.populateInputs(engine.getInputs());
 
             //execute
@@ -48,6 +59,9 @@ public final class JriScriptTaskRunnerR implements IScriptTaskRunnerR, FactoryBe
         } finally {
             LoggingRMainLoopCallbacks.INSTANCE.reset();
             lock.unlock();
+            if (context != null) {
+                context.close();
+            }
         }
     }
 
