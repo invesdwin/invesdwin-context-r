@@ -9,7 +9,8 @@ import de.invesdwin.context.integration.script.callback.AScriptTaskParametersFro
 import de.invesdwin.util.lang.string.Strings;
 
 @NotThreadSafe
-public abstract class AScriptTaskParametersRFromJson extends AScriptTaskParametersFromString {
+public abstract class AScriptTaskParametersRFromJson extends AScriptTaskParametersFromString
+        implements IScriptTaskParametersR {
 
     protected abstract JsonNode getAsJsonNode(int index);
 
@@ -17,7 +18,17 @@ public abstract class AScriptTaskParametersRFromJson extends AScriptTaskParamete
 
     @Override
     public boolean isNull(final int index) {
-        return getAsJsonNode(index) instanceof NullNode;
+        final JsonNode node = getAsJsonNode(index);
+        return node == null || node instanceof NullNode;
+    }
+
+    @Override
+    public boolean isEmpty(final int index) {
+        final JsonNode node = getAsJsonNode(index);
+        if (node == null) {
+            return true;
+        }
+        return node.isEmpty();
     }
 
     @Override

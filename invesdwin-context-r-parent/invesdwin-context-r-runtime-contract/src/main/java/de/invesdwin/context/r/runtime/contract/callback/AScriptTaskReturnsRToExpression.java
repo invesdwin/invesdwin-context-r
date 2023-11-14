@@ -2,71 +2,17 @@ package de.invesdwin.context.r.runtime.contract.callback;
 
 import javax.annotation.concurrent.NotThreadSafe;
 
-import de.invesdwin.context.integration.script.callback.IScriptTaskReturns;
 import de.invesdwin.util.assertions.Assertions;
 
 @NotThreadSafe
-public abstract class AScriptTaskReturnsRToExpression implements IScriptTaskReturns {
-
-    @Override
-    public void returnCharacter(final char value) {
-        returnExpression("Char('" + value + "')");
-    }
-
-    @Override
-    public void returnCharacterVector(final char[] value) {
-        if (value == null) {
-            returnNull();
-        } else {
-            final StringBuilder sb = new StringBuilder("Array{Char}([");
-            for (int i = 0; i < value.length; i++) {
-                if (i > 0) {
-                    sb.append(",");
-                }
-                sb.append("'");
-                sb.append(value[i]);
-                sb.append("'");
-            }
-            sb.append("])");
-            returnExpression(sb.toString());
-        }
-    }
-
-    @Override
-    public void returnCharacterMatrix(final char[][] value) {
-        if (value == null) {
-            returnNull();
-        } else if (value.length == 0 || value[0].length == 0) {
-            returnExpression("Array{Char}(undef, " + value.length + ", 0)");
-        } else {
-            final int rows = value.length;
-            final int cols = value[0].length;
-            final StringBuilder sb = new StringBuilder("Array{Char}([");
-            for (int row = 0; row < rows; row++) {
-                Assertions.checkEquals(value[row].length, cols);
-                if (row > 0) {
-                    sb.append(";");
-                }
-                for (int col = 0; col < cols; col++) {
-                    if (col > 0) {
-                        sb.append(" ");
-                    }
-                    sb.append("'");
-                    sb.append(value[row][col]);
-                    sb.append("'");
-                }
-            }
-            sb.append("])");
-            returnExpression(sb.toString());
-        }
-    }
+public abstract class AScriptTaskReturnsRToExpression implements IScriptTaskReturnsR {
 
     @Override
     public void returnString(final String value) {
         if (value == null) {
             returnNull();
         } else {
-            returnExpression("String(\"" + value + "\")");
+            returnExpression("'" + value + "'");
         }
     }
 
@@ -75,21 +21,21 @@ public abstract class AScriptTaskReturnsRToExpression implements IScriptTaskRetu
         if (value == null) {
             returnNull();
         } else {
-            final StringBuilder sb = new StringBuilder("Array{String}([");
+            final StringBuilder sb = new StringBuilder("c(");
             for (int i = 0; i < value.length; i++) {
                 if (i > 0) {
                     sb.append(",");
                 }
                 final String v = value[i];
                 if (v == null) {
-                    sb.append("\"\"");
+                    sb.append("NA");
                 } else {
-                    sb.append("\"");
+                    sb.append("'");
                     sb.append(v);
-                    sb.append("\"");
+                    sb.append("'");
                 }
             }
-            sb.append("])");
+            sb.append(")");
             returnExpression(sb.toString());
         }
     }
@@ -99,15 +45,15 @@ public abstract class AScriptTaskReturnsRToExpression implements IScriptTaskRetu
         if (value == null) {
             returnNull();
         } else if (value.length == 0 || value[0].length == 0) {
-            returnExpression("Array{String}(undef, " + value.length + ", 0)");
+            returnExpression("matrix(character(), " + value.length + ", 0, TRUE)");
         } else {
             final int rows = value.length;
             final int cols = value[0].length;
-            final StringBuilder sb = new StringBuilder("Array{String}([");
+            final StringBuilder sb = new StringBuilder("c((");
             for (int row = 0; row < rows; row++) {
                 Assertions.checkEquals(value[row].length, cols);
                 if (row > 0) {
-                    sb.append(";");
+                    sb.append("),c(");
                 }
                 for (int col = 0; col < cols; col++) {
                     if (col > 0) {
@@ -123,14 +69,18 @@ public abstract class AScriptTaskReturnsRToExpression implements IScriptTaskRetu
                     }
                 }
             }
-            sb.append("])");
-            returnExpression(sb.toString());
+            sb.append("))");
+            returnExpression("matrix(" + sb.toString() + ", " + rows + ", " + cols + ", TRUE)");
         }
     }
 
     @Override
     public void returnBoolean(final boolean value) {
-        returnExpression("Bool(" + String.valueOf(value) + ")");
+        if (value) {
+            returnExpression("TRUE");
+        } else {
+            returnExpression("FALSE");
+        }
     }
 
     @Override
@@ -138,14 +88,19 @@ public abstract class AScriptTaskReturnsRToExpression implements IScriptTaskRetu
         if (value == null) {
             returnNull();
         } else {
-            final StringBuilder sb = new StringBuilder("Array{Bool}([");
+            final StringBuilder sb = new StringBuilder("c(");
             for (int i = 0; i < value.length; i++) {
                 if (i > 0) {
                     sb.append(",");
                 }
-                sb.append(value[i]);
+                final boolean v = value[i];
+                if (v) {
+                    sb.append("TRUE");
+                } else {
+                    sb.append("FALSE");
+                }
             }
-            sb.append("])");
+            sb.append(")");
             returnExpression(sb.toString());
         }
     }
@@ -155,129 +110,36 @@ public abstract class AScriptTaskReturnsRToExpression implements IScriptTaskRetu
         if (value == null) {
             returnNull();
         } else if (value.length == 0 || value[0].length == 0) {
-            returnExpression("Array{Bool}(undef, " + value.length + ", 0)");
+            returnExpression("matrix(logical(), " + value.length + ", 0, TRUE)");
         } else {
             final int rows = value.length;
             final int cols = value[0].length;
-            final StringBuilder sb = new StringBuilder("Array{Bool}([");
+            final StringBuilder sb = new StringBuilder("c((");
             for (int row = 0; row < rows; row++) {
                 Assertions.checkEquals(value[row].length, cols);
                 if (row > 0) {
-                    sb.append(";");
+                    sb.append("),c(");
                 }
                 for (int col = 0; col < cols; col++) {
                     if (col > 0) {
                         sb.append(" ");
                     }
-                    sb.append(value[row][col]);
-                }
-            }
-            sb.append("])");
-            returnExpression(sb.toString());
-        }
-    }
-
-    @Override
-    public void returnByte(final byte value) {
-        returnExpression("Int8(" + String.valueOf(value) + ")");
-    }
-
-    @Override
-    public void returnByteVector(final byte[] value) {
-        if (value == null) {
-            returnNull();
-        } else {
-            final StringBuilder sb = new StringBuilder("Array{Int8}([");
-            for (int i = 0; i < value.length; i++) {
-                if (i > 0) {
-                    sb.append(",");
-                }
-                sb.append(value[i]);
-            }
-            sb.append("])");
-            returnExpression(sb.toString());
-        }
-    }
-
-    @Override
-    public void returnByteMatrix(final byte[][] value) {
-        if (value == null) {
-            returnNull();
-        } else if (value.length == 0 || value[0].length == 0) {
-            returnExpression("Array{Int8}(undef, " + value.length + ", 0)");
-        } else {
-            final int rows = value.length;
-            final int cols = value[0].length;
-            final StringBuilder sb = new StringBuilder("Array{Int8}([");
-            for (int row = 0; row < rows; row++) {
-                Assertions.checkEquals(value[row].length, cols);
-                if (row > 0) {
-                    sb.append(";");
-                }
-                for (int col = 0; col < cols; col++) {
-                    if (col > 0) {
-                        sb.append(" ");
+                    final boolean v = value[row][col];
+                    if (v) {
+                        sb.append("TRUE");
+                    } else {
+                        sb.append("FALSE");
                     }
-                    sb.append(value[row][col]);
                 }
             }
-            sb.append("])");
-            returnExpression(sb.toString());
-        }
-    }
-
-    @Override
-    public void returnShort(final short value) {
-        returnExpression("Int16(" + String.valueOf(value) + ")");
-    }
-
-    @Override
-    public void returnShortVector(final short[] value) {
-        if (value == null) {
-            returnNull();
-        } else {
-            final StringBuilder sb = new StringBuilder("Array{Int16}([");
-            for (int i = 0; i < value.length; i++) {
-                if (i > 0) {
-                    sb.append(",");
-                }
-                sb.append(value[i]);
-            }
-            sb.append("])");
-            returnExpression(sb.toString());
-        }
-    }
-
-    @Override
-    public void returnShortMatrix(final short[][] value) {
-        if (value == null) {
-            returnNull();
-        } else if (value.length == 0 || value[0].length == 0) {
-            returnExpression("Array{Int16}(undef, " + value.length + ", 0)");
-        } else {
-            final int rows = value.length;
-            final int cols = value[0].length;
-            final StringBuilder sb = new StringBuilder("Array{Int16}([");
-            for (int row = 0; row < rows; row++) {
-                Assertions.checkEquals(value[row].length, cols);
-                if (row > 0) {
-                    sb.append(";");
-                }
-                for (int col = 0; col < cols; col++) {
-                    if (col > 0) {
-                        sb.append(" ");
-                    }
-                    sb.append(value[row][col]);
-                }
-            }
-            sb.append("])");
-            returnExpression(sb.toString());
+            sb.append("))");
+            returnExpression("matrix(" + sb.toString() + ", " + rows + ", " + cols + ", TRUE)");
         }
     }
 
     @Override
     public void returnInteger(final int value) {
-        returnExpression("Int32(" + String.valueOf(value) + ")");
+        returnExpression(String.valueOf(value));
     }
 
     @Override
@@ -285,14 +147,15 @@ public abstract class AScriptTaskReturnsRToExpression implements IScriptTaskRetu
         if (value == null) {
             returnNull();
         } else {
-            final StringBuilder sb = new StringBuilder("Array{Int32}([");
+            final StringBuilder sb = new StringBuilder("c(");
             for (int i = 0; i < value.length; i++) {
                 if (i > 0) {
                     sb.append(",");
                 }
-                sb.append(value[i]);
+                final int v = value[i];
+                sb.append(v);
             }
-            sb.append("])");
+            sb.append(")");
             returnExpression(sb.toString());
         }
     }
@@ -302,129 +165,32 @@ public abstract class AScriptTaskReturnsRToExpression implements IScriptTaskRetu
         if (value == null) {
             returnNull();
         } else if (value.length == 0 || value[0].length == 0) {
-            returnExpression("Array{Int32}(undef, " + value.length + ", 0)");
+            returnExpression("matrix(integer(), " + value.length + ", 0, TRUE)");
         } else {
             final int rows = value.length;
             final int cols = value[0].length;
-            final StringBuilder sb = new StringBuilder("Array{Int32}([");
+            final StringBuilder sb = new StringBuilder("c((");
             for (int row = 0; row < rows; row++) {
                 Assertions.checkEquals(value[row].length, cols);
                 if (row > 0) {
-                    sb.append(";");
+                    sb.append("),c(");
                 }
                 for (int col = 0; col < cols; col++) {
                     if (col > 0) {
                         sb.append(" ");
                     }
-                    sb.append(value[row][col]);
+                    final int v = value[row][col];
+                    sb.append(v);
                 }
             }
-            sb.append("])");
-            returnExpression(sb.toString());
-        }
-    }
-
-    @Override
-    public void returnLong(final long value) {
-        returnExpression("Int64(" + String.valueOf(value) + ")");
-    }
-
-    @Override
-    public void returnLongVector(final long[] value) {
-        if (value == null) {
-            returnNull();
-        } else {
-            final StringBuilder sb = new StringBuilder("Array{Int64}([");
-            for (int i = 0; i < value.length; i++) {
-                if (i > 0) {
-                    sb.append(",");
-                }
-                sb.append(value[i]);
-            }
-            sb.append("])");
-            returnExpression(sb.toString());
-        }
-    }
-
-    @Override
-    public void returnLongMatrix(final long[][] value) {
-        if (value == null) {
-            returnNull();
-        } else if (value.length == 0 || value[0].length == 0) {
-            returnExpression("Array{Int64}(undef, " + value.length + ", 0)");
-        } else {
-            final int rows = value.length;
-            final int cols = value[0].length;
-            final StringBuilder sb = new StringBuilder("Array{Int64}([");
-            for (int row = 0; row < rows; row++) {
-                Assertions.checkEquals(value[row].length, cols);
-                if (row > 0) {
-                    sb.append(";");
-                }
-                for (int col = 0; col < cols; col++) {
-                    if (col > 0) {
-                        sb.append(" ");
-                    }
-                    sb.append(value[row][col]);
-                }
-            }
-            sb.append("])");
-            returnExpression(sb.toString());
-        }
-    }
-
-    @Override
-    public void returnFloat(final float value) {
-        returnExpression("Float32(" + String.valueOf(value) + ")");
-    }
-
-    @Override
-    public void returnFloatVector(final float[] value) {
-        if (value == null) {
-            returnNull();
-        } else {
-            final StringBuilder sb = new StringBuilder("Array{Float32}([");
-            for (int i = 0; i < value.length; i++) {
-                if (i > 0) {
-                    sb.append(",");
-                }
-                sb.append(value[i]);
-            }
-            sb.append("])");
-            returnExpression(sb.toString());
-        }
-    }
-
-    @Override
-    public void returnFloatMatrix(final float[][] value) {
-        if (value == null) {
-            returnNull();
-        } else if (value.length == 0 || value[0].length == 0) {
-            returnExpression("Array{Float32}(undef, " + value.length + ", 0)");
-        } else {
-            final int rows = value.length;
-            final int cols = value[0].length;
-            final StringBuilder sb = new StringBuilder("Array{Float32}([");
-            for (int row = 0; row < rows; row++) {
-                Assertions.checkEquals(value[row].length, cols);
-                if (row > 0) {
-                    sb.append(";");
-                }
-                for (int col = 0; col < cols; col++) {
-                    if (col > 0) {
-                        sb.append(" ");
-                    }
-                    sb.append(value[row][col]);
-                }
-            }
-            sb.append("])");
-            returnExpression(sb.toString());
+            sb.append("))");
+            returnExpression("matrix(" + sb.toString() + ", " + rows + ", " + cols + ", TRUE)");
         }
     }
 
     @Override
     public void returnDouble(final double value) {
-        returnExpression("Float64(" + String.valueOf(value) + ")");
+        returnExpression(String.valueOf(value));
     }
 
     @Override
@@ -432,14 +198,15 @@ public abstract class AScriptTaskReturnsRToExpression implements IScriptTaskRetu
         if (value == null) {
             returnNull();
         } else {
-            final StringBuilder sb = new StringBuilder("Array{Float64}([");
+            final StringBuilder sb = new StringBuilder("c(");
             for (int i = 0; i < value.length; i++) {
                 if (i > 0) {
                     sb.append(",");
                 }
-                sb.append(value[i]);
+                final double v = value[i];
+                sb.append(v);
             }
-            sb.append("])");
+            sb.append(")");
             returnExpression(sb.toString());
         }
     }
@@ -449,31 +216,27 @@ public abstract class AScriptTaskReturnsRToExpression implements IScriptTaskRetu
         if (value == null) {
             returnNull();
         } else if (value.length == 0 || value[0].length == 0) {
-            returnExpression("Array{Float64}(undef, " + value.length + ", 0)");
+            returnExpression("matrix(double(), " + value.length + ", 0, TRUE)");
         } else {
             final int rows = value.length;
             final int cols = value[0].length;
-            final StringBuilder sb = new StringBuilder("Array{Float64}([");
+            final StringBuilder sb = new StringBuilder("c((");
             for (int row = 0; row < rows; row++) {
                 Assertions.checkEquals(value[row].length, cols);
                 if (row > 0) {
-                    sb.append(";");
+                    sb.append("),c(");
                 }
                 for (int col = 0; col < cols; col++) {
                     if (col > 0) {
                         sb.append(" ");
                     }
-                    sb.append(value[row][col]);
+                    final double v = value[row][col];
+                    sb.append(v);
                 }
             }
-            sb.append("])");
-            returnExpression(sb.toString());
+            sb.append("))");
+            returnExpression("matrix(" + sb.toString() + ", " + rows + ", " + cols + ", TRUE)");
         }
-    }
-
-    @Override
-    public void returnNull() {
-        returnExpression("nothing");
     }
 
 }

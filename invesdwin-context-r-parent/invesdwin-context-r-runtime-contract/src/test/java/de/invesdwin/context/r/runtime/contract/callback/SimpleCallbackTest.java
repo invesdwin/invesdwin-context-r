@@ -40,7 +40,7 @@ public class SimpleCallbackTest {
 
     @ReturnExpression
     public String getSecretExpression(final String uuid) {
-        return "\"secret\" * \"123\"";
+        return "paste(\"secret\",\"123\",sep=\"\")";
     }
 
     public void voidMethod() {
