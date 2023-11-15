@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>de.invesdwin</groupId>
@@ -35,6 +37,7 @@
 
 		<version.renjin>3.5-beta76</version.renjin>
 		<version.renjin-r-executor>1.2</version.renjin-r-executor>
+		<version.jsonlite>1.6-b1</version.jsonlite>
 		<version.deoptim>2.2-4-b23</version.deoptim>
 		<version.jri>0.9-9</version.jri>
 		<version.rsession>3.1.6</version.rsession>
@@ -207,8 +210,8 @@
 					<exclusion>
 						<groupId>org.renjin</groupId>
 						<artifactId>
-						renjin-aether-package-loader
-					</artifactId>
+							renjin-aether-package-loader
+						</artifactId>
 					</exclusion>
 					<exclusion>
 						<groupId>org.eclipse.aether</groupId>
@@ -233,7 +236,11 @@
 				<artifactId>RCaller</artifactId>
 				<version>${version.rcaller}</version>
 			</dependency>
-
+			<dependency>
+				<groupId>org.renjin.cran</groupId>
+				<artifactId>jsonlite</artifactId>
+				<version>${version.jsonlite}</version>
+			</dependency>
 
 		</dependencies>
 	</dependencyManagement>

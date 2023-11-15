@@ -1,4 +1,6 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>de.invesdwin</groupId>
@@ -10,7 +12,8 @@
 
 	<licenses>
 		<license>
-			<!--  better not use this module if you don't want to put your code under GPL as well: 
+			<!--  better not use this module if you don't want to put your code
+			under GPL as well: 
 			      https://github.com/invesdwin/invesdwin-context-r#license-discussion -->
 			<name>GNU General Public License (GPL), Version 3.0</name>
 			<url>http://www.gnu.org/licenses/gpl-3.0.html</url>
@@ -33,6 +36,10 @@
 		<dependency>
 			<groupId>org.renjin</groupId>
 			<artifactId>renjin-script-engine</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.renjin.cran</groupId>
+			<artifactId>jsonlite</artifactId>
 		</dependency>
 	</dependencies>
 

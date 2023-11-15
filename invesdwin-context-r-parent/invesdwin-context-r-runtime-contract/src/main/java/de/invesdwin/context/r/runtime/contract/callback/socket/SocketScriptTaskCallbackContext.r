@@ -23,5 +23,6 @@ callback <- function(methodName, ...){
             stop("IScriptTaskCallback not available")
         }
     }
-    return(callback_invokeSocket(methodName, ...))
+    parameters <- c(...)
+    return(callback_invokeSocket(methodName, parameters))
 }

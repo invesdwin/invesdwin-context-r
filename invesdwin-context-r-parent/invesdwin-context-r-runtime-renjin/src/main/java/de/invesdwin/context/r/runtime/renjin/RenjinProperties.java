@@ -5,6 +5,8 @@ import java.util.Set;
 
 import javax.annotation.concurrent.Immutable;
 
+import org.renjin.primitives.packaging.FqPackageName;
+
 import de.invesdwin.util.collections.Collections;
 
 @Immutable
@@ -15,10 +17,10 @@ public final class RenjinProperties {
 
     static {
         EXTENDED_PACKAGE_SEARCH_GROUP_IDS.add("de.invesdwin.context.r.runtime.renjin.packages");
+        EXTENDED_PACKAGE_SEARCH_GROUP_IDS.add(FqPackageName.CRAN_GROUP_ID);
     }
 
-    private RenjinProperties() {
-    }
+    private RenjinProperties() {}
 
     public static Set<String> getExtendedPackageSearchGroupIds() {
         return Collections.unmodifiableSet(EXTENDED_PACKAGE_SEARCH_GROUP_IDS);
