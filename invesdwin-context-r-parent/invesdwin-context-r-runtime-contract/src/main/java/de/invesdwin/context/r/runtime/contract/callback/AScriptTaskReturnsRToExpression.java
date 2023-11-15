@@ -139,7 +139,7 @@ public abstract class AScriptTaskReturnsRToExpression implements IScriptTaskRetu
 
     @Override
     public void returnInteger(final int value) {
-        returnExpression(String.valueOf(value));
+        returnExpression(String.valueOf(value) + "L");
     }
 
     @Override
@@ -154,6 +154,7 @@ public abstract class AScriptTaskReturnsRToExpression implements IScriptTaskRetu
                 }
                 final int v = value[i];
                 sb.append(v);
+                sb.append("L");
             }
             sb.append(")");
             returnExpression(sb.toString());
@@ -181,6 +182,7 @@ public abstract class AScriptTaskReturnsRToExpression implements IScriptTaskRetu
                     }
                     final int v = value[row][col];
                     sb.append(v);
+                    sb.append("L");
                 }
             }
             sb.append("))");
