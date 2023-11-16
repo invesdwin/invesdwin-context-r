@@ -18,8 +18,14 @@ public abstract class AScriptTaskParametersRFromJson extends AScriptTaskParamete
 
     @Override
     public boolean isNull(final int index) {
-        final JsonNode node = getAsJsonNode(index);
-        return node == null || node instanceof NullNode;
+        JsonNode node = getAsJsonNode(index);
+        if (node == null) {
+            return true;
+        }
+        while (node.size() == 1) {
+            node = node.get(0);
+        }
+        return node instanceof NullNode;
     }
 
     @Override
