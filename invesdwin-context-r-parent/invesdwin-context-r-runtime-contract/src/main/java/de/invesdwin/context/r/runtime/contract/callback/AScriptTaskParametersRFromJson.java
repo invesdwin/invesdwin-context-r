@@ -86,14 +86,14 @@ public abstract class AScriptTaskParametersRFromJson extends AScriptTaskParamete
         }
         //[11 12 13;21 22 23;31 32 33;41 42 43]
         //[[11,21,31,41],[12,22,32,42],[13,23,33,43]]
-        final int columns = strsMatrix.size();
-        final int rows = strsMatrix.get(0).size();
+        final int rows = strsMatrix.size();
+        final int columns = strsMatrix.get(0).size();
         final String[][] valuesMatrix = new String[rows][];
         for (int r = 0; r < rows; r++) {
             final String[] values = new String[columns];
             valuesMatrix[r] = values;
             for (int c = 0; c < columns; c++) {
-                final String str = strsMatrix.get(c).get(r).asText();
+                final String str = strsMatrix.get(r).get(c).asText();
                 if (Strings.isBlankOrNullText(str)) {
                     values[c] = null;
                 } else {

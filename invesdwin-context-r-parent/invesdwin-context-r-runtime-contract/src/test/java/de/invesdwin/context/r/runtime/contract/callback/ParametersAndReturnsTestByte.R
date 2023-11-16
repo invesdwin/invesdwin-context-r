@@ -8,7 +8,7 @@ print(getByte)
 if(typeof(getByte) != "integer"){
 	stop("getByte not integer!")
 }
-callback("putByte",getByte)
+callback("setByte",getByte)
 
 print("getByteVector")
 if(exists("getByteVector")){
@@ -20,7 +20,7 @@ print(getByteVector)
 if(typeof(getByteVector) != "integer"){
 	stop("getByteVector not integer!")
 }
-callback("putByteVector",getByteVector)
+callback("setByteVector",list(getByteVector))
 
 print("getByteVectorAsList")
 if(exists("getByteVectorAsList")){
@@ -32,7 +32,7 @@ print(getByteVectorAsList)
 if(typeof(getByteVectorAsList) != "integer"){
 	stop("getByteVectorAsList not integer!")
 }
-callback("putByteVectorAsList",getByteVectorAsList)
+callback("setByteVectorAsList",list(getByteVectorAsList))
 
 print("getByteMatrix")
 if(exists("getByteMatrix")){
@@ -44,7 +44,7 @@ print(getByteMatrix)
 if(typeof(getByteMatrix) != "integer"){
 	stop("getByteMatrix not integer!")
 }
-callback("putByteMatrix",getByteMatrix)
+callback("setByteMatrix",list(getByteMatrix))
 
 print("getByteMatrixAsList")
 if(exists("getByteMatrixAsList")){
@@ -56,4 +56,4 @@ print(getByteMatrixAsList)
 if(typeof(getByteMatrixAsList) != "integer"){
 	stop("getByteMatrixAsList not integer!")
 }
-callback("putByteMatrixAsList",getByteMatrixAsList)
+callback("setByteMatrixAsList",list(getByteMatrixAsList))

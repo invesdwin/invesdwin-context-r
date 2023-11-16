@@ -8,7 +8,7 @@ print(getPercent)
 if(typeof(getPercent) != "double"){
 	stop("getPercent not double!")
 }
-callback("putPercent",getPercent)
+callback("setPercent",getPercent)
 
 print("getPercentVector")
 if(exists("getPercentVector")){
@@ -20,7 +20,7 @@ print(getPercentVector)
 if(typeof(getPercentVector) != "double"){
 	stop("getPercentVector not double!")
 }
-callback("putPercentVector",getPercentVector)
+callback("setPercentVector",list(getPercentVector))
 
 print("getPercentVectorAsList")
 if(exists("getPercentVectorAsList")){
@@ -32,7 +32,7 @@ print(getPercentVectorAsList)
 if(typeof(getPercentVectorAsList) != "double"){
 	stop("getPercentVectorAsList not double!")
 }
-callback("putPercentVectorAsList",getPercentVectorAsList)
+callback("setPercentVectorAsList",list(getPercentVectorAsList))
 
 print("getPercentMatrix")
 if(exists("getPercentMatrix")){
@@ -44,7 +44,7 @@ print(getPercentMatrix)
 if(typeof(getPercentMatrix) != "double"){
 	stop("getPercentMatrix not double!")
 }
-callback("putPercentMatrix",getPercentMatrix)
+callback("setPercentMatrix",list(getPercentMatrix))
 
 print("getPercentMatrixAsList")
 if(exists("getPercentMatrixAsList")){
@@ -56,4 +56,4 @@ print(getPercentMatrixAsList)
 if(typeof(getPercentMatrixAsList) != "double"){
 	stop("getPercentMatrixAsList not double!")
 }
-callback("putPercentMatrixAsList",getPercentMatrixAsList)
+callback("setPercentMatrixAsList",list(getPercentMatrixAsList))

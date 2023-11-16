@@ -8,7 +8,7 @@ print(getDecimal)
 if(typeof(getDecimal) != "double"){
 	stop("getDecimal not double!")
 }
-callback("putDecimal",getDecimal)
+callback("setDecimal",getDecimal)
 
 print("getDecimalVector")
 if(exists("getDecimalVector")){
@@ -20,7 +20,7 @@ print(getDecimalVector)
 if(typeof(getDecimalVector) != "double"){
 	stop("getDecimalVector not double!")
 }
-callback("putDecimalVector",getDecimalVector)
+callback("setDecimalVector",list(getDecimalVector))
 
 print("getDecimalVectorAsList")
 if(exists("getDecimalVectorAsList")){
@@ -32,7 +32,7 @@ print(getDecimalVectorAsList)
 if(typeof(getDecimalVectorAsList) != "double"){
 	stop("getDecimalVectorAsList not double!")
 }
-callback("putDecimalVectorAsList",getDecimalVectorAsList)
+callback("setDecimalVectorAsList",list(getDecimalVectorAsList))
 
 print("getDecimalMatrix")
 if(exists("getDecimalMatrix")){
@@ -44,7 +44,7 @@ print(getDecimalMatrix)
 if(typeof(getDecimalMatrix) != "double"){
 	stop("getDecimalMatrix not double!")
 }
-callback("putDecimalMatrix",getDecimalMatrix)
+callback("setDecimalMatrix",list(getDecimalMatrix))
 
 print("getDecimalMatrixAsList")
 if(exists("getDecimalMatrixAsList")){
@@ -56,4 +56,4 @@ print(getDecimalMatrixAsList)
 if(typeof(getDecimalMatrixAsList) != "double"){
 	stop("getDecimalMatrixAsList not double!")
 }
-callback("putDecimalMatrixAsList",getDecimalMatrixAsList)
+callback("setDecimalMatrixAsList",list(getDecimalMatrixAsList))

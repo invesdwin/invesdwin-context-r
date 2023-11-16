@@ -2,229 +2,229 @@ getBooleanVector <- callback("getBooleanVector")
 if(!is.na(getBooleanVector)){
 	stop("getBooleanVector not na!")
 }
-callback("putBooleanVector",getBooleanVector)
+callback("setBooleanVector",list(getBooleanVector))
 getBooleanVectorAsList <- callback("getBooleanVectorAsList")
 if(!is.na(getBooleanVectorAsList)){
 	stop("getBooleanVectorAsList not na!")
 }
-callback("putBooleanVectorAsList",getBooleanVectorAsList)
+callback("setBooleanVectorAsList",list(getBooleanVectorAsList))
 getBooleanMatrix <- callback("getBooleanMatrix")
 if(!is.na(getBooleanMatrix)){
 	stop("getBooleanMatrix not na!")
 }
-callback("putBooleanMatrix",getBooleanMatrix)
+callback("setBooleanMatrix",list(getBooleanMatrix))
 getBooleanMatrixAsList <- callback("getBooleanMatrixAsList")
 if(!is.na(getBooleanMatrixAsList)){
 	stop("getBooleanMatrixAsList not na!")
 }
-callback("putBooleanMatrixAsList",getBooleanMatrixAsList)
+callback("setBooleanMatrixAsList",list(getBooleanMatrixAsList))
 
 getByteVector <- callback("getByteVector")
 if(!is.na(getByteVector)){
 	stop("getByteVector not na!")
 }
-callback("putByteVector",getByteVector)
+callback("setByteVector",list(getByteVector))
 getByteVectorAsList <- callback("getByteVectorAsList")
 if(!is.na(getByteVectorAsList)){
 	stop("getByteVectorAsList not na!")
 }
-callback("putByteVectorAsList",getByteVectorAsList)
+callback("setByteVectorAsList",list(getByteVectorAsList))
 getByteMatrix <- callback("getByteMatrix")
 if(!is.na(getByteMatrix)){
 	stop("getByteMatrix not na!")
 }
-callback("putByteMatrix",getByteMatrix)
+callback("setByteMatrix",list(getByteMatrix))
 getByteMatrixAsList <- callback("getByteMatrixAsList")
 if(!is.na(getByteMatrixAsList)){
 	stop("getByteMatrixAsList not na!")
 }
-callback("putByteMatrixAsList",getByteMatrixAsList)
+callback("setByteMatrixAsList",list(getByteMatrixAsList))
 
 getCharacterVector <- callback("getCharacterVector")
 if(!is.na(getCharacterVector)){
 	stop("getCharacterVector not na!")
 }
-callback("putCharacterVector",getCharacterVector)
+callback("setCharacterVector",list(getCharacterVector))
 getCharacterVectorAsList <- callback("getCharacterVectorAsList")
 if(!is.na(getCharacterVectorAsList)){
 	stop("getCharacterVectorAsList not na!")
 }
-callback("putCharacterVectorAsList",getCharacterVectorAsList)
+callback("setCharacterVectorAsList",list(getCharacterVectorAsList))
 getCharacterMatrix <- callback("getCharacterMatrix")
 if(!is.na(getCharacterMatrix)){
 	stop("getCharacterMatrix not na!")
 }
-callback("putCharacterMatrix",getCharacterMatrix)
+callback("setCharacterMatrix",list(getCharacterMatrix))
 getCharacterMatrixAsList <- callback("getCharacterMatrixAsList")
 if(!is.na(getCharacterMatrixAsList)){
 	stop("getCharacterMatrixAsList not na!")
 }
-callback("putCharacterMatrixAsList",getCharacterMatrixAsList)
+callback("setCharacterMatrixAsList",list(getCharacterMatrixAsList))
 
 getDecimalVector <- callback("getDecimalVector")
 if(!is.na(getDecimalVector)){
 	stop("getDecimalVector not na!")
 }
-callback("putDecimalVector",getDecimalVector)
+callback("setDecimalVector",list(getDecimalVector))
 getDecimalVectorAsList <- callback("getDecimalVectorAsList")
 if(!is.na(getDecimalVectorAsList)){
 	stop("getDecimalVectorAsList not na!")
 }
-callback("putDecimalVectorAsList",getDecimalVectorAsList)
+callback("setDecimalVectorAsList",list(getDecimalVectorAsList))
 getDecimalMatrix <- callback("getDecimalMatrix")
 if(!is.na(getDecimalMatrix)){
 	stop("getDecimalMatrix not na!")
 }
-callback("putDecimalMatrix",getDecimalMatrix)
+callback("setDecimalMatrix",list(getDecimalMatrix))
 getDecimalMatrixAsList <- callback("getDecimalMatrixAsList")
 if(!is.na(getDecimalMatrixAsList)){
 	stop("getDecimalMatrixAsList not na!")
 }
-callback("putDecimalMatrixAsList",getDecimalMatrixAsList)
+callback("setDecimalMatrixAsList",list(getDecimalMatrixAsList))
 
 getDoubleVector <- callback("getDoubleVector")
 if(!is.na(getDoubleVector)){
 	stop("getDoubleVector not na!")
 }
-callback("putDoubleVector",getDoubleVector)
+callback("setDoubleVector",list(getDoubleVector))
 getDoubleVectorAsList <- callback("getDoubleVectorAsList")
 if(!is.na(getDoubleVectorAsList)){
 	stop("getDoubleVectorAsList not na!")
 }
-callback("putDoubleVectorAsList",getDoubleVectorAsList)
+callback("setDoubleVectorAsList",list(getDoubleVectorAsList))
 getDoubleMatrix <- callback("getDoubleMatrix")
 if(!is.na(getDoubleMatrix)){
 	stop("getDoubleMatrix not na!")
 }
-callback("putDoubleMatrix",getDoubleMatrix)
+callback("setDoubleMatrix",list(getDoubleMatrix))
 getDoubleMatrixAsList <- callback("getDoubleMatrixAsList")
 if(!is.na(getDoubleMatrixAsList)){
 	stop("getDoubleMatrixAsList not na!")
 }
-callback("putDoubleMatrixAsList",getDoubleMatrixAsList)
+callback("setDoubleMatrixAsList",list(getDoubleMatrixAsList))
 
 getFloatVector <- callback("getFloatVector")
 if(!is.na(getFloatVector)){
 	stop("getFloatVector not na!")
 }
-callback("putFloatVector",getFloatVector)
+callback("setFloatVector",list(getFloatVector))
 getFloatVectorAsList <- callback("getFloatVectorAsList")
 if(!is.na(getFloatVectorAsList)){
 	stop("getFloatVectorAsList not na!")
 }
-callback("putFloatVectorAsList",getFloatVectorAsList)
+callback("setFloatVectorAsList",list(getFloatVectorAsList))
 getFloatMatrix <- callback("getFloatMatrix")
 if(!is.na(getFloatMatrix)){
 	stop("getFloatMatrix not na!")
 }
-callback("putFloatMatrix",getFloatMatrix)
+callback("setFloatMatrix",list(getFloatMatrix))
 getFloatMatrixAsList <- callback("getFloatMatrixAsList")
 if(!is.na(getFloatMatrixAsList)){
 	stop("getFloatMatrixAsList not na!")
 }
-callback("putFloatMatrixAsList",getFloatMatrixAsList)
+callback("setFloatMatrixAsList",list(getFloatMatrixAsList))
 
 getIntegerVector <- callback("getIntegerVector")
 if(!is.na(getIntegerVector)){
 	stop("getIntegerVector not na!")
 }
-callback("putIntegerVector",getIntegerVector)
+callback("setIntegerVector",list(getIntegerVector))
 getIntegerVectorAsList <- callback("getIntegerVectorAsList")
 if(!is.na(getIntegerVectorAsList)){
 	stop("getIntegerVectorAsList not na!")
 }
-callback("putIntegerVectorAsList",getIntegerVectorAsList)
+callback("setIntegerVectorAsList",list(getIntegerVectorAsList))
 getIntegerMatrix <- callback("getIntegerMatrix")
 if(!is.na(getIntegerMatrix)){
 	stop("getIntegerMatrix not na!")
 }
-callback("putIntegerMatrix",getIntegerMatrix)
+callback("setIntegerMatrix",list(getIntegerMatrix))
 getIntegerMatrixAsList <- callback("getIntegerMatrixAsList")
 if(!is.na(getIntegerMatrixAsList)){
 	stop("getIntegerMatrixAsList not na!")
 }
-callback("putIntegerMatrixAsList",getIntegerMatrixAsList)
+callback("setIntegerMatrixAsList",list(getIntegerMatrixAsList))
 
 getLongVector <- callback("getLongVector")
 if(!is.na(getLongVector)){
 	stop("getLongVector not na!")
 }
-callback("putLongVector",getLongVector)
+callback("setLongVector",list(getLongVector))
 getLongVectorAsList <- callback("getLongVectorAsList")
 if(!is.na(getLongVectorAsList)){
 	stop("getLongVectorAsList not na!")
 }
-callback("putLongVectorAsList",getLongVectorAsList)
+callback("setLongVectorAsList",list(getLongVectorAsList))
 getLongMatrix <- callback("getLongMatrix")
 if(!is.na(getLongMatrix)){
 	stop("getLongMatrix not na!")
 }
-callback("putLongMatrix",getLongMatrix)
+callback("setLongMatrix",list(getLongMatrix))
 getLongMatrixAsList <- callback("getLongMatrixAsList")
 if(!is.na(getLongMatrixAsList)){
 	stop("getLongMatrixAsList not na!")
 }
-callback("putLongMatrixAsList",getLongMatrixAsList)
+callback("setLongMatrixAsList",list(getLongMatrixAsList))
 
 getPercentVector <- callback("getPercentVector")
 if(!is.na(getPercentVector)){
 	stop("getPercentVector not na!")
 }
-callback("putPercentVector",getPercentVector)
+callback("setPercentVector",list(getPercentVector))
 getPercentVectorAsList <- callback("getPercentVectorAsList")
 if(!is.na(getPercentVectorAsList)){
 	stop("getPercentVectorAsList not na!")
 }
-callback("putPercentVectorAsList",getPercentVectorAsList)
+callback("setPercentVectorAsList",list(getPercentVectorAsList))
 getPercentMatrix <- callback("getPercentMatrix")
 if(!is.na(getPercentMatrix)){
 	stop("getPercentMatrix not na!")
 }
-callback("putPercentMatrix",getPercentMatrix)
+callback("setPercentMatrix",list(getPercentMatrix))
 getPercentMatrixAsList <- callback("getPercentMatrixAsList")
 if(!is.na(getPercentMatrixAsList)){
 	stop("getPercentMatrixAsList not na!")
 }
-callback("putPercentMatrixAsList",getPercentMatrixAsList)
+callback("setPercentMatrixAsList",list(getPercentMatrixAsList))
 
 getShortVector <- callback("getShortVector")
 if(!is.na(getShortVector)){
 	stop("getShortVector not na!")
 }
-callback("putShortVector",getShortVector)
+callback("setShortVector",list(getShortVector))
 getShortVectorAsList <- callback("getShortVectorAsList")
 if(!is.na(getShortVectorAsList)){
 	stop("getShortVectorAsList not na!")
 }
-callback("putShortVectorAsList",getShortVectorAsList)
+callback("setShortVectorAsList",list(getShortVectorAsList))
 getShortMatrix <- callback("getShortMatrix")
 if(!is.na(getShortMatrix)){
 	stop("getShortMatrix not na!")
 }
-callback("putShortMatrix",getShortMatrix)
+callback("setShortMatrix",list(getShortMatrix))
 getShortMatrixAsList <- callback("getShortMatrixAsList")
 if(!is.na(getShortMatrixAsList)){
 	stop("getShortMatrixAsList not na!")
 }
-callback("putShortMatrixAsList",getShortMatrixAsList)
+callback("setShortMatrixAsList",list(getShortMatrixAsList))
 
 getStringVector <- callback("getStringVector")
 if(!is.na(getStringVector)){
 	stop("getStringVector not na!")
 }
-callback("putStringVector",getStringVector)
+callback("setStringVector",list(getStringVector))
 getStringVectorAsList <- callback("getStringVectorAsList")
 if(!is.na(getStringVectorAsList)){
 	stop("getStringVectorAsList not na!")
 }
-callback("putStringVectorAsList",getStringVectorAsList)
+callback("setStringVectorAsList",list(getStringVectorAsList))
 getStringMatrix <- callback("getStringMatrix")
 if(!is.na(getStringMatrix)){
 	stop("getStringMatrix not na!")
 }
-callback("putStringMatrix",getStringMatrix)
+callback("setStringMatrix",list(getStringMatrix))
 getStringMatrixAsList <- callback("getStringMatrixAsList")
 if(!is.na(getStringMatrixAsList)){
 	stop("getStringMatrixAsList not na!")
 }
-callback("putStringMatrixAsList",getStringMatrixAsList)
+callback("setStringMatrixAsList",list(getStringMatrixAsList))

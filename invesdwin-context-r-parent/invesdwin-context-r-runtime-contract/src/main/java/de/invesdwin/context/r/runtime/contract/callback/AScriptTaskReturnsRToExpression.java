@@ -10,7 +10,7 @@ public abstract class AScriptTaskReturnsRToExpression implements IScriptTaskRetu
     @Override
     public void returnString(final String value) {
         if (value == null) {
-            returnNull();
+            returnExpression("NA_character_");
         } else {
             returnExpression("'" + value + "'");
         }
@@ -28,7 +28,7 @@ public abstract class AScriptTaskReturnsRToExpression implements IScriptTaskRetu
                 }
                 final String v = value[i];
                 if (v == null) {
-                    sb.append("NA");
+                    sb.append("NA_character_");
                 } else {
                     sb.append("'");
                     sb.append(v);
@@ -49,7 +49,7 @@ public abstract class AScriptTaskReturnsRToExpression implements IScriptTaskRetu
         } else {
             final int rows = value.length;
             final int cols = value[0].length;
-            final StringBuilder sb = new StringBuilder("c((");
+            final StringBuilder sb = new StringBuilder("c(c(");
             for (int row = 0; row < rows; row++) {
                 Assertions.checkEquals(value[row].length, cols);
                 if (row > 0) {
@@ -57,11 +57,11 @@ public abstract class AScriptTaskReturnsRToExpression implements IScriptTaskRetu
                 }
                 for (int col = 0; col < cols; col++) {
                     if (col > 0) {
-                        sb.append(" ");
+                        sb.append(",");
                     }
                     final String v = value[row][col];
                     if (v == null) {
-                        sb.append("\"\"");
+                        sb.append("NA_character_");
                     } else {
                         sb.append("\"");
                         sb.append(v);
@@ -114,7 +114,7 @@ public abstract class AScriptTaskReturnsRToExpression implements IScriptTaskRetu
         } else {
             final int rows = value.length;
             final int cols = value[0].length;
-            final StringBuilder sb = new StringBuilder("c((");
+            final StringBuilder sb = new StringBuilder("c(c(");
             for (int row = 0; row < rows; row++) {
                 Assertions.checkEquals(value[row].length, cols);
                 if (row > 0) {
@@ -122,7 +122,7 @@ public abstract class AScriptTaskReturnsRToExpression implements IScriptTaskRetu
                 }
                 for (int col = 0; col < cols; col++) {
                     if (col > 0) {
-                        sb.append(" ");
+                        sb.append(",");
                     }
                     final boolean v = value[row][col];
                     if (v) {
@@ -170,7 +170,7 @@ public abstract class AScriptTaskReturnsRToExpression implements IScriptTaskRetu
         } else {
             final int rows = value.length;
             final int cols = value[0].length;
-            final StringBuilder sb = new StringBuilder("c((");
+            final StringBuilder sb = new StringBuilder("c(c(");
             for (int row = 0; row < rows; row++) {
                 Assertions.checkEquals(value[row].length, cols);
                 if (row > 0) {
@@ -178,7 +178,7 @@ public abstract class AScriptTaskReturnsRToExpression implements IScriptTaskRetu
                 }
                 for (int col = 0; col < cols; col++) {
                     if (col > 0) {
-                        sb.append(" ");
+                        sb.append(",");
                     }
                     final int v = value[row][col];
                     sb.append(v);
@@ -222,7 +222,7 @@ public abstract class AScriptTaskReturnsRToExpression implements IScriptTaskRetu
         } else {
             final int rows = value.length;
             final int cols = value[0].length;
-            final StringBuilder sb = new StringBuilder("c((");
+            final StringBuilder sb = new StringBuilder("c(c(");
             for (int row = 0; row < rows; row++) {
                 Assertions.checkEquals(value[row].length, cols);
                 if (row > 0) {
@@ -230,7 +230,7 @@ public abstract class AScriptTaskReturnsRToExpression implements IScriptTaskRetu
                 }
                 for (int col = 0; col < cols; col++) {
                     if (col > 0) {
-                        sb.append(" ");
+                        sb.append(",");
                     }
                     final double v = value[row][col];
                     sb.append(v);

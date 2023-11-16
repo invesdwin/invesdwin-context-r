@@ -8,7 +8,7 @@ print(getFloat)
 if(typeof(getFloat) != "double"){
 	stop("getFloat not double!")
 }
-callback("putFloat",getFloat)
+callback("setFloat",getFloat)
 
 print("getFloatVector")
 if(exists("getFloatVector")){
@@ -20,7 +20,7 @@ print(getFloatVector)
 if(typeof(getFloatVector) != "double"){
 	stop("getFloatVector not double!")
 }
-callback("putFloatVector",getFloatVector)
+callback("setFloatVector",list(getFloatVector))
 
 print("getFloatVectorAsList")
 if(exists("getFloatVectorAsList")){
@@ -32,7 +32,7 @@ print(getFloatVectorAsList)
 if(typeof(getFloatVectorAsList) != "double"){
 	stop("getFloatVectorAsList not double!")
 }
-callback("putFloatVectorAsList",getFloatVectorAsList)
+callback("setFloatVectorAsList",list(getFloatVectorAsList))
 
 print("getFloatMatrix")
 if(exists("getFloatMatrix")){
@@ -44,7 +44,7 @@ print(getFloatMatrix)
 if(typeof(getFloatMatrix) != "double"){
 	stop("getFloatMatrix not double!")
 }
-callback("putFloatMatrix",getFloatMatrix)
+callback("setFloatMatrix",list(getFloatMatrix))
 
 print("getFloatMatrixAsList")
 if(exists("getFloatMatrixAsList")){
@@ -56,4 +56,4 @@ print(getFloatMatrixAsList)
 if(typeof(getFloatMatrixAsList) != "double"){
 	stop("getFloatMatrixAsList not double!")
 }
-callback("putFloatMatrixAsList",getFloatMatrixAsList)
+callback("setFloatMatrixAsList",list(getFloatMatrixAsList))

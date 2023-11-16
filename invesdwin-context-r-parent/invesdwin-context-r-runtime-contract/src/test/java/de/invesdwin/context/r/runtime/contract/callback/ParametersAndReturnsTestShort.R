@@ -8,7 +8,7 @@ print(getShort)
 if(typeof(getShort) != "integer"){
 	stop("getShort not integer!")
 }
-callback("putShort",getShort)
+callback("setShort",getShort)
 
 print("getShortVector")
 if(exists("getShortVector")){
@@ -20,7 +20,7 @@ print(getShortVector)
 if(typeof(getShortVector) != "integer"){
 	stop("getShortVector not integer!")
 }
-callback("putShortVector",getShortVector)
+callback("setShortVector",list(getShortVector))
 
 print("getShortVectorAsList")
 if(exists("getShortVectorAsList")){
@@ -32,7 +32,7 @@ print(getShortVectorAsList)
 if(typeof(getShortVectorAsList) != "integer"){
 	stop("getShortVectorAsList not integer!")
 }
-callback("putShortVectorAsList",getShortVectorAsList)
+callback("setShortVectorAsList",list(getShortVectorAsList))
 
 print("getShortMatrix")
 if(exists("getShortMatrix")){
@@ -44,7 +44,7 @@ print(getShortMatrix)
 if(typeof(getShortMatrix) != "integer"){
 	stop("getShortMatrix not integer!")
 }
-callback("putShortMatrix",getShortMatrix)
+callback("setShortMatrix",list(getShortMatrix))
 
 print("getShortMatrixAsList")
 if(exists("getShortMatrixAsList")){
@@ -56,4 +56,4 @@ print(getShortMatrixAsList)
 if(typeof(getShortMatrixAsList) != "integer"){
 	stop("getShortMatrixAsList not integer!")
 }
-callback("putShortMatrixAsList",getShortMatrixAsList)
+callback("setShortMatrixAsList",list(getShortMatrixAsList))

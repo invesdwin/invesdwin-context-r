@@ -8,7 +8,7 @@ print(getDouble)
 if(typeof(getDouble) != "double"){
 	stop("getDouble not double!")
 }
-callback("putDouble",getDouble)
+callback("setDouble",getDouble)
 
 print("getDoubleVector")
 if(exists("getDoubleVector")){
@@ -20,7 +20,7 @@ print(getDoubleVector)
 if(typeof(getDoubleVector) != "double"){
 	stop("getDoubleVector not double!")
 }
-callback("putDoubleVector",getDoubleVector)
+callback("setDoubleVector",list(getDoubleVector))
 
 print("getDoubleVectorAsList")
 if(exists("getDoubleVectorAsList")){
@@ -32,7 +32,7 @@ print(getDoubleVectorAsList)
 if(typeof(getDoubleVectorAsList) != "double"){
 	stop("getDoubleVectorAsList not double!")
 }
-callback("putDoubleVectorAsList",getDoubleVectorAsList)
+callback("setDoubleVectorAsList",list(getDoubleVectorAsList))
 
 print("getDoubleMatrix")
 if(exists("getDoubleMatrix")){
@@ -44,7 +44,7 @@ print(getDoubleMatrix)
 if(typeof(getDoubleMatrix) != "double"){
 	stop("getDoubleMatrix not double!")
 }
-callback("putDoubleMatrix",getDoubleMatrix)
+callback("setDoubleMatrix",list(getDoubleMatrix))
 
 print("getDoubleMatrixAsList")
 if(exists("getDoubleMatrixAsList")){
@@ -56,4 +56,4 @@ print(getDoubleMatrixAsList)
 if(typeof(getDoubleMatrixAsList) != "double"){
 	stop("getDoubleMatrixAsList not double!")
 }
-callback("putDoubleMatrixAsList",getDoubleMatrixAsList)
+callback("setDoubleMatrixAsList",list(getDoubleMatrixAsList))

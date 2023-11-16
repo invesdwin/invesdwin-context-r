@@ -8,7 +8,7 @@ print(getCharacter)
 if(typeof(getCharacter) != "character"){
 	stop("getCharacter not character!")
 }
-callback("putCharacter",getCharacter)
+callback("setCharacter",getCharacter)
 
 print("getCharacterVector")
 if(exists("getCharacterVector")){
@@ -20,7 +20,7 @@ print(getCharacterVector)
 if(typeof(getCharacterVector) != "character"){
 	stop("getCharacterVector not character!")
 }
-callback("putCharacterVector",getCharacterVector)
+callback("setCharacterVector",list(getCharacterVector))
 
 print("getCharacterVectorAsList")
 if(exists("getCharacterVectorAsList")){
@@ -32,7 +32,7 @@ print(getCharacterVectorAsList)
 if(typeof(getCharacterVectorAsList) != "character"){
 	stop("getCharacterVectorAsList not character!")
 }
-callback("putCharacterVectorAsList",getCharacterVectorAsList)
+callback("setCharacterVectorAsList",list(getCharacterVectorAsList))
 
 print("getCharacterMatrix")
 if(exists("getCharacterMatrix")){
@@ -44,7 +44,7 @@ print(getCharacterMatrix)
 if(typeof(getCharacterMatrix) != "character"){
 	stop("getCharacterMatrix not character!")
 }
-callback("putCharacterMatrix",getCharacterMatrix)
+callback("setCharacterMatrix",list(getCharacterMatrix))
 
 print("getCharacterMatrixAsList")
 if(exists("getCharacterMatrixAsList")){
@@ -56,4 +56,4 @@ print(getCharacterMatrixAsList)
 if(typeof(getCharacterMatrixAsList) != "character"){
 	stop("getCharacterMatrixAsList not character!")
 }
-callback("putCharacterMatrixAsList",getCharacterMatrixAsList)
+callback("setCharacterMatrixAsList",list(getCharacterMatrixAsList))

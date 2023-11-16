@@ -8,7 +8,7 @@ print(getLong)
 if(typeof(getLong) != "double"){
 	stop("getLong not double!")
 }
-callback("putLong",getLong)
+callback("setLong",getLong)
 
 print("getLongVector")
 if(exists("getLongVector")){
@@ -20,7 +20,7 @@ print(getLongVector)
 if(typeof(getLongVector) != "double"){
 	stop("getLongVector not double!")
 }
-callback("putLongVector",getLongVector)
+callback("setLongVector",list(getLongVector))
 
 print("getLongVectorAsList")
 if(exists("getLongVectorAsList")){
@@ -32,7 +32,7 @@ print(getLongVectorAsList)
 if(typeof(getLongVectorAsList) != "double"){
 	stop("getLongVectorAsList not double!")
 }
-callback("putLongVectorAsList",getLongVectorAsList)
+callback("setLongVectorAsList",list(getLongVectorAsList))
 
 print("getLongMatrix")
 if(exists("getLongMatrix")){
@@ -44,7 +44,7 @@ print(getLongMatrix)
 if(typeof(getLongMatrix) != "double"){
 	stop("getLongMatrix not double!")
 }
-callback("putLongMatrix",getLongMatrix)
+callback("setLongMatrix",list(getLongMatrix))
 
 print("getLongMatrixAsList")
 if(exists("getLongMatrixAsList")){
@@ -56,4 +56,4 @@ print(getLongMatrixAsList)
 if(typeof(getLongMatrixAsList) != "double"){
 	stop("getLongMatrixAsList not double!")
 }
-callback("putLongMatrixAsList",getLongMatrixAsList)
+callback("setLongMatrixAsList",list(getLongMatrixAsList))

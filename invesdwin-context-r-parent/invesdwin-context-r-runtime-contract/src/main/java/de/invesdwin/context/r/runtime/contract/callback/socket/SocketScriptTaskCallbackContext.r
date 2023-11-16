@@ -15,7 +15,7 @@ callback_invokeSocket <- function(methodName, parameters){
     return(eval(parse(text=returnExpression)))
 }
 
-callback <- function(methodName, ...){
+callback <- function(methodName, parameters = list()){
     if(!exists("socketScriptTaskCallbackContext")){
         if(exists("socketScriptTaskCallbackContextUuid")){
             callback_createSocket()
@@ -23,6 +23,5 @@ callback <- function(methodName, ...){
             stop("IScriptTaskCallback not available")
         }
     }
-    parameters <- c(...)
     return(callback_invokeSocket(methodName, parameters))
 }

@@ -8,7 +8,7 @@ print(getInteger)
 if(typeof(getInteger) != "integer"){
 	stop("getInteger not integer!")
 }
-callback("putInteger",getInteger)
+callback("setInteger",getInteger)
 
 print("getIntegerVector")
 if(exists("getIntegerVector")){
@@ -20,7 +20,7 @@ print(getIntegerVector)
 if(typeof(getIntegerVector) != "integer"){
 	stop("getIntegerVector not integer!")
 }
-callback("putIntegerVector",getIntegerVector)
+callback("setIntegerVector",list(getIntegerVector))
 
 print("getIntegerVectorAsList")
 if(exists("getIntegerVectorAsList")){
@@ -32,7 +32,7 @@ print(getIntegerVectorAsList)
 if(typeof(getIntegerVectorAsList) != "integer"){
 	stop("getIntegerVectorAsList not integer!")
 }
-callback("putIntegerVectorAsList",getIntegerVectorAsList)
+callback("setIntegerVectorAsList",list(getIntegerVectorAsList))
 
 print("getIntegerMatrix")
 if(exists("getIntegerMatrix")){
@@ -44,7 +44,7 @@ print(getIntegerMatrix)
 if(typeof(getIntegerMatrix) != "integer"){
 	stop("getIntegerMatrix not integer!")
 }
-callback("putIntegerMatrix",getIntegerMatrix)
+callback("setIntegerMatrix",list(getIntegerMatrix))
 
 print("getIntegerMatrixAsList")
 if(exists("getIntegerMatrixAsList")){
@@ -56,4 +56,4 @@ print(getIntegerMatrixAsList)
 if(typeof(getIntegerMatrixAsList) != "integer"){
 	stop("getIntegerMatrixAsList not integer!")
 }
-callback("putIntegerMatrixAsList",getIntegerMatrixAsList)
+callback("setIntegerMatrixAsList",list(getIntegerMatrixAsList))

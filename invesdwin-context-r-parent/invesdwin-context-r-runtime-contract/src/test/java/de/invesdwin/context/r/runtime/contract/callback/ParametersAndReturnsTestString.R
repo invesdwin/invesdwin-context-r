@@ -8,7 +8,7 @@ print(getString)
 if(typeof(getString) != "character"){
 	stop("getString not character!")
 }
-callback("putString",getString)
+callback("setString",getString)
 
 print("getStringWithNull")
 if(exists("getStringWithNull")){
@@ -23,7 +23,7 @@ if(typeof(getStringWithNull) != "character"){
 if(!is.na(getStringWithNull)){
 	stop("getStringWithNull not na!")
 }
-callback("putStringWithNull",getStringWithNull)
+callback("setStringWithNull",getStringWithNull)
 
 print("getStringVector")
 if(exists("getStringVector")){
@@ -35,7 +35,7 @@ print(getStringVector)
 if(typeof(getStringVector) != "character"){
 	stop("getStringVector not character!")
 }
-callback("putStringVector",getStringVector)
+callback("setStringVector",list(getStringVector))
 
 
 print("getStringVectorWithNull")
@@ -51,7 +51,7 @@ if(typeof(getStringVectorWithNull) != "character"){
 if(!is.na(getStringVectorWithNull[2])){
 	stop("getStringVectorWithNull[2] not na!")
 }
-callback("putStringVectorWithNull",getStringVectorWithNull)
+callback("setStringVectorWithNull",list(getStringVectorWithNull))
 
 print("getStringVectorAsList")
 if(exists("getStringVectorAsList")){
@@ -63,7 +63,7 @@ print(getStringVectorAsList)
 if(typeof(getStringVectorAsList) != "character"){
 	stop("getStringVectorAsList not character!")
 }
-callback("putStringVectorAsList",getStringVectorAsList)
+callback("setStringVectorAsList",list(getStringVectorAsList))
 
 print("getStringVectorAsListWithNull")
 if(exists("getStringVectorAsListWithNull")){
@@ -78,7 +78,7 @@ if(typeof(getStringVectorAsListWithNull) != "character"){
 if(!is.na(getStringVectorAsListWithNull[2])){
 	stop("getStringVectorAsListWithNull[2] not na!")
 }
-callback("putStringVectorAsListWithNull",getStringVectorAsListWithNull)
+callback("setStringVectorAsListWithNull",list(getStringVectorAsListWithNull))
 
 print("getStringMatrix")
 if(exists("getStringMatrix")){
@@ -90,7 +90,7 @@ print(getStringMatrix)
 if(typeof(getStringMatrix) != "character"){
 	stop("getStringMatrix not character!")
 }
-callback("putStringMatrix",getStringMatrix)
+callback("setStringMatrix",list(getStringMatrix))
 
 
 print("getStringMatrixWithNull")
@@ -112,7 +112,7 @@ if(!is.na(getStringMatrixWithNull[2][2])){
 if(!is.na(getStringMatrixWithNull[3][3])){
 	stop("getStringMatrixWithNull[3][3] not na!")
 }
-callback("putStringMatrixWithNull",getStringMatrixWithNull)
+callback("setStringMatrixWithNull",list(getStringMatrixWithNull))
 
 print("getStringMatrixAsList")
 if(exists("getStringMatrixAsList")){
@@ -124,7 +124,7 @@ print(getStringMatrixAsList)
 if(typeof(getStringMatrixAsList) != "character"){
 	stop("getStringMatrixAsList not character!")
 }
-callback("putStringMatrixAsList",getStringMatrixAsList)
+callback("setStringMatrixAsList",list(getStringMatrixAsList))
 
 print("getStringMatrixAsListWithNull")
 if(exists("getStringMatrixAsListWithNull")){
@@ -145,4 +145,4 @@ if(!is.na(getStringMatrixAsListWithNull[2][2])){
 if(!is.na(getStringMatrixAsListWithNull[3][3])){
 	stop("getStringMatrixAsListWithNull[3][3] not na!")
 }
-callback("putStringMatrixAsListWithNull",getStringMatrixAsListWithNull)
+callback("setStringMatrixAsListWithNull",list(getStringMatrixAsListWithNull))

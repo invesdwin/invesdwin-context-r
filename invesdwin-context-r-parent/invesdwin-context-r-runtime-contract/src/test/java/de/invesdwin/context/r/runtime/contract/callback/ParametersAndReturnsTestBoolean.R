@@ -8,7 +8,7 @@ print(getBoolean)
 if(typeof(getBoolean) != "logical"){
 	stop("getBoolean not logical!")
 }
-callback("putBoolean",getBoolean)
+callback("setBoolean",getBoolean)
 
 print("getBooleanVector")
 if(exists("getBooleanVector")){
@@ -20,7 +20,7 @@ print(getBooleanVector)
 if(typeof(getBooleanVector) != "logical"){
 	stop("getBooleanVector not logical!")
 }
-callback("putBooleanVector",getBooleanVector)
+callback("setBooleanVector",list(getBooleanVector))
 
 print("getBooleanVectorAsList")
 if(exists("getBooleanVectorAsList")){
@@ -32,7 +32,7 @@ print(getBooleanVectorAsList)
 if(typeof(getBooleanVectorAsList) != "logical"){
 	stop("getBooleanVectorAsList not logical!")
 }
-callback("putBooleanVectorAsList",getBooleanVectorAsList)
+callback("setBooleanVectorAsList",list(getBooleanVectorAsList))
 
 print("getBooleanMatrix")
 if(exists("getBooleanMatrix")){
@@ -44,7 +44,7 @@ print(getBooleanMatrix)
 if(typeof(getBooleanMatrix) != "logical"){
 	stop("getBooleanMatrix not logical!")
 }
-callback("putBooleanMatrix",getBooleanMatrix)
+callback("setBooleanMatrix",list(getBooleanMatrix))
 
 print("getBooleanMatrixAsList")
 if(exists("getBooleanMatrixAsList")){
@@ -56,4 +56,4 @@ print(getBooleanMatrixAsList)
 if(typeof(getBooleanMatrixAsList) != "logical"){
 	stop("getBooleanMatrixAsList not logical!")
 }
-callback("putBooleanMatrixAsList",getBooleanMatrixAsList)
+callback("setBooleanMatrixAsList",list(getBooleanMatrixAsList))
