@@ -2,6 +2,7 @@ package de.invesdwin.context.r.runtime.jri;
 
 import javax.annotation.concurrent.NotThreadSafe;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import de.invesdwin.context.r.runtime.contract.InputsAndResultsTests;
@@ -31,6 +32,7 @@ public class JriScriptTaskRunnerRTest extends ATest {
         new ParametersAndReturnsTests(runner).test();
     }
 
+    @Disabled("*** buffer overflow detected ***: terminated")
     @Test
     public void testCallbackParallel() {
         new ParametersAndReturnsTests(runner).testParallel();

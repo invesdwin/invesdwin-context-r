@@ -18,8 +18,7 @@ public final class RsessionLogger implements RLog {
     @GuardedBy("this")
     private final StringBuilder errorMessage = new StringBuilder();
 
-    public RsessionLogger() {
-    }
+    public RsessionLogger() {}
 
     @Override
     public synchronized void log(final String text, final Level level) {
@@ -30,7 +29,7 @@ public final class RsessionLogger implements RLog {
                 errorMessage.setLength(0);
                 break;
             case INFO:
-                IScriptTaskRunnerR.LOG.trace(text);
+                IScriptTaskRunnerR.LOG.info(text);
                 errorMessage.setLength(0);
                 break;
             case WARNING:

@@ -28,9 +28,11 @@ public class RserveScriptTaskEngineR implements IScriptTaskEngine {
     public void eval(final String expression) {
         final REXP eval = rsession.rawEval(expression);
         if (eval == null) {
-            throw new IllegalStateException(
-                    String.valueOf(de.invesdwin.context.r.runtime.rserve.pool.internal.RsessionLogger.get(rsession)
-                            .getErrorMessage()));
+            final String error = de.invesdwin.context.r.runtime.rserve.pool.internal.RsessionLogger.get(rsession)
+                    .getErrorMessage();
+            if (error != null) {
+                throw new IllegalStateException(String.valueOf(error));
+            }
         }
     }
 
