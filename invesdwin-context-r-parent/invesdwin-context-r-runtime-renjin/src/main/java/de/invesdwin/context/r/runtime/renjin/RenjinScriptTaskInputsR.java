@@ -136,6 +136,7 @@ public class RenjinScriptTaskInputsR implements IScriptTaskInputsR {
         if (value == null) {
             putNull(variable);
         } else {
+            System.out.println("needed?");
             engine.unwrap().put(variable, Arrays.toObject(value));
         }
     }

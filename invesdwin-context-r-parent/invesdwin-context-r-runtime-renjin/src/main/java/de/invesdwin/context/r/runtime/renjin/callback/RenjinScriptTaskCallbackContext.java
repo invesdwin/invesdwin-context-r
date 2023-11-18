@@ -6,20 +6,11 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import javax.annotation.concurrent.ThreadSafe;
 
+import org.renjin.sexp.SEXP;
 import org.springframework.core.io.ClassPathResource;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.NullNode;
-
-import de.invesdwin.context.integration.marshaller.MarshallerJsonJackson;
 import de.invesdwin.context.integration.script.IScriptTaskEngine;
 import de.invesdwin.context.integration.script.callback.IScriptTaskCallback;
-import de.invesdwin.context.r.runtime.contract.callback.ScriptTaskParametersRFromJson;
-import de.invesdwin.context.r.runtime.contract.callback.ScriptTaskParametersRFromJsonPool;
-import de.invesdwin.context.r.runtime.contract.callback.ScriptTaskReturnsRToExpression;
-import de.invesdwin.context.r.runtime.contract.callback.ScriptTaskReturnsRToExpressionPool;
-import de.invesdwin.util.error.Throwables;
 import de.invesdwin.util.lang.UUIDs;
 
 @ThreadSafe
@@ -29,13 +20,11 @@ public class RenjinScriptTaskCallbackContext implements Closeable {
 
     private final String uuid;
     private final IScriptTaskCallback callback;
-    private final ObjectMapper mapper;
 
     public RenjinScriptTaskCallbackContext(final IScriptTaskCallback callback) {
         this.uuid = UUIDs.newPseudoRandomUUID();
         this.callback = callback;
         UUID_CONTEXT.put(uuid, this);
-        this.mapper = MarshallerJsonJackson.getInstance().getJsonMapper(false);
     }
 
     public static RenjinScriptTaskCallbackContext getContext(final String uuid) {
@@ -52,31 +41,16 @@ public class RenjinScriptTaskCallbackContext implements Closeable {
         return uuid;
     }
 
-    public String invoke(final String methodName, final String dims, final String args) {
-        final ScriptTaskParametersRFromJson parameters = ScriptTaskParametersRFromJsonPool.INSTANCE.borrowObject();
-        final ScriptTaskReturnsRToExpression returns = ScriptTaskReturnsRToExpressionPool.INSTANCE.borrowObject();
+    public SexpScriptTaskReturnValue invoke(final String methodName, final SEXP args) {
+        final RenjinScriptTaskParametersR parameters = RenjinScriptTaskParametersRPool.INSTANCE.borrowObject();
+        final RenjinScriptTaskReturnsR returns = RenjinScriptTaskReturnsRPool.INSTANCE.borrowObject();
         try {
-            final JsonNode jsonDims = toJsonNode(dims);
-            final JsonNode jsonArgs = toJsonNode(args);
-            parameters.setParameters(jsonDims, jsonArgs);
+            parameters.setParameters(args);
             callback.invoke(methodName, parameters, returns);
-            return returns.getReturnExpression();
+            return returns.newReturn();
         } finally {
-            ScriptTaskReturnsRToExpressionPool.INSTANCE.returnObject(returns);
-            ScriptTaskParametersRFromJsonPool.INSTANCE.returnObject(parameters);
-        }
-    }
-
-    private JsonNode toJsonNode(final String json) {
-        try {
-            final JsonNode node = mapper.readTree(json);
-            if (node instanceof NullNode) {
-                return null;
-            } else {
-                return node;
-            }
-        } catch (final Throwable t) {
-            throw Throwables.propagate(t);
+            RenjinScriptTaskReturnsRPool.INSTANCE.returnObject(returns);
+            RenjinScriptTaskParametersRPool.INSTANCE.returnObject(parameters);
         }
     }
 
