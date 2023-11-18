@@ -1,5 +1,5 @@
 if (!require("jsonlite")) {
-  install.packages('jsonlite', dependencies=TRUE, repos='http://cran.rstudio.com/')
+  install.packages('jsonlite', dependencies=TRUE, repos='http://cran.rstudio.com')
   library("jsonlite")
 }
 
@@ -11,7 +11,7 @@ callback_createSocket <- function(){
 callback_invokeSocket <- function(methodName, parameters){
 	dims <- sapply(parameters, dim)
     writeLines(paste(methodName, ";", toJSON(dims), ";", toJSON(parameters), sep=""), socketScriptTaskCallbackSocket)
-    returnExpression <- readlines(socketScriptTaskCallbackSocket, 1)
+    returnExpression <- readLines(socketScriptTaskCallbackSocket, 1L)
     return(eval(parse(text=returnExpression)))
 }
 
