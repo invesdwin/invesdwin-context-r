@@ -5,9 +5,9 @@ import javax.annotation.concurrent.NotThreadSafe;
 import org.renjin.primitives.matrix.DoubleMatrixBuilder;
 import org.renjin.primitives.matrix.IntMatrixBuilder;
 import org.renjin.primitives.matrix.StringMatrixBuilder;
+import org.renjin.sexp.LogicalArrayVector;
 
 import de.invesdwin.context.r.runtime.contract.IScriptTaskInputsR;
-import de.invesdwin.util.collections.Arrays;
 
 @NotThreadSafe
 public class RenjinScriptTaskInputsR implements IScriptTaskInputsR {
@@ -136,8 +136,7 @@ public class RenjinScriptTaskInputsR implements IScriptTaskInputsR {
         if (value == null) {
             putNull(variable);
         } else {
-            System.out.println("needed?");
-            engine.unwrap().put(variable, Arrays.toObject(value));
+            engine.unwrap().put(variable, new LogicalArrayVector(value));
         }
     }
 

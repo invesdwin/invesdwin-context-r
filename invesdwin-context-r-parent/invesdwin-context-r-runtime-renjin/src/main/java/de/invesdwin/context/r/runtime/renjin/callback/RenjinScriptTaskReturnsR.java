@@ -9,11 +9,11 @@ import org.renjin.invoke.reflection.converters.StringConverter;
 import org.renjin.primitives.matrix.DoubleMatrixBuilder;
 import org.renjin.primitives.matrix.IntMatrixBuilder;
 import org.renjin.primitives.matrix.StringMatrixBuilder;
+import org.renjin.sexp.LogicalArrayVector;
 import org.renjin.sexp.SEXP;
 
 import de.invesdwin.context.r.runtime.contract.callback.IScriptTaskReturnsR;
 import de.invesdwin.util.assertions.Assertions;
-import de.invesdwin.util.collections.Arrays;
 import de.invesdwin.util.collections.loadingcache.ALoadingCache;
 
 @NotThreadSafe
@@ -156,8 +156,7 @@ public class RenjinScriptTaskReturnsR implements IScriptTaskReturnsR, Closeable 
         if (value == null) {
             returnNull();
         } else {
-            System.out.println("needed?");
-            returnValue(Arrays.toObject(value));
+            returnValue(new LogicalArrayVector(value));
         }
     }
 
