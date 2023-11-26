@@ -1,5 +1,5 @@
 # invesdwin-context-r
-Integrate R functionality with these modules for the [invesdwin-context](https://github.com/subes/invesdwin-context) module system.
+Integrate R functionality with these modules for the [invesdwin-context](https://github.com/subes/invesdwin-context) module system. All integration modules provide unified bidirectional communication between Java and R. That way you can switch the R provider without having to change your script implementation. See test cases for examples on how to implement your script integrations.
 
 ## Maven
 
