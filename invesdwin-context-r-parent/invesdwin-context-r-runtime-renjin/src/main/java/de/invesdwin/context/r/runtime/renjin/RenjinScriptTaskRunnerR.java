@@ -6,6 +6,7 @@ import org.renjin.script.RenjinScriptEngine;
 import org.springframework.beans.factory.FactoryBean;
 
 import de.invesdwin.context.integration.script.callback.IScriptTaskCallback;
+import de.invesdwin.context.integration.script.callback.LoggingDelegateScriptTaskCallback;
 import de.invesdwin.context.r.runtime.contract.AScriptTaskR;
 import de.invesdwin.context.r.runtime.contract.IScriptTaskRunnerR;
 import de.invesdwin.context.r.runtime.renjin.callback.RenjinScriptTaskCallbackContext;
@@ -31,7 +32,7 @@ public final class RenjinScriptTaskRunnerR implements IScriptTaskRunnerR, Factor
         final RenjinScriptTaskCallbackContext context;
         final IScriptTaskCallback callback = scriptTask.getCallback();
         if (callback != null) {
-            context = new RenjinScriptTaskCallbackContext(callback);
+            context = new RenjinScriptTaskCallbackContext(LoggingDelegateScriptTaskCallback.maybeWrap(LOG, callback));
         } else {
             context = null;
         }

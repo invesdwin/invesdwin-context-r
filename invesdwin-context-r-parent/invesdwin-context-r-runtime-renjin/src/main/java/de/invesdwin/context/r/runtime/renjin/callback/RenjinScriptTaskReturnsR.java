@@ -15,6 +15,7 @@ import org.renjin.sexp.SEXP;
 import de.invesdwin.context.r.runtime.contract.callback.IScriptTaskReturnsR;
 import de.invesdwin.util.assertions.Assertions;
 import de.invesdwin.util.collections.loadingcache.ALoadingCache;
+import de.invesdwin.util.lang.string.Strings;
 
 @NotThreadSafe
 public class RenjinScriptTaskReturnsR implements IScriptTaskReturnsR, Closeable {
@@ -295,6 +296,11 @@ public class RenjinScriptTaskReturnsR implements IScriptTaskReturnsR, Closeable 
     public void close() {
         returnValue = null;
         returnExpression = false;
+    }
+
+    @Override
+    public String toString() {
+        return Strings.asString(returnValue);
     }
 
 }

@@ -6,6 +6,8 @@ import javax.annotation.concurrent.NotThreadSafe;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
+import de.invesdwin.util.lang.string.Strings;
+
 @NotThreadSafe
 public class ScriptTaskParametersRFromJson extends AScriptTaskParametersRFromJson implements Closeable {
 
@@ -36,6 +38,11 @@ public class ScriptTaskParametersRFromJson extends AScriptTaskParametersRFromJso
     public void close() {
         dims = null;
         parameters = null;
+    }
+
+    @Override
+    public String toString() {
+        return Strings.asString(dims) + "," + Strings.asString(parameters);
     }
 
 }

@@ -12,6 +12,7 @@ import org.renjin.sexp.Vector;
 
 import de.invesdwin.context.r.runtime.contract.callback.IScriptTaskParametersR;
 import de.invesdwin.util.assertions.Assertions;
+import de.invesdwin.util.lang.string.Strings;
 
 @NotThreadSafe
 public class RenjinScriptTaskParametersR implements IScriptTaskParametersR, Closeable {
@@ -210,6 +211,11 @@ public class RenjinScriptTaskParametersR implements IScriptTaskParametersR, Clos
     @Override
     public void close() {
         parameters = null;
+    }
+
+    @Override
+    public String toString() {
+        return Strings.asString(parameters);
     }
 
 }

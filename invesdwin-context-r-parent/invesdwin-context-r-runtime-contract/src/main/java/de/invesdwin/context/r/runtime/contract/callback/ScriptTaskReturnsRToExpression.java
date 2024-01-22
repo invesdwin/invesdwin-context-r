@@ -24,4 +24,9 @@ public class ScriptTaskReturnsRToExpression extends AScriptTaskReturnsRToExpress
         returnExpression = null;
     }
 
+    @Override
+    public String toString() {
+        return returnExpression;
+    }
+
 }
