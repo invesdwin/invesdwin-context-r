@@ -45,9 +45,10 @@ public class JriScriptTaskInputsR implements IScriptTaskInputsR {
             final String[] flatMatrix = new String[rows * cols];
             int i = 0;
             for (int row = 0; row < rows; row++) {
-                Assertions.checkEquals(value[row].length, cols);
+                final String[] valueRow = value[row];
+                Assertions.checkEquals(valueRow.length, cols);
                 for (int col = 0; col < cols; col++) {
-                    flatMatrix[i] = value[row][col];
+                    flatMatrix[i] = valueRow[col];
                     i++;
                 }
             }
@@ -85,9 +86,10 @@ public class JriScriptTaskInputsR implements IScriptTaskInputsR {
             final double[] flatMatrix = new double[rows * cols];
             int i = 0;
             for (int row = 0; row < rows; row++) {
-                Assertions.checkEquals(value[row].length, cols);
+                final double[] valueRow = value[row];
+                Assertions.checkEquals(valueRow.length, cols);
                 for (int col = 0; col < cols; col++) {
-                    flatMatrix[i] = value[row][col];
+                    flatMatrix[i] = valueRow[col];
                     i++;
                 }
             }
@@ -125,9 +127,10 @@ public class JriScriptTaskInputsR implements IScriptTaskInputsR {
             final int[] flatMatrix = new int[rows * cols];
             int i = 0;
             for (int row = 0; row < rows; row++) {
-                Assertions.checkEquals(value[row].length, cols);
+                final int[] valueRow = value[row];
+                Assertions.checkEquals(valueRow.length, cols);
                 for (int col = 0; col < cols; col++) {
-                    flatMatrix[i] = value[row][col];
+                    flatMatrix[i] = valueRow[col];
                     i++;
                 }
             }
@@ -162,9 +165,10 @@ public class JriScriptTaskInputsR implements IScriptTaskInputsR {
             final int[] flatMatrix = new int[rows * cols];
             int i = 0;
             for (int row = 0; row < rows; row++) {
-                Assertions.checkEquals(value[row].length, cols);
+                final boolean[] valueRow = value[row];
+                Assertions.checkEquals(valueRow.length, cols);
                 for (int col = 0; col < cols; col++) {
-                    if (value[row][col]) {
+                    if (valueRow[col]) {
                         flatMatrix[i] = 1;
                     } else {
                         flatMatrix[i] = 0;

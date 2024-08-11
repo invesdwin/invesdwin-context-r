@@ -59,9 +59,10 @@ public class RserveScriptTaskInputsR implements IScriptTaskInputsR {
             final String[] flatMatrix = new String[rows * cols];
             int i = 0;
             for (int row = 0; row < rows; row++) {
-                Assertions.checkEquals(value[row].length, cols);
+                final String[] valueRow = value[row];
+                Assertions.checkEquals(valueRow.length, cols);
                 for (int col = 0; col < cols; col++) {
-                    flatMatrix[i] = value[row][col];
+                    flatMatrix[i] = valueRow[col];
                     i++;
                 }
             }

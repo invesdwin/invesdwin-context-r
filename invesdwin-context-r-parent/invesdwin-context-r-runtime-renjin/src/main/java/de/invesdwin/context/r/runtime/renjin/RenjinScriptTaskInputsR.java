@@ -52,8 +52,9 @@ public class RenjinScriptTaskInputsR implements IScriptTaskInputsR {
             final int cols = value[0].length;
             final StringMatrixBuilder matrix = new StringMatrixBuilder(rows, cols);
             for (int row = 0; row < rows; row++) {
+                final String[] valueRow = value[row];
                 for (int col = 0; col < cols; col++) {
-                    matrix.setValue(row, col, value[row][col]);
+                    matrix.setValue(row, col, valueRow[col]);
                 }
             }
             engine.unwrap().put(variable, matrix.build());
@@ -85,8 +86,9 @@ public class RenjinScriptTaskInputsR implements IScriptTaskInputsR {
             final int cols = value[0].length;
             final DoubleMatrixBuilder matrix = new DoubleMatrixBuilder(rows, cols);
             for (int row = 0; row < rows; row++) {
+                final double[] valueRow = value[row];
                 for (int col = 0; col < cols; col++) {
-                    matrix.setValue(row, col, value[row][col]);
+                    matrix.setValue(row, col, valueRow[col]);
                 }
             }
             engine.unwrap().put(variable, matrix.build());
@@ -118,8 +120,9 @@ public class RenjinScriptTaskInputsR implements IScriptTaskInputsR {
             final int cols = value[0].length;
             final IntMatrixBuilder matrix = new IntMatrixBuilder(rows, cols);
             for (int row = 0; row < rows; row++) {
+                final int[] valueRow = value[row];
                 for (int col = 0; col < cols; col++) {
-                    matrix.setValue(row, col, value[row][col]);
+                    matrix.setValue(row, col, valueRow[col]);
                 }
             }
             engine.unwrap().put(variable, matrix.build());
@@ -151,9 +154,10 @@ public class RenjinScriptTaskInputsR implements IScriptTaskInputsR {
             final int cols = value[0].length;
             final IntMatrixBuilder matrix = new IntMatrixBuilder(rows, cols);
             for (int row = 0; row < rows; row++) {
+                final boolean[] valueRow = value[row];
                 for (int col = 0; col < cols; col++) {
                     final int intValue;
-                    if (value[row][col]) {
+                    if (valueRow[col]) {
                         intValue = 1;
                     } else {
                         intValue = 0;

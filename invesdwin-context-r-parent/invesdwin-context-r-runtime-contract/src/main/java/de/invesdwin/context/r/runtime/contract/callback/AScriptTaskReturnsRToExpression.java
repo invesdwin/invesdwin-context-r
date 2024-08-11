@@ -51,7 +51,8 @@ public abstract class AScriptTaskReturnsRToExpression implements IScriptTaskRetu
             final int cols = value[0].length;
             final StringBuilder sb = new StringBuilder("c(c(");
             for (int row = 0; row < rows; row++) {
-                Assertions.checkEquals(value[row].length, cols);
+                final String[] valueRow = value[row];
+                Assertions.checkEquals(valueRow.length, cols);
                 if (row > 0) {
                     sb.append("),c(");
                 }
@@ -59,7 +60,7 @@ public abstract class AScriptTaskReturnsRToExpression implements IScriptTaskRetu
                     if (col > 0) {
                         sb.append(",");
                     }
-                    final String v = value[row][col];
+                    final String v = valueRow[col];
                     if (v == null) {
                         sb.append("NA_character_");
                     } else {
@@ -116,7 +117,8 @@ public abstract class AScriptTaskReturnsRToExpression implements IScriptTaskRetu
             final int cols = value[0].length;
             final StringBuilder sb = new StringBuilder("c(c(");
             for (int row = 0; row < rows; row++) {
-                Assertions.checkEquals(value[row].length, cols);
+                final boolean[] valueRow = value[row];
+                Assertions.checkEquals(valueRow.length, cols);
                 if (row > 0) {
                     sb.append("),c(");
                 }
@@ -124,7 +126,7 @@ public abstract class AScriptTaskReturnsRToExpression implements IScriptTaskRetu
                     if (col > 0) {
                         sb.append(",");
                     }
-                    final boolean v = value[row][col];
+                    final boolean v = valueRow[col];
                     if (v) {
                         sb.append("TRUE");
                     } else {
@@ -172,7 +174,8 @@ public abstract class AScriptTaskReturnsRToExpression implements IScriptTaskRetu
             final int cols = value[0].length;
             final StringBuilder sb = new StringBuilder("c(c(");
             for (int row = 0; row < rows; row++) {
-                Assertions.checkEquals(value[row].length, cols);
+                final int[] valueRow = value[row];
+                Assertions.checkEquals(valueRow.length, cols);
                 if (row > 0) {
                     sb.append("),c(");
                 }
@@ -180,7 +183,7 @@ public abstract class AScriptTaskReturnsRToExpression implements IScriptTaskRetu
                     if (col > 0) {
                         sb.append(",");
                     }
-                    final int v = value[row][col];
+                    final int v = valueRow[col];
                     sb.append(v);
                     sb.append("L");
                 }
@@ -224,7 +227,8 @@ public abstract class AScriptTaskReturnsRToExpression implements IScriptTaskRetu
             final int cols = value[0].length;
             final StringBuilder sb = new StringBuilder("c(c(");
             for (int row = 0; row < rows; row++) {
-                Assertions.checkEquals(value[row].length, cols);
+                final double[] valueRow = value[row];
+                Assertions.checkEquals(valueRow.length, cols);
                 if (row > 0) {
                     sb.append("),c(");
                 }
@@ -232,7 +236,7 @@ public abstract class AScriptTaskReturnsRToExpression implements IScriptTaskRetu
                     if (col > 0) {
                         sb.append(",");
                     }
-                    final double v = value[row][col];
+                    final double v = valueRow[col];
                     sb.append(v);
                 }
             }

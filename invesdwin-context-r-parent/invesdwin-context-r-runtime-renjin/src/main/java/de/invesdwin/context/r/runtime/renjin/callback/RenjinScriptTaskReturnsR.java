@@ -73,8 +73,9 @@ public class RenjinScriptTaskReturnsR implements IScriptTaskReturnsR, Closeable 
             final int cols = value[0].length;
             final StringMatrixBuilder matrix = new StringMatrixBuilder(rows, cols);
             for (int row = 0; row < rows; row++) {
+                final String[] valueRow = value[row];
                 for (int col = 0; col < cols; col++) {
-                    matrix.setValue(row, col, value[row][col]);
+                    matrix.setValue(row, col, valueRow[col]);
                 }
             }
             returnValue(matrix.build());
@@ -106,8 +107,9 @@ public class RenjinScriptTaskReturnsR implements IScriptTaskReturnsR, Closeable 
             final int cols = value[0].length;
             final DoubleMatrixBuilder matrix = new DoubleMatrixBuilder(rows, cols);
             for (int row = 0; row < rows; row++) {
+                final double[] valueRow = value[row];
                 for (int col = 0; col < cols; col++) {
-                    matrix.setValue(row, col, value[row][col]);
+                    matrix.setValue(row, col, valueRow[col]);
                 }
             }
             returnValue(matrix.build());
@@ -139,8 +141,9 @@ public class RenjinScriptTaskReturnsR implements IScriptTaskReturnsR, Closeable 
             final int cols = value[0].length;
             final IntMatrixBuilder matrix = new IntMatrixBuilder(rows, cols);
             for (int row = 0; row < rows; row++) {
+                final int[] valueRow = value[row];
                 for (int col = 0; col < cols; col++) {
-                    matrix.setValue(row, col, value[row][col]);
+                    matrix.setValue(row, col, valueRow[col]);
                 }
             }
             returnValue(matrix.build());
@@ -172,7 +175,8 @@ public class RenjinScriptTaskReturnsR implements IScriptTaskReturnsR, Closeable 
             final int cols = value[0].length;
             final StringBuilder sb = new StringBuilder("c(c(");
             for (int row = 0; row < rows; row++) {
-                Assertions.checkEquals(value[row].length, cols);
+                final boolean[] valueRow = value[row];
+                Assertions.checkEquals(valueRow.length, cols);
                 if (row > 0) {
                     sb.append("),c(");
                 }
@@ -180,7 +184,7 @@ public class RenjinScriptTaskReturnsR implements IScriptTaskReturnsR, Closeable 
                     if (col > 0) {
                         sb.append(",");
                     }
-                    final boolean v = value[row][col];
+                    final boolean v = valueRow[col];
                     if (v) {
                         sb.append("TRUE");
                     } else {
