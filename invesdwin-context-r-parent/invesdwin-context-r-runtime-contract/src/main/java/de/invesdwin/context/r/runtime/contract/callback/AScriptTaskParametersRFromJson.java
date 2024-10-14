@@ -39,9 +39,12 @@ public abstract class AScriptTaskParametersRFromJson extends AScriptTaskParamete
 
     @Override
     public String getString(final int index) {
-        final JsonNode node = getAsJsonNode(index);
+        JsonNode node = getAsJsonNode(index);
         if (node == null) {
             return null;
+        }
+        while (node.size() == 1) {
+            node = node.get(0);
         }
         final String str = node.asText();
         if (Strings.isBlankOrNullText(str)) {

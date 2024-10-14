@@ -11,7 +11,11 @@ callback_createSocket <- function(){
 callback_invokeSocket <- function(methodName, parameters){
     dims <- sapply(parameters, dim)
     writeLines(paste(methodName, ";", toJSON(dims), ";", toJSON(parameters), sep=""), socketScriptTaskCallbackSocket)
-    returnExpression <- readLines(socketScriptTaskCallbackSocket, 1L)
+    #WORKAROUNS readLines has a timeout in R
+    returnExpression <- NULL
+	while (length(returnExpression) == 0) {
+	  returnExpression <- gsub("__##R@NL@C##__", "\n", readLines(socketScriptTaskCallbackSocket, 1L), fixed=T)
+	}
     return(eval(parse(text=returnExpression)))
 }
 
